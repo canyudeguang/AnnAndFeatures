@@ -18,7 +18,8 @@ SOURCES += main.cpp \
     lib_support/cvSupport.cpp \
     lib_support/support.cpp \
     lib_features/rawfeatures.cpp \
-    lib_features/skeletfeatures.cpp
+    lib_features/skeletfeatures.cpp \
+    lib_features/hogfeatures.cpp
 
 INCLUDE += /usr/local/include/opencv /usr/local/include/opencv2
 LIBS += -L/usr/local/lib \
@@ -52,5 +53,6 @@ HEADERS += \
     lib_support/cvSupport.h \
     lib_support/support.h \
     lib_features/rawfeatures.h \
-    lib_features/skeletfeatures.h
+    lib_features/skeletfeatures.h \
+    lib_features/hogfeatures.h
 

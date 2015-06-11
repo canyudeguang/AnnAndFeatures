@@ -14,6 +14,7 @@ using namespace std;
 #include "lib_features/experimentfeature.h"
 #include "lib_features/rawfeatures.h"
 #include "lib_features/skeletfeatures.h"
+#include "lib_features/hogfeatures.h"
 
 #include "lib_ann/ann.h"
 
@@ -40,13 +41,14 @@ int main(int argc, char ** argv)
         experimentFeature fExper;
         RawFeatures fRaw;
         SkeletFeatures fSkelet;
+        HOGFeatures fHog;
 
         // put all pointers tp FeatureExtractors objecst into vector
         vector<FeatureExtractor *> vec_extractors;
        // vec_extractors.push_back(&fEdge);
-       // vec_extractors.push_back(&fExper);
+        vec_extractors.push_back(&fExper);
        // vec_extractors.push_back(&fRaw);
-        vec_extractors.push_back(&fSkelet);
+        vec_extractors.push_back(&fHog);
         /** Feature Extraction */
         /*
          * Open each image from training set
