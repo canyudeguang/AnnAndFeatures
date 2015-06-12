@@ -3,10 +3,53 @@
 // Constructor
 //==============================================================================
 ANN::ANN(){
-    this->numberOfClasses = 2; // Open/Closed state
+    // default number of classes is two
+    this->numberOfClasses = 2;
 }
 //==============================================================================
+void ANN::setLabels(string labels[], int numOfClasses){
+    for(int i = 0; i < numOfClasses; i++){
+        this->strLabels.push_back(labels[i]);
+    }
+    this->numberOfClasses = numOfClasses;
 
+#if DEBUG
+ cout << this->numberOfClasses <<  " Labels set: ";
+ for(uint i = 0; i < this->strLabels.size(); i++) cout << this->strLabels[i] << ":" << i << ", ";
+ cout << endl;
+#endif
+}
+//==============================================================================
+int ANN::getLabelIndex(string label){
+    return find(this->strLabels.begin(), this->strLabels.end(), label) - this->strLabels.begin();
+}
+//==============================================================================
+string ANN::getLabelString(uint iLabel){
+    if(iLabel >= numberOfClasses || iLabel < 0) return "null";
+    return this->strLabels[iLabel];
+}
+//==============================================================================
+vector<uchar> ANN::extLabelFromFileName(vector<string> &fileNames){
+    vector<uchar> labels;
+    for(size_t i = 0; i < fileNames.size(); ++i){
+        uchar foundLabel = this->findStrLabel(fileNames[i]);
+       // if(foundLabel){
+        //@Must fill all labels even those are wrong - unknown label perhaps (-1)
+            labels.push_back(foundLabel);
+       // }
+    }
+    return labels;
+}
+//==============================================================================
+uchar ANN::findStrLabel(const string & filename){
+    //find for each label
+    for(size_t i = 0; i < this->strLabels.size(); ++i){
+        if(filename.find(this->strLabels[i]) != string::npos){
+            return i;
+        }
+    }
+    return -1;
+}
 
 uchar ANN::getEYE_CLOSE(){
     return ANN::EYE_CLOSE;

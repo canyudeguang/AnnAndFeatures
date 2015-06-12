@@ -46,9 +46,11 @@ int main(int argc, char ** argv)
         // put all pointers tp FeatureExtractors objecst into vector
         vector<FeatureExtractor *> vec_extractors;
        // vec_extractors.push_back(&fEdge);
-        vec_extractors.push_back(&fExper);
+       // vec_extractors.push_back(&fExper);
        // vec_extractors.push_back(&fRaw);
         vec_extractors.push_back(&fHog);
+       //  vec_extractors.push_back(&fSkelet);
+
         /** Feature Extraction */
         /*
          * Open each image from training set
@@ -91,14 +93,27 @@ int main(int argc, char ** argv)
         /** Ann Training */
         ANN Ann;
 
-        vector<int> layers(2); // 2 layers of neurons,
-        fill(layers.begin(), layers.end(), 8); // with 8 neurons in each layer
+        string str_labels[] = {"OPEN","CLOSED","UNKNOWN"};
+        Ann.setLabels(str_labels,3);
+
+
+        vector<uchar> eLabels =Ann.extLabelFromFileName(train_images);
+        for(int i = 0; i < eLabels.size() ; ++i){
+            cout << Ann.getLabelString(eLabels[i]) << " : " << (int)eLabels[i] << endl;
+        }
+        return 0;
+
+        // Hidden layer if data are not linearly separable
+        // Most of the problems are solved by 1 hidden layer, deeper hidden layers are too small differences
+        // How many neurons? usually between size of input and size of output
+        vector<int> layers(0); // 2 layers of neurons,
+        fill(layers.begin(), layers.end(), 2); // with 8 neurons in each layer
         Ann.setParameters(Features.cols, layers, 2); // input how many features, layers, output layer classes
 
         // Check if labels are same size of features
         if(labels.size() == Features.rows){
-            //Ann.parametricTrain(Features,labels,20,layers,0); // 20 ieter, 0 hidden layers
-            Ann.train(Features,labels,2);
+            Ann.parametricTrain(Features,labels,2000, layers, 1); // 20 ieter, 0 hidden layers
+            //Ann.train(Features,labels,2);
         }
         else{
             cerr << "Labels are not same size as Features:" << endl;
