@@ -5,6 +5,7 @@
 ANN::ANN(){
     // default number of classes is two
     this->numberOfClasses = 2;
+    this->nullLabel = false;
 }
 //==============================================================================
 void ANN::setLabels(string labels[], int numOfClasses){
@@ -31,14 +32,21 @@ string ANN::getLabelString(uint iLabel){
 //==============================================================================
 vector<uchar> ANN::extLabelFromFileName(vector<string> &fileNames){
     vector<uchar> labels;
+
     for(size_t i = 0; i < fileNames.size(); ++i){
         uchar foundLabel = this->findStrLabel(fileNames[i]);
        // if(foundLabel){
         //@Must fill all labels even those are wrong - unknown label perhaps (-1)
-            labels.push_back(foundLabel);
+        labels.push_back(foundLabel);
        // }
     }
+#if DEBUG
+ if(!this->nullLabel){
+     cout << "Label extraction correct: " << labels.size() << " labels" << endl;
+ }
+#endif
     return labels;
+
 }
 //==============================================================================
 uchar ANN::findStrLabel(const string & filename){
@@ -48,7 +56,12 @@ uchar ANN::findStrLabel(const string & filename){
             return i;
         }
     }
+    this->nullLabel = true;
     return -1;
+}
+//==============================================================================
+bool ANN::hasNullLabel(){
+    return this->nullLabel;
 }
 
 uchar ANN::getEYE_CLOSE(){
@@ -96,7 +109,9 @@ void ANN::setParameters(int inputs, vector<int> & lay, int output){
 
     layers.at<int>(0, netsize-1) = output; // output
 
-    cout << "Layers: " << layers << endl;
+#if DEBUG
+    cout << "ANN Settings: Layers " << layers << endl;
+#endif
 
     // Create the network using a sigmoid function
     //--------------------------------------------------------------------------
@@ -134,7 +149,9 @@ void ANN::parametricTrainMouth(cv::Mat_<float> &trainData, std::vector<uchar> &l
     //--------------------------------------------------------------------------
     int iters = nnetwork->train(trainData, trainLabels, Mat(), Mat(), params);
 
+#if DEBUG
     cout << "Number of iterations: " << iters << endl;
+#endif
 
     stringstream ss;
     ss << iters << "_" << hidden << "_hid_";
@@ -150,7 +167,7 @@ void ANN::parametricTrainMouth(cv::Mat_<float> &trainData, std::vector<uchar> &l
 void ANN::parametricTrain(cv::Mat_<float> &trainData, std::vector<uchar> &labels, int iter, vector<int> & nodes, int hidden){
     // Prepare labels in required format
     //--------------------------------------------------------------------------
-    Mat_<float> trainLabels = Mat_<uchar>::zeros(trainData.rows, ANN::CLASSES);
+    Mat_<float> trainLabels = Mat_<uchar>::zeros(trainData.rows, this->numberOfClasses);
     // Fill in the matrix with labels
     for(int i = 0; i < trainData.rows; i++) {
         trainLabels(i, labels[i]) = 1.0;
@@ -177,7 +194,9 @@ void ANN::parametricTrain(cv::Mat_<float> &trainData, std::vector<uchar> &labels
     //--------------------------------------------------------------------------
     int iters = nnetwork->train(trainData, trainLabels, Mat(), Mat(), params);
 
+#if DEBUG
     cout << "Number of iterations: " << iters << endl;
+#endif
 
     stringstream ss;
     ss << iters << "_" << hidden << "_hid_";
@@ -255,6 +274,9 @@ vector<uchar> ANN::predict(Mat_<float> &testData)
 
         nnetwork->predict(testData.row(i), classifResult);
 
+#if DEBUG
+        cout << classifResult << endl;
+#endif
         Point2i max_loc;
         minMaxLoc(classifResult, 0, 0, 0, &max_loc);
 

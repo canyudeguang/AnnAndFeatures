@@ -62,6 +62,11 @@ public:
      * @return vector with uchar labels
      */
     vector<uchar> extLabelFromFileName(vector<string> &fileNames);
+    /**
+     * @brief Checks label extraction result
+     * @return True if there was an error in LabelExtraction (extra image/extra label)
+     */
+    bool hasNullLabel();
 
 
 
@@ -121,6 +126,7 @@ private:
     int attributesPerSample;
     int numberOfClasses;
 
+    bool nullLabel;
 
 };
 
