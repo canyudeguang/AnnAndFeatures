@@ -199,7 +199,7 @@ void ANN::parametricTrain(cv::Mat_<float> &trainData, std::vector<uchar> &labels
 #endif
 
     stringstream ss;
-    ss << iters << "_" << hidden << "_hid_";
+    ss << iters << "_" << hidden << "_Classes_";
     for(int i = 0; i < nodes.size(); i++){
         ss << nodes[i] << "_";
     }

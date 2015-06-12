@@ -86,7 +86,7 @@ int main(int argc, char ** argv)
 
         // set labels
         int numClasses = 4;
-        string str_labels[numClasses] = {"OPEN","DEFAULT","TONGUE","TEETH"};
+        string str_labels[numClasses] = {"DEFAULT","OPEN","TONGUE","TEETH"};
         Ann.setLabels(str_labels,numClasses);
 
         // label extraction
@@ -102,8 +102,8 @@ int main(int argc, char ** argv)
         // Hidden layer if data are not linearly separable
         // Most of the problems are solved by 1 hidden layer, deeper hidden layers are too small differences
         // How many neurons? usually between size of input and size of output
-        vector<int> layers(0); // 2 layers of neurons,
-        fill(layers.begin(), layers.end(), 4); // with 8 neurons in each layer
+        vector<int> layers(1); // 2 layers of neurons,
+        fill(layers.begin(), layers.end(), 2); // with 8 neurons in each layer
         Ann.setParameters(Features.cols, layers, numClasses); // input how many features, layers, output layer classes
 
         cout << "ANN training ... " << endl;
@@ -130,6 +130,7 @@ int main(int argc, char ** argv)
             cout << "ANN predict ... from " << test_dir << endl;
 
             vector<string> test_imgs = Support::pathVector(test_dir,".jpg");
+            sort(test_imgs.begin(), test_imgs.end());
 
             for(uint i = 0; i < test_imgs.size(); ++i){
                 cv::Mat img = imread(test_imgs[i],CV_LOAD_IMAGE_ANYCOLOR);
