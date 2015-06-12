@@ -47,9 +47,9 @@ int main(int argc, char ** argv)
         // put all pointers tp FeatureExtractors objecst into vector
         vector<FeatureExtractor *> vec_extractors;
        // vec_extractors.push_back(&fEdge);
-      //  vec_extractors.push_back(&fExper);
+        vec_extractors.push_back(&fExper);
        // vec_extractors.push_back(&fHisto);
-        vec_extractors.push_back(&fRaw);
+       // vec_extractors.push_back(&fRaw);
         vec_extractors.push_back(&fHog);
        // vec_extractors.push_back(&fSkelet);
 
