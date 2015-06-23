@@ -18,6 +18,8 @@ public:
     HistogramFeatures();
     virtual Mat_<float> getFeature(Mat &image);
     void setNumberOfBins(int bins);
+
+    Mat_<float> derivateHistogram(Mat_<float> &Histogram);
 private:
     int numberOfBins;
 };

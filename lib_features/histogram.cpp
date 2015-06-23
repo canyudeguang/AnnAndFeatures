@@ -635,3 +635,33 @@ vector<float> Histogram::getFeatureHisto(){
 //    cout << endl;
     return histValues;
 }
+
+cv::Mat Histogram::showHistogram(Mat_<float> &histogram){
+    //to draw histogram
+    // histogram image size
+
+    // Draw the histogram
+    int hist_h = 512; int hist_w = 512;
+    Mat histImg(hist_w, hist_h, CV_8UC3, Scalar(0,0,0));
+
+    Mat normalized;
+    // Normalize results
+    normalize(histogram, normalized, 0, histImg.rows, NORM_MINMAX, -1, Mat());
+
+    // width of bin
+    int bin_w = cvRound ( (double) hist_w/histogram.cols);
+
+
+    for(int i = 0; i < histogram.cols; ++i ){
+        if( abs(histogram(0,i) - 2.0) <= 2 ){
+            rectangle(histImg, Point(i*bin_w,hist_h), Point(i*bin_w + bin_w,  hist_h - cvRound( normalized.at<float>(i)) ), Scalar(0,0,128),1,8,0);
+
+        }
+        else{
+            rectangle(histImg, Point(i*bin_w,hist_h), Point(i*bin_w + bin_w,  hist_h - cvRound( normalized.at<float>(i)) ), Scalar(128,128,128),1,8,0);
+
+        }
+    }
+
+    return histImg;
+}

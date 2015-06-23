@@ -36,7 +36,7 @@ int main(int argc, char ** argv)
         // Define features
         /// Here example with histogram feature only
         HistogramFeatures fHisto; // histogram features
-        fHisto.setNumberOfBins(4); // set number of histogram bins
+        fHisto.setNumberOfBins(256); // set number of histogram bins
 
         EdgeFeatures fEdge;
         experimentFeature fExper;
@@ -46,7 +46,7 @@ int main(int argc, char ** argv)
 
         // put all pointers tp FeatureExtractors objecst into vector
         vector<FeatureExtractor *> vec_extractors;
-       // vec_extractors.push_back(&fEdge);
+        vec_extractors.push_back(&fEdge);
         vec_extractors.push_back(&fExper);
        // vec_extractors.push_back(&fHisto);
        // vec_extractors.push_back(&fRaw);
@@ -79,18 +79,18 @@ int main(int argc, char ** argv)
 
 
 
-
         /** Ann Training */
 
         ANN Ann;
 
         // set labels
-        int numClasses = 4;
-        string str_labels[numClasses] = {"DEFAULT","OPEN","TONGUE","TEETH"};
+        int numClasses = 2;
+        string str_labels[numClasses] = {"DEFAULT","TEETH"};
         Ann.setLabels(str_labels,numClasses);
 
         // label extraction
         vector<uchar> eLabels = Ann.extLabelFromFileName(train_images);
+
 
         if(Ann.hasNullLabel()){
             cerr << "Error in Label extraction" << endl;
@@ -102,7 +102,7 @@ int main(int argc, char ** argv)
         // Hidden layer if data are not linearly separable
         // Most of the problems are solved by 1 hidden layer, deeper hidden layers are too small differences
         // How many neurons? usually between size of input and size of output
-        vector<int> layers(1); // 2 layers of neurons,
+        vector<int> layers(0); // 2 layers of neurons,
         fill(layers.begin(), layers.end(), 2); // with 8 neurons in each layer
         Ann.setParameters(Features.cols, layers, numClasses); // input how many features, layers, output layer classes
 
@@ -118,6 +118,7 @@ int main(int argc, char ** argv)
             cerr << eLabels.size() << " labels, " << Features.rows << " rows" << endl;
         }
 
+
         /** ANN Prediction */
 
         if(argc > 2){
@@ -130,7 +131,7 @@ int main(int argc, char ** argv)
             cout << "ANN predict ... from " << test_dir << endl;
 
             vector<string> test_imgs = Support::pathVector(test_dir,".jpg");
-            sort(test_imgs.begin(), test_imgs.end());
+            //sort(test_imgs.begin(), test_imgs.end());
 
             for(uint i = 0; i < test_imgs.size(); ++i){
                 cv::Mat img = imread(test_imgs[i],CV_LOAD_IMAGE_ANYCOLOR);
@@ -145,9 +146,14 @@ int main(int argc, char ** argv)
                test_features.push_back(fjoined); // add feature_vector to mat of all features
             }
 
+
+
+
             vector<uchar> test_labels = Ann.extLabelFromFileName(test_imgs);
             vector<uchar> predicts = Ann.predict(test_features);
             Ann.evaluate(predicts,test_labels,numClasses);
+
+           Ann.saveTofile("D_Teeth_edge_ex_hog");
 
         }
     }

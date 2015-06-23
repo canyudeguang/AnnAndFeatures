@@ -96,6 +96,8 @@ public:
 
     Mat_<float> getRGBfeatures();
 
+    cv::Mat showHistogram(Mat_<float> &histogram);
+
 
 private:
     vector<float> R,G,B;

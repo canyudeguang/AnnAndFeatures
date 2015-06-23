@@ -116,7 +116,8 @@ void ANN::setParameters(int inputs, vector<int> & lay, int output){
     // Create the network using a sigmoid function
     //--------------------------------------------------------------------------
     nnetwork = new CvANN_MLP();
-    nnetwork->create(layers, CvANN_MLP::SIGMOID_SYM, 1.0, 1.0);
+    //!@TODO if parameters 1.0 1.0 when switching labels doesn't work... magic why
+    nnetwork->create(layers, CvANN_MLP::SIGMOID_SYM, 0, 0);
 }
 
 void ANN::parametricTrainMouth(cv::Mat_<float> &trainData, std::vector<uchar> &labels, int iter, vector<int> & nodes, int hidden){
@@ -267,28 +268,36 @@ vector<uchar> ANN::predict(Mat_<float> &testData)
 {
     int numberOfSamples = testData.rows;
 
-    Mat_<float> classifResult(1, numberOfClasses);
+    Mat_<float> classifResult(1, this->numberOfClasses);
     vector<uchar> predictedLabels(numberOfSamples);
 
     for(int i = 0; i < numberOfSamples; i++) {
 
         nnetwork->predict(testData.row(i), classifResult);
 
-#if DEBUG
         cout << classifResult << endl;
-#endif
+
+        //        int max = 0;
+//        int maxI = 0;
+//        for(int j = 0; j < this->numberOfClasses; ++j){
+//            if( classifResult(0,j) > max){
+//                max = classifResult(0,j);
+//                maxI = j;
+//            }
+//        }
         Point2i max_loc;
         minMaxLoc(classifResult, 0, 0, 0, &max_loc);
 
         // add row into predictions
         predictions.push_back(classifResult);
-
+        //predictedLabels.push_back(maxI);
         predictedLabels[i] = static_cast<unsigned char>(max_loc.x);
     }
     predictLabels.insert(predictLabels.end(),predictedLabels.begin(), predictedLabels.end());
 
-    return predictedLabels;
+    return predictLabels;
 }
+
 //==============================================================================
 vector<uchar> ANN::predictMouth(Mat_<float> &testData)
 {
