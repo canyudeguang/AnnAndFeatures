@@ -14,7 +14,8 @@ using namespace std;
 // Other headers
 #include "classifier.h"
 
-#define DEBUG 1
+#define DEBUG 0
+#define INFO 1
 
 /*
  *  AnnTrainer for Images

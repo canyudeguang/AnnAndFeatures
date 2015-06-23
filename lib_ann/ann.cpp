@@ -14,7 +14,7 @@ void ANN::setLabels(string labels[], int numOfClasses){
     }
     this->numberOfClasses = numOfClasses;
 
-#if DEBUG
+#if INFO
  cout << this->numberOfClasses <<  " Labels set: ";
  for(uint i = 0; i < this->strLabels.size(); i++) cout << this->strLabels[i] << ":" << i << ", ";
  cout << endl;
@@ -40,7 +40,7 @@ vector<uchar> ANN::extLabelFromFileName(vector<string> &fileNames){
         labels.push_back(foundLabel);
        // }
     }
-#if DEBUG
+#if INFO
  if(!this->nullLabel){
      cout << "Label extraction correct: " << labels.size() << " labels" << endl;
  }
@@ -109,7 +109,7 @@ void ANN::setParameters(int inputs, vector<int> & lay, int output){
 
     layers.at<int>(0, netsize-1) = output; // output
 
-#if DEBUG
+#if INFO
     cout << "ANN Settings: Layers " << layers << endl;
 #endif
 
@@ -150,7 +150,7 @@ void ANN::parametricTrainMouth(cv::Mat_<float> &trainData, std::vector<uchar> &l
     //--------------------------------------------------------------------------
     int iters = nnetwork->train(trainData, trainLabels, Mat(), Mat(), params);
 
-#if DEBUG
+#if INFO
     cout << "Number of iterations: " << iters << endl;
 #endif
 
@@ -195,7 +195,7 @@ void ANN::parametricTrain(cv::Mat_<float> &trainData, std::vector<uchar> &labels
     //--------------------------------------------------------------------------
     int iters = nnetwork->train(trainData, trainLabels, Mat(), Mat(), params);
 
-#if DEBUG
+#if INFO
     cout << "Number of iterations: " << iters << endl;
 #endif
 
@@ -274,9 +274,9 @@ vector<uchar> ANN::predict(Mat_<float> &testData)
     for(int i = 0; i < numberOfSamples; i++) {
 
         nnetwork->predict(testData.row(i), classifResult);
-
+#if DEBUG
         cout << classifResult << endl;
-
+#endif
         //        int max = 0;
 //        int maxI = 0;
 //        for(int j = 0; j < this->numberOfClasses; ++j){

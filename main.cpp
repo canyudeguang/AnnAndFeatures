@@ -46,7 +46,7 @@ int main(int argc, char ** argv)
 
         // put all pointers tp FeatureExtractors objecst into vector
         vector<FeatureExtractor *> vec_extractors;
-        vec_extractors.push_back(&fEdge);
+       // vec_extractors.push_back(&fEdge);
         vec_extractors.push_back(&fExper);
        // vec_extractors.push_back(&fHisto);
        // vec_extractors.push_back(&fRaw);
@@ -84,8 +84,8 @@ int main(int argc, char ** argv)
         ANN Ann;
 
         // set labels
-        int numClasses = 2;
-        string str_labels[numClasses] = {"DEFAULT","TEETH"};
+        int numClasses = 5;
+        string str_labels[numClasses] = {"DEFAULT","OPEN","TEETH","TONGUE","NONE"};
         Ann.setLabels(str_labels,numClasses);
 
         // label extraction
@@ -153,7 +153,7 @@ int main(int argc, char ** argv)
             vector<uchar> predicts = Ann.predict(test_features);
             Ann.evaluate(predicts,test_labels,numClasses);
 
-           Ann.saveTofile("D_Teeth_edge_ex_hog");
+           Ann.saveTofile("FiveClasses_hog_exper_D_O_T_TO_N");
 
         }
     }
