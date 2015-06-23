@@ -3,6 +3,7 @@
 
 #include "featureextractor.h"
 #include "histogram.h"
+#include "lib_support/cvSupport.h"
 
 
 /**
@@ -20,6 +21,9 @@ public:
     void setNumberOfBins(int bins);
 
     Mat_<float> derivateHistogram(Mat_<float> &Histogram);
+    Mat_<float> derivateHistogram(vector<float> &Histogram);
+
+    vector<float> lowpass(vector<float> & src, float xm1);
 private:
     int numberOfBins;
 };

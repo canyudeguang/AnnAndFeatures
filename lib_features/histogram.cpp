@@ -576,6 +576,13 @@ void Histogram::histHSV(int isshow){
     }
 }
 
+void Histogram::setGrayImage(cv::Mat &src, int bins){
+    defineWindowsNames();
+
+    src.copyTo(this->srcGray);
+    isSrc = true;
+    histSize = bins;
+}
 
 void Histogram::histGrey(int isshow){
     if(!srcGray.data){

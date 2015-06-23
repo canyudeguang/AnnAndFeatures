@@ -226,3 +226,67 @@ cv::Mat cvSupport::copyFromImage(Mat &img, vector<Point> &points){
     // Mat maskROI = mask(roi); // Save this if you want a mask for pixels within the contour in contourRegion.
     return imageROI;
 }
+
+
+cv::Mat cvSupport::drawHistogram(vector<float> hist_values, int w, int h, Scalar color_BG, Scalar color_Hist){
+
+    if(w <= hist_values.size()){ // minimal size of histogram
+        w = hist_values.size();
+    }
+
+    cv::Mat histImg(h, w, CV_8UC3, color_BG); // blank black background
+
+    int histSize = hist_values.size();
+
+    // Normalize results
+    Mat normalized;
+    normalize(hist_values, normalized, 0, histImg.rows, NORM_MINMAX, -1, Mat());
+
+    // width of bin
+    int bin_w = cvRound ( (double) w/histSize);
+
+    // draw bins as rectangles
+    for(int i = 0; i < histSize; ++i ){
+        rectangle(histImg, Point(i*bin_w, h), Point(i*bin_w + bin_w,  h - cvRound( normalized.at<float>(i)) ), color_Hist,1,8,0);
+    }
+
+    return histImg;
+}
+
+cv::Mat cvSupport::drawHistogram(vector<float> hist_values, int val, int range, int w, int h){
+
+    cv::Scalar color_BG = Scalar(0,0,0);
+    cv::Scalar color_Hist = Scalar(128,0,128);
+    cv::Scalar color_val = Scalar(0,0,255);
+    if(w <= hist_values.size()){ // minimal size of histogram
+        w = hist_values.size();
+    }
+
+    cv::Mat histImg(h, w, CV_8UC3, color_BG); // blank black background
+
+    int histSize = hist_values.size();
+
+    // Normalize results
+    Mat normalized;
+    normalize(hist_values, normalized, 0, histImg.rows, NORM_MINMAX, -1, Mat());
+
+    // width of bin
+    int bin_w = cvRound ( (double) w/histSize);
+
+    // draw bins as rectangles
+    for(int i = 0; i < histSize; ++i ){
+
+        int diff = abs(val - hist_values[i]);
+
+        if( diff <= range ){
+            rectangle(histImg, Point(i*bin_w, h), Point(i*bin_w + bin_w,  h - cvRound( normalized.at<float>(i)) ), color_val,1,8,0);
+        }
+        else{
+           rectangle(histImg, Point(i*bin_w, h), Point(i*bin_w + bin_w,  h - cvRound( normalized.at<float>(i)) ), color_Hist,1,8,0);
+
+        }
+    }
+
+
+    return histImg;
+}

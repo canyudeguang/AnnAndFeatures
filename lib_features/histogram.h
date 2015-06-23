@@ -58,6 +58,8 @@ public:
     void loadImg(string file, int bins);
     Histogram(Mat image, int bins);
 
+    void setGrayImage(cv::Mat &src, int bins);
+
     void histGrey(int isshow = 0);
     void histColor(int isshow = 0);
     void histHSL(int isshow = 0);

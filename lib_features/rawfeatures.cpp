@@ -15,6 +15,9 @@ RawFeatures::~RawFeatures()
 cv::Mat_<float> RawFeatures::thres(){
     // grayscale image
     cvtColor(this->img_orig, this->img_gray,CV_BGR2GRAY);
+
+    equalizeHist(this->img_gray,this->img_gray);
+
     cv::threshold(this->img_gray, img_thres, 25, 255, THRESH_OTSU);
 
 
@@ -23,6 +26,8 @@ cv::Mat_<float> RawFeatures::thres(){
     Mat_<float> imgInRow;
     this->img_thres.convertTo(imgInRow, CV_32F); // Convert to float (required by train function)
     imgInRow = imgInRow.reshape(0, 1);
+
+    imshow("thres",this->img_thres);
     return imgInRow;
 }
 cv::Mat_<float> RawFeatures::rgb1D(){
