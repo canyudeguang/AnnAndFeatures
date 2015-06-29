@@ -84,8 +84,8 @@ int main(int argc, char ** argv)
         ANN Ann;
 
         // set labels
-        int numClasses = 5;
-        string str_labels[numClasses] = {"DEFAULT","OPEN","TEETH","TONGUE","NONE"};
+        int numClasses = 4;
+        string str_labels[numClasses] = {"DEFAULT","OPEN","TEETH","TONGUE"};
         Ann.setLabels(str_labels,numClasses);
 
         // label extraction
@@ -153,7 +153,7 @@ int main(int argc, char ** argv)
             vector<uchar> predicts = Ann.predict(test_features);
             Ann.evaluate(predicts,test_labels,numClasses);
 
-           Ann.saveTofile("FiveClasses_hog_exper_D_O_T_TO_N");
+           Ann.saveTofile("FourClasses_hog_exper_D_O_T_TO");
 
         }
     }
