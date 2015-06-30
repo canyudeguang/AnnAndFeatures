@@ -84,8 +84,8 @@ int main(int argc, char ** argv)
         ANN Ann;
 
         // set labels
-        int numClasses = 4;
-        string str_labels[numClasses] = {"DEFAULT","OPEN","TEETH","TONGUE"};
+        int numClasses = 2;
+        string str_labels[numClasses] = {"OPEN","CLOSED"};
         Ann.setLabels(str_labels,numClasses);
 
         // label extraction
@@ -118,6 +118,7 @@ int main(int argc, char ** argv)
             cerr << eLabels.size() << " labels, " << Features.rows << " rows" << endl;
         }
 
+        Ann.saveTofile("eyes_ho_ex");
 
         /** ANN Prediction */
 
@@ -131,7 +132,7 @@ int main(int argc, char ** argv)
             cout << "ANN predict ... from " << test_dir << endl;
 
             vector<string> test_imgs = Support::pathVector(test_dir,".jpg");
-            //sort(test_imgs.begin(), test_imgs.end());
+            sort(test_imgs.begin(), test_imgs.end());
 
             for(uint i = 0; i < test_imgs.size(); ++i){
                 cv::Mat img = imread(test_imgs[i],CV_LOAD_IMAGE_ANYCOLOR);
@@ -153,7 +154,6 @@ int main(int argc, char ** argv)
             vector<uchar> predicts = Ann.predict(test_features);
             Ann.evaluate(predicts,test_labels,numClasses);
 
-           Ann.saveTofile("FourClasses_hog_exper_D_O_T_TO");
 
         }
     }
