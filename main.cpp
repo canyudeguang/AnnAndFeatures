@@ -16,7 +16,11 @@ using namespace std;
 #include "lib_features/skeletfeatures.h"
 #include "lib_features/hogfeatures.h"
 
-#include "lib_ann/ann.h"
+#include "lib_ann/ann.h"\
+
+
+#include "doublefann.h"
+#include "fann_cpp.h"
 
 /**
  * In this example we are using images of Eyes as the training set
@@ -24,139 +28,49 @@ using namespace std;
  * Label is written in the file name "CLOSED"
  * FeatureVector is extracted from the image
  */
+void train(){
+    FANN::neural_net net;
+    net.create_standard(2,3,1,6);
+
+    net.train_on_file("output.txt",5000,1000,0.001);
+    net.save("mouths_float.net");
+}
+
 int main(int argc, char ** argv)
 {
-    if(argc > 1){
-        string directory(argv[1]);
+    FANN::neural_net net;
+    net.create_from_file("mouths_float.net");
 
-        // load all images into vector
-        vector<string> train_images = Support::pathVector(directory,".jpg");
+    fann_type input[3];
+    input[0] = 86;
+    input[1] = 80;
+    input[2] =103.5;
 
-        cout << "From: " << directory << " "<< train_images.size() << " images loaded." << endl;
-        // Define features
-        /// Here example with histogram feature only
-        HistogramFeatures fHisto; // histogram features
-        fHisto.setNumberOfBins(256); // set number of histogram bins
-
-        EdgeFeatures fEdge;
-        experimentFeature fExper;
-        RawFeatures fRaw;
-        SkeletFeatures fSkelet;
-        HOGFeatures fHog;
-
-        // put all pointers tp FeatureExtractors objecst into vector
-        vector<FeatureExtractor *> vec_extractors;
-       // vec_extractors.push_back(&fEdge);
-        vec_extractors.push_back(&fExper);
-       // vec_extractors.push_back(&fHisto);
-       // vec_extractors.push_back(&fRaw);
-        vec_extractors.push_back(&fHog);
-       // vec_extractors.push_back(&fSkelet);
-
-        /** Feature Extraction */
-        /*
-         * Open each image from training set
-         * extract features
-         * extract label
-         * save them into final feature vector
-         */
-
-        cv::Mat_<float> Features; // Mat of feature vectors, each row is featureVec from one image
-
-        for(uint i = 0; i < train_images.size(); ++i){
-            cv::Mat img = imread(train_images[i],CV_LOAD_IMAGE_ANYCOLOR);
-
-            // joined features from all extractors
-            Mat_<float> fjoined;
-            fjoined.setTo(0);
-
-            for(uint j = 0; j < vec_extractors.size(); ++j){
-                Mat_<float> f = vec_extractors[j]->getFeature(img);
-                FeatureExtractor::joinFeatures(fjoined,f);
-            }
-            Features.push_back(fjoined); // add feature_vector to mat of all features
-        }
+    fann_type * calc_out = net.run(input);
 
 
+    printf("MouthTest test (%f,%f,%f) -> %f\n", input[0], input[1], input[2], calc_out[0]);
 
-        /** Ann Training */
+//       const unsigned int num_input = 3;
+//       const unsigned int num_output = 6;
+//       const unsigned int num_layers = 1;
+//       const unsigned int num_neurons_hidden = 2;
+//       const float desired_error = (const float) 0.001;
+//       const unsigned int max_epochs = 500000;
+//       const unsigned int epochs_between_reports = 1000;
 
-        ANN Ann;
+//       struct fann *ann = fann_create_standard(num_layers, num_input, num_neurons_hidden, num_output);
 
-        // set labels
-        int numClasses = 4;
-        string str_labels[numClasses] = {"DEFAULT","OPEN","TEETH","TONGUE"};
-        Ann.setLabels(str_labels,numClasses);
+//       fann_set_activation_function_hidden(ann, FANN_SIGMOID_SYMMETRIC);
+//       fann_set_activation_function_output(ann, FANN_SIGMOID_SYMMETRIC);
 
-        // label extraction
-        vector<uchar> eLabels = Ann.extLabelFromFileName(train_images);
+//       fann_train_on_file(ann, "output.txt", max_epochs,
+//           epochs_between_reports, desired_error);
 
+//       fann_save(ann, "mouths_float.net");
 
-        if(Ann.hasNullLabel()){
-            cerr << "Error in Label extraction" << endl;
-            for(int i = 0; i < eLabels.size() ; ++i){
-                cout << train_images[i] <<" " << Ann.getLabelString(eLabels[i]) << " : " << (int)eLabels[i] << endl;
-            }
-        }
+//       fann_destroy(ann);
 
-        // Hidden layer if data are not linearly separable
-        // Most of the problems are solved by 1 hidden layer, deeper hidden layers are too small differences
-        // How many neurons? usually between size of input and size of output
-        vector<int> layers(0); // 2 layers of neurons,
-        fill(layers.begin(), layers.end(), 2); // with 8 neurons in each layer
-        Ann.setParameters(Features.cols, layers, numClasses); // input how many features, layers, output layer classes
-
-        cout << "ANN training ... " << endl;
-
-        // Check if labels are same size of features
-        if(eLabels.size() == Features.rows){
-           Ann.parametricTrain(Features,eLabels,100, layers, 0); // 20 ieter, 0 hidden layers
-           //Ann.train(Features,eLabels,2);
-        }
-        else{
-            cerr << "Labels are not same size as Features:" << endl;
-            cerr << eLabels.size() << " labels, " << Features.rows << " rows" << endl;
-        }
-
-
-        /** ANN Prediction */
-
-        if(argc > 2){
-            //Ann.loadFromFile("iter_20_1_hid_20_nodes.yml");
-            //Label extraction & Feature extaction
-
-            cv::Mat_<float> test_features;
-            string test_dir(argv[2]);
-
-            cout << "ANN predict ... from " << test_dir << endl;
-
-            vector<string> test_imgs = Support::pathVector(test_dir,".jpg");
-            //sort(test_imgs.begin(), test_imgs.end());
-
-            for(uint i = 0; i < test_imgs.size(); ++i){
-                cv::Mat img = imread(test_imgs[i],CV_LOAD_IMAGE_ANYCOLOR);
-               // joined features from all extractors
-               Mat_<float> fjoined;
-               fjoined.setTo(0);
-
-               for(uint j = 0; j < vec_extractors.size(); ++j){
-                   Mat_<float> f = vec_extractors[j]->getFeature(img);
-                   FeatureExtractor::joinFeatures(fjoined,f);
-               }
-               test_features.push_back(fjoined); // add feature_vector to mat of all features
-            }
-
-
-
-
-            vector<uchar> test_labels = Ann.extLabelFromFileName(test_imgs);
-            vector<uchar> predicts = Ann.predict(test_features);
-            Ann.evaluate(predicts,test_labels,numClasses);
-
-           Ann.saveTofile("FourClasses_hog_exper_D_O_T_TO");
-
-        }
-    }
-    return 0;
+       return 0;
 }
 

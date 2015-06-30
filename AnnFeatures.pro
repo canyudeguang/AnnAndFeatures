@@ -21,7 +21,7 @@ SOURCES += main.cpp \
     lib_features/skeletfeatures.cpp \
     lib_features/hogfeatures.cpp
 
-INCLUDE += /usr/local/include/opencv /usr/local/include/opencv2
+INCLUDE += /usr/local/include/opencv /usr/local/include/opencv2 -I./fann/include
 LIBS += -L/usr/local/lib \
 -lopencv_core \
 -lopencv_imgproc \
@@ -32,14 +32,15 @@ LIBS += -L/usr/local/lib \
 -lopencv_calib3d \
 -lopencv_objdetect \
 -lopencv_contrib \
--lopencv_legacy
+-lopencv_legacy \
+-ldoublefann
+
 
 include(deployment.pri)
 qtcAddDeployment()
 
 HEADERS += \
     lib_ann/ann.h \
-    lib_ann/classifier.h \
     lib_features/cornerfeatures.h \
     lib_features/edgefeatures.h \
     lib_features/experimentfeature.h \
@@ -54,5 +55,6 @@ HEADERS += \
     lib_support/support.h \
     lib_features/rawfeatures.h \
     lib_features/skeletfeatures.h \
-    lib_features/hogfeatures.h
+    lib_features/hogfeatures.h \
+    lib_ann/classifier.h
 
