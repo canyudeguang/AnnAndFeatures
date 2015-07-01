@@ -5,6 +5,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <string>
+#include <math.h>
 
 #include <ostream>
 #include <iostream>
@@ -65,6 +66,8 @@ vector<string> pathVector(string pathDir, string filter = "");
 */
 bool ofSameName(string name1, string name2);
 
+
+string binaryPrint(unsigned long number, bool print = 0);
 
 
 class myString{

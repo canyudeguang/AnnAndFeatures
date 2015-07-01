@@ -15,6 +15,7 @@ using namespace std;
 #include "lib_features/rawfeatures.h"
 #include "lib_features/skeletfeatures.h"
 #include "lib_features/hogfeatures.h"
+#include "lib_features/lbpfeatures.h"
 
 #include "lib_ann/ann.h"
 
@@ -44,14 +45,17 @@ int main(int argc, char ** argv)
         SkeletFeatures fSkelet;
         HOGFeatures fHog;
 
+        LBPFeatures fLbp;
+        fLbp.setSize(256,256);
+
         // put all pointers tp FeatureExtractors objecst into vector
         vector<FeatureExtractor *> vec_extractors;
        // vec_extractors.push_back(&fEdge);
-        vec_extractors.push_back(&fExper);
+      //  vec_extractors.push_back(&fExper);
        // vec_extractors.push_back(&fHisto);
        // vec_extractors.push_back(&fRaw);
-        vec_extractors.push_back(&fHog);
-       // vec_extractors.push_back(&fSkelet);
+        vec_extractors.push_back(&fLbp);
+      //  vec_extractors.push_back(&fHog);
 
         /** Feature Extraction */
         /*
@@ -118,7 +122,6 @@ int main(int argc, char ** argv)
             cerr << eLabels.size() << " labels, " << Features.rows << " rows" << endl;
         }
 
-        Ann.saveTofile("eyes_ho_ex");
 
         /** ANN Prediction */
 

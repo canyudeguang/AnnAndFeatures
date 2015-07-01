@@ -64,7 +64,8 @@ SOURCES       = main.cpp \
 		lib_support/support.cpp \
 		lib_features/rawfeatures.cpp \
 		lib_features/skeletfeatures.cpp \
-		lib_features/hogfeatures.cpp 
+		lib_features/hogfeatures.cpp \
+		lib_features/lbpfeatures.cpp 
 OBJECTS       = main.o \
 		ann.o \
 		classifier.o \
@@ -81,7 +82,8 @@ OBJECTS       = main.o \
 		support.o \
 		rawfeatures.o \
 		skeletfeatures.o \
-		hogfeatures.o
+		hogfeatures.o \
+		lbpfeatures.o
 DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/common/shell-unix.conf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/common/unix.conf \
@@ -212,7 +214,8 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		lib_support/support.h \
 		lib_features/rawfeatures.h \
 		lib_features/skeletfeatures.h \
-		lib_features/hogfeatures.h main.cpp \
+		lib_features/hogfeatures.h \
+		lib_features/lbpfeatures.h main.cpp \
 		lib_ann/ann.cpp \
 		lib_ann/classifier.cpp \
 		lib_features/cornerfeatures.cpp \
@@ -228,7 +231,8 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		lib_support/support.cpp \
 		lib_features/rawfeatures.cpp \
 		lib_features/skeletfeatures.cpp \
-		lib_features/hogfeatures.cpp
+		lib_features/hogfeatures.cpp \
+		lib_features/lbpfeatures.cpp
 QMAKE_TARGET  = AnnFeatures
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = AnnFeatures
@@ -541,6 +545,7 @@ main.o: main.cpp lib_support/support.h \
 		lib_features/rawfeatures.h \
 		lib_features/skeletfeatures.h \
 		lib_features/hogfeatures.h \
+		lib_features/lbpfeatures.h \
 		lib_ann/ann.h \
 		lib_ann/classifier.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
@@ -612,6 +617,11 @@ hogfeatures.o: lib_features/hogfeatures.cpp lib_features/hogfeatures.h \
 		lib_support/cvSupport.h \
 		lib_support/support.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o hogfeatures.o lib_features/hogfeatures.cpp
+
+lbpfeatures.o: lib_features/lbpfeatures.cpp lib_features/lbpfeatures.h \
+		lib_features/featureextractor.h \
+		lib_support/support.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o lbpfeatures.o lib_features/lbpfeatures.cpp
 
 ####### Install
 
