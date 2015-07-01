@@ -1,0 +1,6 @@
+*.jpg
+*.yml
+*.o
+*~
+AnnFeatures
+*.user

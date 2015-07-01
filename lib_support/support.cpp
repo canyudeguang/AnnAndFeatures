@@ -141,3 +141,28 @@ int Support::myString::endsWith(string suffix){
 
     return endStr;
 }
+
+string Support::binaryPrint(unsigned long number, bool print){
+    unsigned long res;
+    string bin = "";
+    unsigned long tmpRetVal = number;
+
+    int i = floor(log2(number));
+    if(i+1 >= 65 || i < 0){
+        cerr << "The number " << number << "is longer than 64 bits" << endl;
+    }
+    for(; i >= 0; --i){
+        res = floor(tmpRetVal / pow(2.0,i));
+        long zbyt = tmpRetVal % (long long)pow(2.0,i);
+        if (res >= 1){
+            bin = bin + "1";
+        }
+        else{
+            bin = bin + "0";
+        }
+            tmpRetVal = zbyt;
+
+    }
+    if(print)cout << number << " = "<< bin << "[2] " << floor(log2(number))+1 << "b" << endl;
+    return bin;
+}

@@ -16,7 +16,7 @@ using namespace std;
 #include "lib_features/skeletfeatures.h"
 #include "lib_features/hogfeatures.h"
 
-#include "lib_features/blobfeatures.h"
+#include "lib_features/lbpfeatures.h"
 
 #include "lib_ann/ann.h"
 
@@ -45,7 +45,7 @@ int main(int argc, char ** argv)
         RawFeatures fRaw;
         SkeletFeatures fSkelet;
         HOGFeatures fHog;
-        BlobFeatures fBlob;
+        LBPFeatures fLbp;
 
 
 
@@ -57,7 +57,7 @@ int main(int argc, char ** argv)
         //vec_extractors.push_back(&fRaw);
        // vec_extractors.push_back(&fHog);
        // vec_extractors.push_back(&fSkelet);
-        vec_extractors.push_back(&fBlob);
+        vec_extractors.push_back(&fLbp);
 
         /** Feature Extraction */
         /*
@@ -83,7 +83,7 @@ int main(int argc, char ** argv)
             Features.push_back(fjoined); // add feature_vector to mat of all features
 
             imshow("Image",img);
-            moveWindow("Image",0,0);
+           // moveWindow("Image",0,0);
             cvSupport::indexBrowser(i,train_images.size());
 
         }
