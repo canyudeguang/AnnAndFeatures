@@ -95,53 +95,87 @@ void LBPFeatures::Lbp64(Mat &src, Mat &dst, int neighRadius){
     }
 }
 
-void LBPFeatures::LbpE(Mat &src, cv::Mat &dst, int radius, int neighbors){
-    neighbors = max(min(neighbors,31),1);
+cv::Mat_<float> LBPFeatures::showPeaks(Mat &src, Mat &dst, int thres){
+    cvtColor(src,dst,CV_GRAY2BGR);
 
-    dst = Mat::zeros(src.rows - 2 * radius, src.cols - 2 * radius, CV_32SC1);
+    int erosion_type;
+    int erosion_elem = 0;
+    int erosion_size = 2;
+    if( erosion_elem == 0 ){ erosion_type = MORPH_RECT; }
+    else if( erosion_elem == 1 ){ erosion_type = MORPH_CROSS; }
+    else if( erosion_elem == 2) { erosion_type = MORPH_ELLIPSE; }
 
-    for(int n = 0; n < neighbors; ++n){
-        // sample points
-        float x = static_cast<float>(radius) * cos(2.0*M_PI*n/static_cast<float>(neighbors));
-        float y = static_cast<float>(radius) * -sin(2.0*M_PI*n/static_cast<float>(neighbors));
-        // relative indices
-        int fx = static_cast<int>(floor(x));
-        int fy = static_cast<int>(floor(y));
-        int cx = static_cast<int>(ceil(x));
-        int cy = static_cast<int>(ceil(y));
-        // fractional part
-        float ty = y - fy;
-        float tx = x - fx;
-        // set interpolation weights
-        float w1 = (1 - tx) * (1 - ty);
-        float w2 =      tx  * (1 - ty);
-        float w3 = (1 - tx) *      ty;
-        float w4 =      tx  *      ty;
-        // iterate through your data
-        for(int i=radius; i < src.rows-radius;i++) {
-            for(int j=radius;j < src.cols-radius;j++) {
-                float t = w1*src.at<uchar>(i+fy,j+fx) + w2*src.at<uchar>(i+fy,j+cx) + w3*src.at<uchar>(i+cy,j+fx) + w4*src.at<uchar>(i+cy,j+cx);
-                // we are dealing with floating point precision, so add some little tolerance
-                dst.at<unsigned int>(i-radius,j-radius) += ((t > src.at<uchar>(i,j)) && (abs(t-src.at<uchar>(i,j)) > std::numeric_limits<float>::epsilon())) << n;
-            }
-         }
+    Mat element = getStructuringElement( erosion_type,
+                                           Size( 2*erosion_size + 1, 2*erosion_size+1 ),
+                                           Point( erosion_size, erosion_size ) );
+
+
+
+    Mat source_edited;
+    src.copyTo(source_edited);
+
+
+     erode(source_edited,source_edited,element);
+     //dilate(source_edited,source_edited,element);
+
+
+
+     Mat_<float> features(1,256);
+     features.setTo(0);
+
+    // Values are: 0, 1, 2, 3, 4, 6, 7, 8, 9, 11, 15, 16, 20, 22, 23, 31, 32, 33, 35, 40, 41, 43,
+    // 64, 96, 104, 105,
+    // 128, 144, 148, 150, 192, 208, 212, 224, 232, 240
+    for(int y = 0; y < src.rows; ++y){
+        for(int x = 0; x < src.cols; ++x){
+            uchar pix = source_edited.at<uchar>(y,x);
+            features(0,pix)++;
+//            if(pix >= 0 && pix <= 43){
+//                circle(dst,Point(x,y),1,Scalar(255,0,0));
+//            }
+//            if(pix >= 64 && pix <= 105){
+//                circle(dst,Point(x,y),1,Scalar(0,255,0));
+//            }
+
+//            if(pix >= 128 && pix <= 240){
+//                circle(dst,Point(x,y),1,Scalar(0,0,255));
+//            }
+        }
     }
 
+
+   // imshow("Blur",source_edited);
+   // moveWindow("Blur",(this->imgSize.width + 5)*2,(this->imgSize.height + 60));
+
+    return features;
 }
 
 cv::Mat_<float> LBPFeatures::getFeature(Mat &image){
-
+    // Convert to GrayScale
     cvtColor(image,this->_ImgGray,CV_BGR2GRAY);
 
-    equalizeHist(this->_ImgGray, this->_ImgGray);
+    // Blur and Equalize histogram
+    blur(this->_ImgGray,this->_ImgGray,cv::Size(9,9));
+    equalizeHist(this->_ImgGray,this->_ImgGray);
+    // Resize to the scalable size
     resize(this->_ImgGray, this->_ImgGray, this->imgSize);
 
+    // Perform LBP
     cv::Mat dst;
     Lbp8(_ImgGray,dst);
+    // Blur again
 
-//    imshow("c",dst);
+    cv::Mat peaks;
+    return showPeaks(dst,peaks,200);
 
-//    cvWaitKey(0);
+
+//    imshow("LBP",dst);
+//    imshow("Original",this->_ImgGray);
+//    imshow("PEAKS",peaks);
+
+//    moveWindow("Original",0,0);
+//    moveWindow("LBP",this->imgSize.width + 5,0);
+//    moveWindow("PEAKS",(this->imgSize.width + 5)*2,0);
 
     cv::Mat_<float> features;
     features = dst.reshape(1,1);
