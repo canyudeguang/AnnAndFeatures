@@ -33,6 +33,7 @@ int main(int argc, char ** argv)
 
         // load all images into vector
         vector<string> train_images = Support::pathVector(directory,".jpg");
+        sort(train_images.begin(), train_images.end());
 
         cout << "From: " << directory << " "<< train_images.size() << " images loaded." << endl;
         // Define features
@@ -48,6 +49,7 @@ int main(int argc, char ** argv)
         LBPFeatures fLbp;
 
 
+        fLbp.setSize(512,256);
 
         // put all pointers tp FeatureExtractors objecst into vector
         vector<FeatureExtractor *> vec_extractors;

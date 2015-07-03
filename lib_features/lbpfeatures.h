@@ -5,6 +5,8 @@
 #include "lib_support/support.h"
 
 
+#include "queue"
+
 class LBPFeatures : public FeatureExtractor
 {
 public:
@@ -22,6 +24,9 @@ public:
     static void Lbp64(cv::Mat &src, cv::Mat &dst, int neighRadius = 3);
 
     static unsigned long NeighBits(int neighRadius, cv::Mat & src, int _x, int _y);
+
+
+    cv::Mat_<float> showPeaks(cv::Mat &src, cv::Mat &dst, int thres);
 private:
     cv::Size imgSize;
     cv::Mat _ImgGray;
