@@ -49,8 +49,6 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = main.cpp \
-		lib_ann/ann.cpp \
-		lib_ann/classifier.cpp \
 		lib_features/cornerfeatures.cpp \
 		lib_features/edgefeatures.cpp \
 		lib_features/experimentfeature.cpp \
@@ -65,10 +63,12 @@ SOURCES       = main.cpp \
 		lib_features/rawfeatures.cpp \
 		lib_features/skeletfeatures.cpp \
 		lib_features/hogfeatures.cpp \
-		lib_features/lbpfeatures.cpp 
+		lib_features/lbpfeatures.cpp \
+		lib_classifiers/ann.cpp \
+		lib_classifiers/classifier.cpp \
+		lib_classifiers/svm.cpp \
+		lib_classifiers/boostclass.cpp 
 OBJECTS       = main.o \
-		ann.o \
-		classifier.o \
 		cornerfeatures.o \
 		edgefeatures.o \
 		experimentfeature.o \
@@ -83,7 +83,11 @@ OBJECTS       = main.o \
 		rawfeatures.o \
 		skeletfeatures.o \
 		hogfeatures.o \
-		lbpfeatures.o
+		lbpfeatures.o \
+		ann.o \
+		classifier.o \
+		svm.o \
+		boostclass.o
 DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/common/shell-unix.conf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/common/unix.conf \
@@ -198,9 +202,7 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/features/exceptions.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/features/yacc.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/features/lex.prf \
-		AnnFeatures.pro lib_ann/ann.h \
-		lib_ann/classifier.h \
-		lib_features/cornerfeatures.h \
+		AnnFeatures.pro lib_features/cornerfeatures.h \
 		lib_features/edgefeatures.h \
 		lib_features/experimentfeature.h \
 		lib_features/facedescription.h \
@@ -215,9 +217,11 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		lib_features/rawfeatures.h \
 		lib_features/skeletfeatures.h \
 		lib_features/hogfeatures.h \
-		lib_features/lbpfeatures.h main.cpp \
-		lib_ann/ann.cpp \
-		lib_ann/classifier.cpp \
+		lib_features/lbpfeatures.h \
+		lib_classifiers/ann.h \
+		lib_classifiers/classifier.h \
+		lib_classifiers/svm.h \
+		lib_classifiers/boostclass.h main.cpp \
 		lib_features/cornerfeatures.cpp \
 		lib_features/edgefeatures.cpp \
 		lib_features/experimentfeature.cpp \
@@ -232,7 +236,11 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		lib_features/rawfeatures.cpp \
 		lib_features/skeletfeatures.cpp \
 		lib_features/hogfeatures.cpp \
-		lib_features/lbpfeatures.cpp
+		lib_features/lbpfeatures.cpp \
+		lib_classifiers/ann.cpp \
+		lib_classifiers/classifier.cpp \
+		lib_classifiers/svm.cpp \
+		lib_classifiers/boostclass.cpp
 QMAKE_TARGET  = AnnFeatures
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = AnnFeatures
@@ -546,16 +554,11 @@ main.o: main.cpp lib_support/support.h \
 		lib_features/skeletfeatures.h \
 		lib_features/hogfeatures.h \
 		lib_features/lbpfeatures.h \
-		lib_ann/ann.h \
-		lib_ann/classifier.h
+		lib_classifiers/svm.h \
+		lib_classifiers/classifier.h \
+		lib_classifiers/ann.h \
+		lib_classifiers/boostclass.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
-
-ann.o: lib_ann/ann.cpp lib_ann/ann.h \
-		lib_ann/classifier.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ann.o lib_ann/ann.cpp
-
-classifier.o: lib_ann/classifier.cpp lib_ann/classifier.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o classifier.o lib_ann/classifier.cpp
 
 cornerfeatures.o: lib_features/cornerfeatures.cpp lib_features/cornerfeatures.h \
 		lib_features/featureextractor.h
@@ -622,6 +625,21 @@ lbpfeatures.o: lib_features/lbpfeatures.cpp lib_features/lbpfeatures.h \
 		lib_features/featureextractor.h \
 		lib_support/support.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o lbpfeatures.o lib_features/lbpfeatures.cpp
+
+ann.o: lib_classifiers/ann.cpp lib_classifiers/ann.h \
+		lib_classifiers/classifier.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ann.o lib_classifiers/ann.cpp
+
+classifier.o: lib_classifiers/classifier.cpp lib_classifiers/classifier.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o classifier.o lib_classifiers/classifier.cpp
+
+svm.o: lib_classifiers/svm.cpp lib_classifiers/svm.h \
+		lib_classifiers/classifier.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o svm.o lib_classifiers/svm.cpp
+
+boostclass.o: lib_classifiers/boostclass.cpp lib_classifiers/boostclass.h \
+		lib_classifiers/classifier.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o boostclass.o lib_classifiers/boostclass.cpp
 
 ####### Install
 

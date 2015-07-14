@@ -17,7 +17,10 @@ using namespace std;
 #include "lib_features/hogfeatures.h"
 #include "lib_features/lbpfeatures.h"
 
-#include "lib_ann/ann.h"
+
+#include "lib_classifiers/svm.h"
+#include "lib_classifiers/ann.h"
+#include "lib_classifiers/boostclass.h"
 
 /**
  * In this example we are using images of Eyes as the training set
@@ -49,13 +52,13 @@ int main(int argc, char ** argv)
 
         // put all pointers tp FeatureExtractors objecst into vector
         vector<FeatureExtractor *> vec_extractors;
-       // vec_extractors.push_back(&fEdge);
-        vec_extractors.push_back(&fExper);
-       // vec_extractors.push_back(&fHisto);
-       // vec_extractors.push_back(&fRaw);
-        vec_extractors.push_back(&fHog);
-        vec_extractors.push_back(&fLbp);
-       // vec_extractors.push_back(&fSkelet);
+        //vec_extractors.push_back(&fEdge);
+        //vec_extractors.push_back(&fExper);
+        //vec_extractors.push_back(&fHisto);
+        vec_extractors.push_back(&fRaw);
+        //vec_extractors.push_back(&fHog);
+        //vec_extractors.push_back(&fLbp);
+        //vec_extractors.push_back(&fSkelet);
 
         /** Feature Extraction */
         /*
@@ -83,13 +86,67 @@ int main(int argc, char ** argv)
 
 
 
-        /** Ann Training */
+        /** SVM Training */
 
-        ANN Ann;
+        Classifier * classifier = new BoostClass();
+
+        cout << "Training from " << directory << endl;
 
         // set labels
         static const int numClasses = 2;
         string str_labels[numClasses] = {"OPEN","CLOSED"};
+
+        classifier->setLabels(str_labels,numClasses);
+
+        // Lebel extraction
+        vector<uchar> eLabels = classifier->extLabelFromFileName(train_images);
+
+        if(classifier->hasNullLabel()){
+            cerr << "Unknown label found" << endl;
+            cerr << "Training without UNKNOWNS" << endl;
+        }
+
+//        for(int i = 0; i < eLabels.size();++i){
+//            cout << train_images[i] << "\t" << svm.getLabelString(eLabels[i]) << ":\t" << (int)eLabels[i] << endl;
+//        }
+
+        if(eLabels.size() == Features.rows){
+            classifier->train(Features, eLabels, numClasses);
+        }
+
+
+
+         /** SVM Prediction */
+        cv::Mat_<float> test_features;
+        string test_dir(argv[2]);
+
+        cout << "Predict ... from " << test_dir << endl;
+
+        vector<string> test_imgs = Support::pathVector(test_dir,".jpg");
+        sort(test_imgs.begin(), test_imgs.end());
+
+        for(uint i = 0; i < test_imgs.size(); ++i){
+            cv::Mat img = imread(test_imgs[i],CV_LOAD_IMAGE_ANYCOLOR);
+           // joined features from all extractors
+           Mat_<float> fjoined;
+           fjoined.setTo(0);
+
+           for(uint j = 0; j < vec_extractors.size(); ++j){
+               Mat_<float> f = vec_extractors[j]->getFeature(img);
+               FeatureExtractor::joinFeatures(fjoined,f);
+           }
+           test_features.push_back(fjoined); // add feature_vector to mat of all features
+        }
+
+        vector<uchar> predictions = classifier->predict(test_features);
+
+
+        vector<uchar> test_labels = classifier->extLabelFromFileName(test_imgs);
+        classifier->evaluate(predictions,test_labels,numClasses);
+
+    }
+
+        /*
         Ann.setLabels(str_labels,numClasses);
 
         // label extraction
@@ -121,10 +178,11 @@ int main(int argc, char ** argv)
             cerr << "Labels are not same size as Features:" << endl;
             cerr << eLabels.size() << " labels, " << Features.rows << " rows" << endl;
         }
-
+    */
 
         /** ANN Prediction */
 
+        /*
         if(argc > 2){
             //Ann.loadFromFile("iter_20_1_hid_20_nodes.yml");
             //Label extraction & Feature extaction
@@ -159,7 +217,8 @@ int main(int argc, char ** argv)
 
 
         }
-    }
+    }\
+    */
     return 0;
 }
 

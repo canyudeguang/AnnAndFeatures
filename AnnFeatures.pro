@@ -4,8 +4,6 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += main.cpp \
-    lib_ann/ann.cpp \
-    lib_ann/classifier.cpp \
     lib_features/cornerfeatures.cpp \
     lib_features/edgefeatures.cpp \
     lib_features/experimentfeature.cpp \
@@ -20,7 +18,11 @@ SOURCES += main.cpp \
     lib_features/rawfeatures.cpp \
     lib_features/skeletfeatures.cpp \
     lib_features/hogfeatures.cpp \
-    lib_features/lbpfeatures.cpp
+    lib_features/lbpfeatures.cpp \
+    lib_classifiers/ann.cpp \
+    lib_classifiers/classifier.cpp \
+    lib_classifiers/svm.cpp \
+    lib_classifiers/boostclass.cpp
 
 INCLUDE += /usr/local/include/opencv /usr/local/include/opencv2
 LIBS += -L/usr/local/lib \
@@ -39,8 +41,6 @@ include(deployment.pri)
 qtcAddDeployment()
 
 HEADERS += \
-    lib_ann/ann.h \
-    lib_ann/classifier.h \
     lib_features/cornerfeatures.h \
     lib_features/edgefeatures.h \
     lib_features/experimentfeature.h \
@@ -56,5 +56,9 @@ HEADERS += \
     lib_features/rawfeatures.h \
     lib_features/skeletfeatures.h \
     lib_features/hogfeatures.h \
-    lib_features/lbpfeatures.h
+    lib_features/lbpfeatures.h \
+    lib_classifiers/ann.h \
+    lib_classifiers/classifier.h \
+    lib_classifiers/svm.h \
+    lib_classifiers/boostclass.h
 
