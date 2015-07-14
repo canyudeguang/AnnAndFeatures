@@ -31,6 +31,7 @@ public:
 
     void evaluate(std::vector<uchar> predictedLabels, std::vector<uchar> trueLabels, int numClasses);
 
+    static cv::Mat cr8ResponseMat(std::vector<uchar> & labels, int numberOfSamples);
     // Classifier methods
     /**
      * @brief Set string values for labels

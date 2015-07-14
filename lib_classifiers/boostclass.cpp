@@ -43,6 +43,7 @@ vector<uchar> BoostClass::predict(cv::Mat_<float> &testData){
         float predict = cvboost->predict(testData.row(i));
         responses.push_back(predict);
     }
+
     return responses;
 }
 

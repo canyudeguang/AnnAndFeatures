@@ -21,6 +21,7 @@ using namespace std;
 #include "lib_classifiers/svm.h"
 #include "lib_classifiers/ann.h"
 #include "lib_classifiers/boostclass.h"
+#include "lib_classifiers/kn.h"
 
 /**
  * In this example we are using images of Eyes as the training set
@@ -55,8 +56,8 @@ int main(int argc, char ** argv)
         //vec_extractors.push_back(&fEdge);
         //vec_extractors.push_back(&fExper);
         //vec_extractors.push_back(&fHisto);
-        vec_extractors.push_back(&fRaw);
-        //vec_extractors.push_back(&fHog);
+        //vec_extractors.push_back(&fRaw);
+        vec_extractors.push_back(&fHog);
         //vec_extractors.push_back(&fLbp);
         //vec_extractors.push_back(&fSkelet);
 
@@ -88,13 +89,13 @@ int main(int argc, char ** argv)
 
         /** SVM Training */
 
-        Classifier * classifier = new BoostClass();
+        Classifier * classifier = new KN();
 
         cout << "Training from " << directory << endl;
 
         // set labels
-        static const int numClasses = 2;
-        string str_labels[numClasses] = {"OPEN","CLOSED"};
+        static const int numClasses = 5;
+        string str_labels[numClasses] = {"DEFAULT","OPEN","TEETH","SMILE","TONGUE"};
 
         classifier->setLabels(str_labels,numClasses);
 
@@ -143,6 +144,7 @@ int main(int argc, char ** argv)
 
         vector<uchar> test_labels = classifier->extLabelFromFileName(test_imgs);
         classifier->evaluate(predictions,test_labels,numClasses);
+
 
     }
 

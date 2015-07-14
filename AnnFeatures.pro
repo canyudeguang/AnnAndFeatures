@@ -22,7 +22,8 @@ SOURCES += main.cpp \
     lib_classifiers/ann.cpp \
     lib_classifiers/classifier.cpp \
     lib_classifiers/svm.cpp \
-    lib_classifiers/boostclass.cpp
+    lib_classifiers/boostclass.cpp \
+    lib_classifiers/kn.cpp
 
 INCLUDE += /usr/local/include/opencv /usr/local/include/opencv2
 LIBS += -L/usr/local/lib \
@@ -60,5 +61,6 @@ HEADERS += \
     lib_classifiers/ann.h \
     lib_classifiers/classifier.h \
     lib_classifiers/svm.h \
-    lib_classifiers/boostclass.h
+    lib_classifiers/boostclass.h \
+    lib_classifiers/kn.h
 

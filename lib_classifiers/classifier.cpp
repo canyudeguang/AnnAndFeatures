@@ -4,6 +4,16 @@ Classifier::Classifier(){
     this->nullLabel = false;
 }
 
+cv::Mat Classifier::cr8ResponseMat(std::vector<uchar> &labels, int numberOfSamples){
+    // Prepare labels in required format
+    //--------------------------------------------------------------------------
+    cv::Mat_<float> trainLabels = Mat_<float>::zeros(1, numberOfSamples);
+    for(int i = 0; i < labels.size(); i ++){
+        trainLabels(0,i) = labels[i];
+    }
+    return trainLabels;
+}
+
 //==============================================================================
 void Classifier::evaluate(vector<uchar> predictedLabels, vector<uchar> trueLabels, int numClasses)
 {

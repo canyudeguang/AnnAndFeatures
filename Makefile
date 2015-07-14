@@ -67,7 +67,8 @@ SOURCES       = main.cpp \
 		lib_classifiers/ann.cpp \
 		lib_classifiers/classifier.cpp \
 		lib_classifiers/svm.cpp \
-		lib_classifiers/boostclass.cpp 
+		lib_classifiers/boostclass.cpp \
+		lib_classifiers/kn.cpp 
 OBJECTS       = main.o \
 		cornerfeatures.o \
 		edgefeatures.o \
@@ -87,7 +88,8 @@ OBJECTS       = main.o \
 		ann.o \
 		classifier.o \
 		svm.o \
-		boostclass.o
+		boostclass.o \
+		kn.o
 DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/common/shell-unix.conf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/common/unix.conf \
@@ -221,7 +223,8 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		lib_classifiers/ann.h \
 		lib_classifiers/classifier.h \
 		lib_classifiers/svm.h \
-		lib_classifiers/boostclass.h main.cpp \
+		lib_classifiers/boostclass.h \
+		lib_classifiers/kn.h main.cpp \
 		lib_features/cornerfeatures.cpp \
 		lib_features/edgefeatures.cpp \
 		lib_features/experimentfeature.cpp \
@@ -240,7 +243,8 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		lib_classifiers/ann.cpp \
 		lib_classifiers/classifier.cpp \
 		lib_classifiers/svm.cpp \
-		lib_classifiers/boostclass.cpp
+		lib_classifiers/boostclass.cpp \
+		lib_classifiers/kn.cpp
 QMAKE_TARGET  = AnnFeatures
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = AnnFeatures
@@ -640,6 +644,10 @@ svm.o: lib_classifiers/svm.cpp lib_classifiers/svm.h \
 boostclass.o: lib_classifiers/boostclass.cpp lib_classifiers/boostclass.h \
 		lib_classifiers/classifier.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o boostclass.o lib_classifiers/boostclass.cpp
+
+kn.o: lib_classifiers/kn.cpp lib_classifiers/kn.h \
+		lib_classifiers/classifier.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o kn.o lib_classifiers/kn.cpp
 
 ####### Install
 

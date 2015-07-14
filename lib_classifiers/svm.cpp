@@ -19,17 +19,11 @@ void mySVM::train(cv::Mat_<float> &trainData, std::vector<uchar> &labels, int nu
     params.degree = 4;
     params.term_crit = cvTermCriteria(CV_TERMCRIT_ITER,1000000,0.000001);
 
-    int numberOfSamples = trainData.rows;
-
 #if INFO
     cout << "SVM training ..." << endl;
 #endif
-    // Prepare labels in required format
-    //--------------------------------------------------------------------------
-    cv::Mat_<float> trainLabels = Mat_<float>::zeros(1, numberOfSamples);
-    for(int i = 0; i < labels.size(); i ++){
-        trainLabels(0,i) = labels[i];
-    }
+    int numberOfSamples = trainData.rows;
+    cv::Mat trainLabels = Classifier::cr8ResponseMat(labels, numberOfSamples);
     cvsvm = new CvSVM();
     cvsvm->train(trainData,trainLabels,cv::Mat(),cv::Mat(),params);
 #if INFO
