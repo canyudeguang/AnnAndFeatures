@@ -47,7 +47,7 @@ int main(int argc, char ** argv)
         SkeletFeatures fSkelet;
         HOGFeatures fHog;
         LBPFeatures fLbp;
-
+        HistogramFeatures fhist;
 
         fLbp.setSize(512,256);
 
@@ -59,7 +59,7 @@ int main(int argc, char ** argv)
         //vec_extractors.push_back(&fRaw);
        // vec_extractors.push_back(&fHog);
        // vec_extractors.push_back(&fSkelet);
-        vec_extractors.push_back(&fLbp);
+        vec_extractors.push_back(&fhist);
 
         /** Feature Extraction */
         /*

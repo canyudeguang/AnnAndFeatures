@@ -24,7 +24,8 @@ Mat_<float> HistogramFeatures::getFeature(Mat &image){
     cv::Mat src;
     cvtColor(image,src,CV_BGR2GRAY);
 
-    equalizeHist(src,src);
+    blur(src,src,Size(5,5));
+   // equalizeHist(src,src);
 
     //Histogram histovalues(image, this->numberOfBins);
     Histogram histovalues;

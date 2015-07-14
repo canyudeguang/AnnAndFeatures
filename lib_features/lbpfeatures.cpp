@@ -130,22 +130,22 @@ cv::Mat_<float> LBPFeatures::showPeaks(Mat &src, Mat &dst, int thres){
         for(int x = 0; x < src.cols; ++x){
             uchar pix = source_edited.at<uchar>(y,x);
             features(0,pix)++;
-//            if(pix >= 0 && pix <= 43){
-//                circle(dst,Point(x,y),1,Scalar(255,0,0));
-//            }
-//            if(pix >= 64 && pix <= 105){
-//                circle(dst,Point(x,y),1,Scalar(0,255,0));
-//            }
+            if(pix >= 0 && pix <= 43){
+                circle(dst,Point(x,y),1,Scalar(255,0,0));
+            }
+            if(pix >= 64 && pix <= 105){
+                circle(dst,Point(x,y),1,Scalar(0,255,0));
+            }
 
-//            if(pix >= 128 && pix <= 240){
-//                circle(dst,Point(x,y),1,Scalar(0,0,255));
-//            }
+            if(pix >= 128 && pix <= 240){
+                circle(dst,Point(x,y),1,Scalar(0,0,255));
+            }
         }
     }
 
 
-   // imshow("Blur",source_edited);
-   // moveWindow("Blur",(this->imgSize.width + 5)*2,(this->imgSize.height + 60));
+    imshow("Blur",source_edited);
+    moveWindow("Blur",(this->imgSize.width + 5)*2,(this->imgSize.height + 60));
 
     return features;
 }
@@ -166,16 +166,16 @@ cv::Mat_<float> LBPFeatures::getFeature(Mat &image){
     // Blur again
 
     cv::Mat peaks;
-    return showPeaks(dst,peaks,200);
+     showPeaks(dst,peaks,200);
 
 
-//    imshow("LBP",dst);
-//    imshow("Original",this->_ImgGray);
-//    imshow("PEAKS",peaks);
+    imshow("LBP",dst);
+    imshow("Original",this->_ImgGray);
+    imshow("PEAKS",peaks);
 
-//    moveWindow("Original",0,0);
-//    moveWindow("LBP",this->imgSize.width + 5,0);
-//    moveWindow("PEAKS",(this->imgSize.width + 5)*2,0);
+    moveWindow("Original",0,0);
+    moveWindow("LBP",this->imgSize.width + 5,0);
+    moveWindow("PEAKS",(this->imgSize.width + 5)*2,0);
 
     cv::Mat_<float> features;
     features = dst.reshape(1,1);
