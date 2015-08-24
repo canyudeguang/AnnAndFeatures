@@ -15,6 +15,7 @@ using namespace std;
 #include "lib_features/rawfeatures.h"
 #include "lib_features/skeletfeatures.h"
 #include "lib_features/hogfeatures.h"
+#include "lib_features/integralfeature.h"
 
 #include "lib_features/lbpfeatures.h"
 
@@ -48,6 +49,7 @@ int main(int argc, char ** argv)
         HOGFeatures fHog;
         LBPFeatures fLbp;
         HistogramFeatures fhist;
+        IntegralFeature fIntegral;
 
         fLbp.setSize(512,256);
 
@@ -59,7 +61,7 @@ int main(int argc, char ** argv)
         //vec_extractors.push_back(&fRaw);
        // vec_extractors.push_back(&fHog);
        // vec_extractors.push_back(&fSkelet);
-        vec_extractors.push_back(&fhist);
+        vec_extractors.push_back(&fIntegral);
 
         /** Feature Extraction */
         /*

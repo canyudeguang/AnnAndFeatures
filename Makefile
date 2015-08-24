@@ -66,7 +66,8 @@ SOURCES       = main.cpp \
 		lib_features/skeletfeatures.cpp \
 		lib_features/hogfeatures.cpp \
 		lib_features/blobfeatures.cpp \
-		lib_features/lbpfeatures.cpp 
+		lib_features/lbpfeatures.cpp \
+		lib_features/integralfeature.cpp 
 OBJECTS       = main.o \
 		ann.o \
 		classifier.o \
@@ -85,7 +86,8 @@ OBJECTS       = main.o \
 		skeletfeatures.o \
 		hogfeatures.o \
 		blobfeatures.o \
-		lbpfeatures.o
+		lbpfeatures.o \
+		integralfeature.o
 DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/common/shell-unix.conf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/common/unix.conf \
@@ -218,7 +220,8 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		lib_features/skeletfeatures.h \
 		lib_features/hogfeatures.h \
 		lib_features/blobfeatures.h \
-		lib_features/lbpfeatures.h main.cpp \
+		lib_features/lbpfeatures.h \
+		lib_features/integralfeature.h main.cpp \
 		lib_ann/ann.cpp \
 		lib_ann/classifier.cpp \
 		lib_features/cornerfeatures.cpp \
@@ -236,7 +239,8 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		lib_features/skeletfeatures.cpp \
 		lib_features/hogfeatures.cpp \
 		lib_features/blobfeatures.cpp \
-		lib_features/lbpfeatures.cpp
+		lib_features/lbpfeatures.cpp \
+		lib_features/integralfeature.cpp
 QMAKE_TARGET  = AnnFeatures
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = AnnFeatures
@@ -549,6 +553,7 @@ main.o: main.cpp lib_support/support.h \
 		lib_features/rawfeatures.h \
 		lib_features/skeletfeatures.h \
 		lib_features/hogfeatures.h \
+		lib_features/integralfeature.h \
 		lib_features/lbpfeatures.h \
 		lib_ann/ann.h \
 		lib_ann/classifier.h
@@ -629,8 +634,13 @@ blobfeatures.o: lib_features/blobfeatures.cpp lib_features/blobfeatures.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o blobfeatures.o lib_features/blobfeatures.cpp
 
 lbpfeatures.o: lib_features/lbpfeatures.cpp lib_features/lbpfeatures.h \
-		lib_features/featureextractor.h
+		lib_features/featureextractor.h \
+		lib_support/support.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o lbpfeatures.o lib_features/lbpfeatures.cpp
+
+integralfeature.o: lib_features/integralfeature.cpp lib_features/integralfeature.h \
+		lib_features/featureextractor.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o integralfeature.o lib_features/integralfeature.cpp
 
 ####### Install
 
