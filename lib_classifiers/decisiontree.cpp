@@ -28,21 +28,25 @@ void DecisionTrees::train(cv::Mat_<float> &trainData, std::vector<uchar> &labels
                                   priors // the array of priors
                                   );
 
-    Mat training_classifications = Mat(trainData.rows, 1, CV_32FC1);
+    Mat training_classifications = Mat(1000, 1, CV_32FC1);
+
     cv::Mat trainLabels = Classifier::cr8ResponseMat(labels,trainData.rows);
 
 
     int tFlag = CV_ROW_SAMPLE;
-    this->cvDT->train(trainLabels, tFlag, training_classifications,Mat(),Mat(),Mat(),Mat(),params);
+    this->cvDT->train(trainData, tFlag, trainLabels,Mat(),Mat(),Mat(),Mat(),params);
 
 }
 
 
 std::vector<uchar> DecisionTrees::predict(cv::Mat_<float> &testData){
     std::vector<uchar> responses;
+
+    CvDTreeNode * resultNode;
+
     for(int i = 0; i < testData.rows; ++i){
-        float predict = cvDT->predict(testData.row(i));
-        responses.push_back(predict);
+        resultNode = cvDT->predict(testData.row(i));
+        responses.push_back(resultNode->value);
     }
 
     return responses;
