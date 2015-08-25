@@ -89,13 +89,13 @@ int main(int argc, char ** argv)
 
         /** SVM Training */
 
-        Classifier * classifier = new KN();
+        Classifier * classifier = new BoostClass();
 
         cout << "Training from " << directory << endl;
 
         // set labels
-        static const int numClasses = 5;
-        string str_labels[numClasses] = {"DEFAULT","OPEN","TEETH","SMILE","TONGUE"};
+        static const int numClasses = 2;
+        string str_labels[numClasses] = {"OPEN","CLOSED"};
 
         classifier->setLabels(str_labels,numClasses);
 

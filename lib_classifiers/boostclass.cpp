@@ -30,7 +30,6 @@ void BoostClass::train(cv::Mat_<float> &trainData, std::vector<uchar> &labels, i
     int tflag = CV_ROW_SAMPLE;
 
     cvboost->train(trainData,tflag,trainLabels,Mat(),Mat(),Mat(),Mat(),params);
-
 #if INFO
     cout << "Boost training DONE" << endl;
 #endif
