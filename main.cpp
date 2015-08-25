@@ -22,6 +22,7 @@ using namespace std;
 #include "lib_classifiers/ann.h"
 #include "lib_classifiers/boostclass.h"
 #include "lib_classifiers/kn.h"
+#include "lib_classifiers/decisiontree.h"
 
 /**
  * In this example we are using images of Eyes as the training set
@@ -89,13 +90,13 @@ int main(int argc, char ** argv)
 
         /** SVM Training */
 
-        Classifier * classifier = new BoostClass();
+        Classifier * classifier = new DecisionTrees();
 
         cout << "Training from " << directory << endl;
 
         // set labels
         static const int numClasses = 2;
-        string str_labels[numClasses] = {"OPEN","CLOSED"};
+        string str_labels[numClasses] = {"CLOSED","OPEN"};
 
         classifier->setLabels(str_labels,numClasses);
 

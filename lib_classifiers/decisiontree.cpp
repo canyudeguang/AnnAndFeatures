@@ -39,8 +39,13 @@ void DecisionTrees::train(cv::Mat_<float> &trainData, std::vector<uchar> &labels
 
 
 std::vector<uchar> DecisionTrees::predict(cv::Mat_<float> &testData){
-std::vector<uchar> responses;
-return responses;
+    std::vector<uchar> responses;
+    for(int i = 0; i < testData.rows; ++i){
+        float predict = cvDT->predict(testData.row(i));
+        responses.push_back(predict);
+    }
+
+    return responses;
 }
 
 uchar DecisionTrees::predictResponse(cv::Mat_<float> &testData){
