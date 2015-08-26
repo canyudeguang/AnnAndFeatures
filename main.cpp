@@ -88,8 +88,12 @@ int main(int argc, char ** argv)
 
             imshow("Image",img);
            // moveWindow("Image",0,0);
-            cvSupport::indexBrowser(i,train_images.size());
+           cvSupport::indexBrowser(i,train_images.size());
 
+        }
+
+        for(int i = 0; i <  Features.rows;++i){
+            cout << Features.row(i) << ";" <<train_images[i] << endl;
         }
 
     }

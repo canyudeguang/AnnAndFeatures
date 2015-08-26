@@ -1,5 +1,135 @@
 #include "integralfeature.h"
 
+
+/**
+** Integral Rectangle
+** *************************************************************************************
+*/
+IntegralRect::IntegralRect(cv::Point tl, cv::Point br, bool isWhite){
+    this->A = cv::Point(tl.x, tl.y);
+    this->B = cv::Point(br.x, tl.y);
+    this->C = cv::Point(tl.x, br.y);
+    this->D = cv::Point(br.x, br.y);
+    this->isWhite = isWhite;
+}
+
+int IntegralRect::calcIntegral(Mat &integralImage){
+    int a = integralImage.at<int>(A.y, A.x);
+    int b = integralImage.at<int>(B.y, B.x);
+    int c = integralImage.at<int>(C.y, C.x);
+    int d = integralImage.at<int>(D.y, D.x);
+
+    int Isum = a-b-c+d;
+    return Isum;
+}
+
+void IntegralRect::show(Mat &img){
+    cv::Mat copy;
+    img.copyTo(copy);
+    Rect r = Rect(A.x, A.y, B.x-A.x, D.y-B.y);
+    if(this->isWhite){
+        rectangle(copy,r,cv::Scalar(255,255,255),2);
+    }
+    else{
+        rectangle(copy,r,cv::Scalar(0,0,0),2);
+    }
+
+    imshow("Feature",copy);
+}
+void IntegralRect::imprint(Mat &img){
+    Rect r = Rect(A.x, A.y, B.x-A.x, D.y-B.y);
+    if(this->isWhite){
+        rectangle(img,r,cv::Scalar(255,255,255),2);
+    }
+    else{
+        rectangle(img,r,cv::Scalar(0,0,0),2);
+    }
+}
+
+/**
+** Integral Feature - packed rectangles
+** *************************************************************************************
+*/
+IntegralF::IntegralF(cv::Point tlW, cv::Point brW, cv::Point tlB, cv::Point brB){
+    this->_tlW = tlW;
+    this->_brW = brW;
+    this->_tlB = tlB;
+    this->_brB = brB;
+}
+
+// Based on the image and type
+//
+IntegralF::IntegralF(Mat &img, int type){
+    switch(type){
+    case IntegralF::Edge:{
+        this->Whites.push_back(IntegralRect(Point(0,0),Point(img.cols,img.rows/2),true));
+        this->Blacks.push_back(IntegralRect(Point(0,img.rows/2),Point(img.cols,img.rows),false));
+        break;
+    }
+    case IntegralF::Edges:{
+        this->Whites.push_back(IntegralRect(Point(0,0),Point(img.cols,img.rows/3),true));
+        this->Blacks.push_back(IntegralRect(Point(0,img.rows/3),Point(img.cols*2.3,img.rows*2/3),false));
+        this->Whites.push_back(IntegralRect(Point(0,img.rows*2/3),Point(img.cols,img.rows),true));
+        break;
+    }
+    case IntegralF::Cross:{
+        this->Whites.push_back(IntegralRect(Point(0,0),Point(img.cols/3,img.rows/3),true));
+        this->Whites.push_back(IntegralRect(Point(img.cols*2/3,img.rows*2/3),Point(img.cols,img.rows),true));
+        this->Whites.push_back(IntegralRect(Point(0,img.rows*2/3),Point(img.cols/3,img.rows),true));
+        this->Whites.push_back(IntegralRect(Point(img.cols*2/3,0),Point(img.cols,img.rows/3),true));
+
+        this->Blacks.push_back(IntegralRect(Point(0,img.rows/3),Point(img.cols,img.rows*2/3),false));
+        this->Blacks.push_back(IntegralRect(Point(img.cols/3,0),Point(img.cols*2/3,img.rows/3),false));
+        this->Blacks.push_back(IntegralRect(Point(img.cols/3,img.rows*2/3),Point(img.cols*2/3,img.rows),false));
+        break;
+    }
+    case IntegralF::Centroid:{
+        this->Whites.push_back(IntegralRect(Point(0,0),Point(img.cols,img.rows/3),true));
+        this->Whites.push_back(IntegralRect(Point(0,img.rows*2/3),Point(img.cols,img.rows),true));
+        this->Whites.push_back(IntegralRect(Point(0,img.rows/3),Point(img.cols/3,img.rows*2/3),true));
+        this->Whites.push_back(IntegralRect(Point(img.cols*2/3,img.rows/3),Point(img.cols,img.rows*2/3),true));
+
+        this->Blacks.push_back(IntegralRect(Point(img.cols/3,img.rows/3),Point(img.cols*2/3,img.rows*2/3),false));
+        break;
+    }
+    default:{
+        cout << "Other type: " << type << endl;
+        break;
+    }
+    }
+}
+
+void IntegralF::showFeature(Mat &image, IntegralF &feature){
+    cv::Mat copy;
+    image.copyTo(copy);
+
+    imshow("Feature",copy);
+}
+void IntegralF::showFeature(Mat &image){
+    cv::Mat copy;
+    image.copyTo(copy);
+    for(int i = 0; i < Whites.size(); ++i){
+        Whites[i].imprint(copy);
+    }
+    for(int i = 0; i < Blacks.size(); ++i){
+        Blacks[i].imprint(copy);
+    }
+    imshow("Feature",copy);
+}
+
+int IntegralF::calcFromIntegralImage(Mat &integralImage){
+    int whiteSum = 0;
+    int blackSum = 0;
+    for(int i = 0; i < Whites.size(); ++i){
+        whiteSum += Whites[i].calcIntegral(integralImage);
+    }
+    for(int i = 0; i < Blacks.size(); ++i){
+        blackSum+= Blacks[i].calcIntegral(integralImage);
+    }
+
+    return whiteSum - blackSum;
+}
+
 IntegralFeature::IntegralFeature()
 {
 
@@ -21,37 +151,22 @@ int IntegralFeature::IntegerSum(cv::Mat &intImage, Point a, Point b ){
 
 cv::Mat_<float> IntegralFeature::getFeature(Mat &image){
 
-    // Boreder mouth points
-    int width = image.cols/3;
-    int height = image.rows/3;
+    cv::Mat integralImage, grscale;
+    cvtColor(image,grscale,CV_BGR2GRAY);
+    integral(grscale,integralImage);
 
-    Point center = Point(image.cols/2,image.rows/2);
-    Point k = Point(center.x + width, center.y);
-    Point k1 = Point(center.x - width, center.y);
-    Point q = Point(center.x, center.y + height);
-    Point q1 = Point(center.x, center.y - height);
+    IntegralF edges(image,IntegralF::Edges);
+    IntegralF cross(image,IntegralF::Cross);
+    IntegralF center(image,IntegralF::Centroid);
 
-    Point tl = Point(k1.x, q1.y);
-    Point br = Point(k.x,q.y);
-
-    cv::Mat integralImage;
-    integral(image,integralImage);
-
-    int total = IntegerSum(integralImage,tl,br);
-
-    int top = IntegerSum(integralImage, tl, Point(br.x,center.y));
-    int bottom = IntegerSum(integralImage, Point(tl.x, center.y), br);
-
-    int ratio = width/10;
-    int centralPoint = IntegerSum(integralImage,Point(center.x - ratio, center.y - ratio*2), Point(center.x + ratio, center.y + ratio));
+    cross.showFeature(image);
 
 
     cv::Mat_<float> Features(1,3);
-    Features(0,0) = top;
-    Features(0,1) = bottom;
-    Features(0,2) = centralPoint;
+    Features(0,0) = edges.calcFromIntegralImage(integralImage);
+    Features(0,1) = cross.calcFromIntegralImage(integralImage);
+    Features(0,2) = center.calcFromIntegralImage(integralImage);
 
-    //cout << Features << endl;
 
     return Features;
 }
