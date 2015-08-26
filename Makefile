@@ -67,7 +67,8 @@ SOURCES       = main.cpp \
 		lib_features/hogfeatures.cpp \
 		lib_features/blobfeatures.cpp \
 		lib_features/lbpfeatures.cpp \
-		lib_features/integralfeature.cpp 
+		lib_features/integralfeature.cpp \
+		lib_features/brightfeature.cpp 
 OBJECTS       = main.o \
 		ann.o \
 		classifier.o \
@@ -87,7 +88,8 @@ OBJECTS       = main.o \
 		hogfeatures.o \
 		blobfeatures.o \
 		lbpfeatures.o \
-		integralfeature.o
+		integralfeature.o \
+		brightfeature.o
 DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/common/shell-unix.conf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/common/unix.conf \
@@ -221,7 +223,8 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		lib_features/hogfeatures.h \
 		lib_features/blobfeatures.h \
 		lib_features/lbpfeatures.h \
-		lib_features/integralfeature.h main.cpp \
+		lib_features/integralfeature.h \
+		lib_features/brightfeature.h main.cpp \
 		lib_ann/ann.cpp \
 		lib_ann/classifier.cpp \
 		lib_features/cornerfeatures.cpp \
@@ -240,7 +243,8 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		lib_features/hogfeatures.cpp \
 		lib_features/blobfeatures.cpp \
 		lib_features/lbpfeatures.cpp \
-		lib_features/integralfeature.cpp
+		lib_features/integralfeature.cpp \
+		lib_features/brightfeature.cpp
 QMAKE_TARGET  = AnnFeatures
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = AnnFeatures
@@ -554,6 +558,7 @@ main.o: main.cpp lib_support/support.h \
 		lib_features/skeletfeatures.h \
 		lib_features/hogfeatures.h \
 		lib_features/integralfeature.h \
+		lib_features/brightfeature.h \
 		lib_features/lbpfeatures.h \
 		lib_ann/ann.h \
 		lib_ann/classifier.h
@@ -639,8 +644,14 @@ lbpfeatures.o: lib_features/lbpfeatures.cpp lib_features/lbpfeatures.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o lbpfeatures.o lib_features/lbpfeatures.cpp
 
 integralfeature.o: lib_features/integralfeature.cpp lib_features/integralfeature.h \
-		lib_features/featureextractor.h
+		lib_features/featureextractor.h \
+		lib_support/cvSupport.h \
+		lib_support/support.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o integralfeature.o lib_features/integralfeature.cpp
+
+brightfeature.o: lib_features/brightfeature.cpp lib_features/brightfeature.h \
+		lib_features/featureextractor.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o brightfeature.o lib_features/brightfeature.cpp
 
 ####### Install
 

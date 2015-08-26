@@ -22,7 +22,8 @@ SOURCES += main.cpp \
     lib_features/hogfeatures.cpp \
     lib_features/blobfeatures.cpp \
     lib_features/lbpfeatures.cpp \
-    lib_features/integralfeature.cpp
+    lib_features/integralfeature.cpp \
+    lib_features/brightfeature.cpp
 
 INCLUDE += /usr/local/include/opencv /usr/local/include/opencv2
 LIBS += -L/usr/local/lib \
@@ -60,5 +61,6 @@ HEADERS += \
     lib_features/hogfeatures.h \
     lib_features/blobfeatures.h \
     lib_features/lbpfeatures.h \
-    lib_features/integralfeature.h
+    lib_features/integralfeature.h \
+    lib_features/brightfeature.h
 
