@@ -290,3 +290,15 @@ cv::Mat cvSupport::drawHistogram(vector<float> hist_values, int val, int range, 
 
     return histImg;
 }
+
+void cvSupport::show(const char* name, Mat &image, Size size){
+    Mat resized;
+    resize(image,resized,size);
+    imshow(name,resized);
+}
+
+void cvSupport::show(const char* name, cv::Mat & image, double sizeModifier){
+    Mat resized;
+    resize(image,resized,cv::Size(sizeModifier*image.cols, sizeModifier*image.rows));
+    imshow(name,resized);
+}

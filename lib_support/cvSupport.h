@@ -60,7 +60,8 @@ cv::Mat copyFromImage(cv::Mat & img, vector<cv::Point> & points);
 cv::Mat drawHistogram(vector<float> hist_values, int w = 512, int h = 256, cv::Scalar color_BG = cv::Scalar(0,0,0), cv::Scalar color_Hist = cv::Scalar(128,128,128));
 cv::Mat drawHistogram(vector<float> hist_values, int val, int range, int w, int h);
 
-
+void show(const char* name, cv::Mat & image, cv::Size size);
+void show(const char* name, cv::Mat & image, double sizeModifier);
 }
 
 
