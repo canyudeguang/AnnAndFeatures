@@ -16,6 +16,7 @@ using namespace std;
 #include "lib_features/skeletfeatures.h"
 #include "lib_features/hogfeatures.h"
 #include "lib_features/lbpfeatures.h"
+#include "lib_features/brightfeature.h"
 
 
 #include "lib_classifiers/svm.h"
@@ -49,7 +50,7 @@ int main(int argc, char ** argv)
         RawFeatures fRaw;
         SkeletFeatures fSkelet;
         HOGFeatures fHog;
-
+        BrightFeature fBright;
         LBPFeatures fLbp;
 
         // put all pointers tp FeatureExtractors objecst into vector
@@ -58,8 +59,8 @@ int main(int argc, char ** argv)
         //vec_extractors.push_back(&fExper);
         //vec_extractors.push_back(&fHisto);
         //vec_extractors.push_back(&fRaw);
-        vec_extractors.push_back(&fHog);
-        //vec_extractors.push_back(&fLbp);
+       // vec_extractors.push_back(&fHog);
+        vec_extractors.push_back(&fBright);
         //vec_extractors.push_back(&fSkelet);
 
         /** Feature Extraction */
@@ -90,7 +91,7 @@ int main(int argc, char ** argv)
 
         /** SVM Training */
 
-        Classifier * classifier = new BoostClass();
+        Classifier * classifier = new KN();
 
         cout << "Training from " << directory << endl;
 
