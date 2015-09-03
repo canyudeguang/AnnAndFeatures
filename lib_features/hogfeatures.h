@@ -10,6 +10,7 @@ class HOGFeatures : public FeatureExtractor
 {
 public:
     cv::Mat_<float> getFeature(Mat &image);
+    string name();
     HOGFeatures();
     ~HOGFeatures();
 };

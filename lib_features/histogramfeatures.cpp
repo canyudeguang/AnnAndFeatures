@@ -1,6 +1,10 @@
 #include "histogramfeatures.h"
 
 
+string HistogramFeatures::name(){
+    return "HistogramFeature";
+}
+
 HistogramFeatures::HistogramFeatures(){
     this->numberOfBins = 256;
 }

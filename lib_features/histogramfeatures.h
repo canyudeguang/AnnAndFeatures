@@ -17,6 +17,7 @@ class HistogramFeatures : public FeatureExtractor
 public:
     HistogramFeatures();
     virtual Mat_<float> getFeature(Mat &image);
+    string name();
     void setNumberOfBins(int bins);
 
     Mat_<float> derivateHistogram(Mat_<float> &Histogram);

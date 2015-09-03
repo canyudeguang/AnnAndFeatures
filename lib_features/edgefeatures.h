@@ -8,6 +8,7 @@ class EdgeFeatures : public FeatureExtractor
 {
 public:
     cv::Mat_<float> getFeature(Mat &image);
+    string name();
 private:
     void initImgs(Mat &image);
     void showAll();

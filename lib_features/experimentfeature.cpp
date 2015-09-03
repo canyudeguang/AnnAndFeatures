@@ -1,6 +1,10 @@
 #include "experimentfeature.h"
 
 
+string experimentFeature::name(){
+    return "experimantalFeatures";
+}
+
 /** @function thresh_callback */
 void experimentFeature::on_trackbar(int event, void* param)
 {

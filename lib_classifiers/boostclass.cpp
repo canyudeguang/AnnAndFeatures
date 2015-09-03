@@ -54,4 +54,15 @@ void BoostClass::showGraph(int featuresNum){
 
 }
 
+int BoostClass::save2file(const char *filename){
+
+    this->cvboost->save("boost_D_R.yml");
+    return -1;
+}
+
+int BoostClass::loadFromFile(const char *filename){
+    this->cvboost->load(filename);
+    return -1;
+}
+
 

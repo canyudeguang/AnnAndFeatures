@@ -5,6 +5,10 @@ BrightFeature::BrightFeature()
 
 }
 
+string BrightFeature::name(){
+    return "BrightFeature";
+}
+
 BrightFeature::~BrightFeature()
 {
 

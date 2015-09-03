@@ -6,6 +6,7 @@
 class RawFeatures : public FeatureExtractor
 {
 public:
+    string name();
     Mat_<float> getFeature(Mat &image);
     RawFeatures();
     ~RawFeatures();

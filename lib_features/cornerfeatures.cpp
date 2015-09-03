@@ -1,5 +1,9 @@
 #include "cornerfeatures.h"
 
+string CornerFeatures::name(){
+    return "CornerFeature";
+}
+
 Mat_<float> CornerFeatures::getFeature(Mat &image)
 {
     Mat_<float> Featues(1,1);

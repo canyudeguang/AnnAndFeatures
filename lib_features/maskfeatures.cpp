@@ -1,5 +1,10 @@
 #include "maskfeatures.h"
 
+
+string maskfeatures::name(){
+    return "MastFeatures";
+}
+
 cv::Mat_<float> maskfeatures::getFeature(Mat &image){
 
     Mat_<float> Features(1,3);

@@ -113,3 +113,13 @@ void mySVM::showGraph(int featuresNum){
         imshow("SVM Simple Example", image); // show it to the user
         waitKey(0);
 }
+
+
+int mySVM::loadFromFile(const char *filename){
+    return -1;
+}
+
+int mySVM::save2file(const char *filename){
+    this->cvsvm->save(filename);
+    return -1;
+}

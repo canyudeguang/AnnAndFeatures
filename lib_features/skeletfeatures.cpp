@@ -1,5 +1,9 @@
 #include "skeletfeatures.h"
 
+string SkeletFeatures::name(){
+    return "SkeletonFeatures";
+}
+
 SkeletFeatures::SkeletFeatures()
 {
 

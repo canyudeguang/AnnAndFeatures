@@ -9,6 +9,7 @@ public:
     SkeletFeatures();
     ~SkeletFeatures();
 
+    string name();
     cv::Mat_<float> getFeature(Mat &image);
 };
 

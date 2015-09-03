@@ -6,6 +6,7 @@
 class maskfeatures : public FeatureExtractor
 {
 public:
+    string name();
     cv::Mat_<float> getFeature(Mat &image);
 
     maskfeatures();

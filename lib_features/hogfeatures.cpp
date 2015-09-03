@@ -5,6 +5,10 @@ HOGFeatures::HOGFeatures()
 
 }
 
+string HOGFeatures::name(){
+    return "HOGFeatures";
+}
+
 HOGFeatures::~HOGFeatures()
 {
 

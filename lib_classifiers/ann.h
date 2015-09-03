@@ -45,7 +45,8 @@ public:
     ANN();
     // Member functions
     void saveTofile(char *filename);
-    void loadFromFile(const char *filename);
+    int save2file(const char *filename);
+    int loadFromFile(const char *filename);
 
 
     void setParameters(int inputs, vector<int> & lay, int output);

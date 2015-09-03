@@ -18,6 +18,11 @@ public:
     uchar predictResponse(cv::Mat_<float> &testData);
     void showGraph(int featuresNum);
 
+    int save2file(const char *filename);
+    int loadFromFile(const char * filename);
+
+
+
 private:
     CvBoost *cvboost;
 };

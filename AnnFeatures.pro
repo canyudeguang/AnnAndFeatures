@@ -25,7 +25,8 @@ SOURCES += main.cpp \
     lib_classifiers/boostclass.cpp \
     lib_classifiers/kn.cpp \
     lib_classifiers/decisiontree.cpp \
-    lib_features/brightfeature.cpp
+    lib_features/brightfeature.cpp \
+    lib_features/featurespicker.cpp
 
 INCLUDE += /usr/local/include/opencv /usr/local/include/opencv2
 LIBS += -L/usr/local/lib \
@@ -66,5 +67,6 @@ HEADERS += \
     lib_classifiers/boostclass.h \
     lib_classifiers/kn.h \
     lib_classifiers/decisiontree.h \
-    lib_features/brightfeature.h
+    lib_features/brightfeature.h \
+    lib_features/featurespicker.h
 

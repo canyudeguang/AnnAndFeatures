@@ -35,3 +35,11 @@ void KN::showGraph(int featuresNum){
 }
 
 
+int KN::save2file(const char *filename){
+    return -1;
+}
+
+int KN::loadFromFile(const char *filename){
+    return -1;
+}
+

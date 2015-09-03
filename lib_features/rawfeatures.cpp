@@ -1,5 +1,8 @@
 #include "rawfeatures.h"
 
+string RawFeatures::name(){
+    return "RawFeatures";
+}
 
 /* Ctor */
 RawFeatures::RawFeatures()

@@ -20,6 +20,8 @@ public:
     // Virtual functions implemented in a child class
     virtual cv::Mat_<float> getFeature(cv::Mat &image){return Mat(image);}; // not pure virtual :)
     static cv::Mat_<float> joinFeatures(cv::Mat_<float> &f1, cv::Mat_<float> &f2);
+
+    virtual string name() = 0;
 };
 
 #endif // FEATUREEXTRACTOR_H

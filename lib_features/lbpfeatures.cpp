@@ -9,6 +9,9 @@ LBPFeatures::~LBPFeatures()
 {
 
 }
+string LBPFeatures::name(){
+    return "LBPFeatures";
+}
 
 void LBPFeatures::setSize(int width, int height){
     this->imgSize = cv::Size(width, height);

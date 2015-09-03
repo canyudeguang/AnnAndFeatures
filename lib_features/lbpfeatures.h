@@ -15,6 +15,7 @@ public:
 
     static const int DEF_HEIGHT = 64;
     static const int DEF_WIDTH = 128;
+    string name();
     cv::Mat_<float> getFeature(cv::Mat &image);
 
     void setSize(int width, int height);

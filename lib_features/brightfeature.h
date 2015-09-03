@@ -9,6 +9,7 @@ public:
     BrightFeature();
     ~BrightFeature();
 
+    string name();
 
     std::vector<cv::Point> bPoints;
 

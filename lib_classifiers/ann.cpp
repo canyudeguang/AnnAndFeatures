@@ -293,12 +293,13 @@ uchar ANN::predictResponse(cv::Mat_<float> &testData){
     return response;
 }
 
-void ANN::loadFromFile(const char *filename){
+int ANN::loadFromFile(const char *filename){
     cout << "Opening .yml file : " << filename << endl;
     string f(filename);
     //f += ".yml";
     nnetwork = new CvANN_MLP();
     nnetwork->load(f.c_str());
+    return 0;
 }
 
 void ANN::saveTofile(char *filename){
@@ -306,5 +307,10 @@ void ANN::saveTofile(char *filename){
     f += ".yml";
     FileStorage fs(f, FileStorage::WRITE);
     nnetwork->write(*fs, filename);
+    cout << "Saving classifier file: " << filename << endl;
+}
+
+int ANN::save2file(const char *filename){
+    nnetwork->save(filename);
     cout << "Saving classifier file: " << filename << endl;
 }

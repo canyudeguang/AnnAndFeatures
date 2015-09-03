@@ -10,6 +10,7 @@
 #include <iostream>
 #include <string>
 
+#define INFO 1
 using namespace std;
 using namespace cv;
 
@@ -28,6 +29,10 @@ public:
     virtual std::vector<uchar> predict(cv::Mat_<float> &testData) = 0;
     virtual uchar predictResponse(cv::Mat_<float> &testData) = 0;
     virtual void showGraph(int featuresNum) = 0;
+
+
+    virtual int loadFromFile(const char * filename) = 0;
+    virtual int save2file(const char * filename) = 0;
 
     void evaluate(std::vector<uchar> predictedLabels, std::vector<uchar> trueLabels, int numClasses);
 
@@ -72,6 +77,7 @@ public:
      */
     uchar findStrLabel(const string & filename);
 private:
+    bool isRestMember;
     std::vector<string> strLabels;
 
     int numberOfClasses;

@@ -1,6 +1,10 @@
 #include "grayscalefeatures.h"
 
 
+string GrayScaleFeatures::name(){
+    return "GrayscaleFeatures";
+}
+
 cv::Mat_<float> GrayScaleFeatures::getFeature(Mat &image){
 
     Mat_<uchar>img;

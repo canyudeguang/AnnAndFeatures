@@ -6,6 +6,7 @@ class CornerFeatures : public FeatureExtractor
 {
 public:
     Mat_<float> getFeature(Mat &image);
+    string name();
 };
 
 #endif // CORNERFEATURES_H

@@ -70,7 +70,8 @@ SOURCES       = main.cpp \
 		lib_classifiers/boostclass.cpp \
 		lib_classifiers/kn.cpp \
 		lib_classifiers/decisiontree.cpp \
-		lib_features/brightfeature.cpp 
+		lib_features/brightfeature.cpp \
+		lib_features/featurespicker.cpp 
 OBJECTS       = main.o \
 		cornerfeatures.o \
 		edgefeatures.o \
@@ -93,7 +94,8 @@ OBJECTS       = main.o \
 		boostclass.o \
 		kn.o \
 		decisiontree.o \
-		brightfeature.o
+		brightfeature.o \
+		featurespicker.o
 DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/common/shell-unix.conf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/common/unix.conf \
@@ -230,7 +232,8 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		lib_classifiers/boostclass.h \
 		lib_classifiers/kn.h \
 		lib_classifiers/decisiontree.h \
-		lib_features/brightfeature.h main.cpp \
+		lib_features/brightfeature.h \
+		lib_features/featurespicker.h main.cpp \
 		lib_features/cornerfeatures.cpp \
 		lib_features/edgefeatures.cpp \
 		lib_features/experimentfeature.cpp \
@@ -252,7 +255,8 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		lib_classifiers/boostclass.cpp \
 		lib_classifiers/kn.cpp \
 		lib_classifiers/decisiontree.cpp \
-		lib_features/brightfeature.cpp
+		lib_features/brightfeature.cpp \
+		lib_features/featurespicker.cpp
 QMAKE_TARGET  = AnnFeatures
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = AnnFeatures
@@ -567,6 +571,7 @@ main.o: main.cpp lib_support/support.h \
 		lib_features/hogfeatures.h \
 		lib_features/lbpfeatures.h \
 		lib_features/brightfeature.h \
+		lib_features/featurespicker.h \
 		lib_classifiers/svm.h \
 		lib_classifiers/classifier.h \
 		lib_classifiers/ann.h \
@@ -667,6 +672,10 @@ decisiontree.o: lib_classifiers/decisiontree.cpp lib_classifiers/decisiontree.h 
 brightfeature.o: lib_features/brightfeature.cpp lib_features/brightfeature.h \
 		lib_features/featureextractor.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o brightfeature.o lib_features/brightfeature.cpp
+
+featurespicker.o: lib_features/featurespicker.cpp lib_features/featurespicker.h \
+		lib_features/featureextractor.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o featurespicker.o lib_features/featurespicker.cpp
 
 ####### Install
 

@@ -2,6 +2,7 @@
 
 Classifier::Classifier(){
     this->nullLabel = false;
+    this->isRestMember = false;
 }
 
 cv::Mat Classifier::cr8ResponseMat(std::vector<uchar> &labels, int numberOfSamples){
@@ -56,6 +57,9 @@ void Classifier::evaluate(vector<uchar> predictedLabels, vector<uchar> trueLabel
 void Classifier::setLabels(string labels[], int numOfClasses){
     for(int i = 0; i < numOfClasses; i++){
         this->strLabels.push_back(labels[i]);
+        if(labels[i] == "REST"){
+            this->isRestMember = true;
+        }
     }
     this->numberOfClasses = numOfClasses;
 
@@ -100,6 +104,10 @@ uchar Classifier::findStrLabel(const string & filename){
         if(filename.find(this->strLabels[i]) != string::npos){
             return i;
         }
+    }
+
+    if(isRestMember){
+        return this->strLabels.size()-1;
     }
 
 
