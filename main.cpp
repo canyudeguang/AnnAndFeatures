@@ -60,7 +60,7 @@ int main(int argc, char ** argv)
        // vec_extractors.push_back(&fExper);
        // vec_extractors.push_back(&fHisto);
         //vec_extractors.push_back(&fRaw);
-       // vec_extractors.push_back(&fHog);
+       //vec_extractors.push_back(&fLbp);
        // vec_extractors.push_back(&fSkelet);
         vec_extractors.push_back(&fBright);
 
@@ -89,7 +89,7 @@ int main(int argc, char ** argv)
 
             imshow("Image",img);
            // moveWindow("Image",0,0);
-         //  cvSupport::indexBrowser(i,train_images.size());
+           cvSupport::indexBrowser(i,train_images.size());
 
         }
 
