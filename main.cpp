@@ -303,7 +303,7 @@ int mainOld(int argc, char ** argv)
 
 void help(){
     cout << "Usage:" << endl;
-    cout << "./AnnFeatures TrainDir TestDir -c Classifier {[Ann layers] classifier Settings} -f featureIndexes" << endl;
+    cout << "./AnnFeatures TrainDir TestDir -c Classifier {[Ann layers] classifier Settings} -f featureIndexes repetitions" << endl;
     cout << "f featureIndexes: fore example -f 0,1,4" << endl;
     cout << "{classifier Settings} :" << endl;
     cout << "\t ANN = {iter,BP_Coef,BP_Coef,[layout]}: " << endl;
@@ -362,12 +362,23 @@ cv::Mat_<float> featureExtractionFromDir(vector<string> & train_images, vector<i
 }
 
 int main(int argc, char *argv[]){
-
     if(argc > 5){
         if(string(argv[3]) == "-c"){
             Classifier * classifier;
             if(string(argv[4]) == Classifier::C_ANN){
-            for(int i = 0; i < 10; ++i){
+
+
+            int repetitions = 1;
+            if(argc == 9) repetitions = stoi(argv[8]);
+            cout << "Reps" << repetitions << endl;
+            for(int REPEAT = 0; REPEAT < repetitions; ++REPEAT){
+
+                vector<int> FeaturesIndexes;
+                if(argc >= 7){
+                    if(string(argv[6]) == "-f"){
+                        FeaturesIndexes = FeaturesPicker::getIndexesFromArguments(string(argv[7]));
+                    }
+                }
 
                 // Set Classifier
                 classifier = new myANN();
@@ -386,10 +397,10 @@ int main(int argc, char *argv[]){
                 vector<uchar> eLabels = classifier->extLabelFromFileName(train_images);
                 cout << classifier->getStrLabels() << endl;
                 // set features
-                vector<int> indexes{0};
+
                 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                 // Feature Extraction
-                cv::Mat_<float> Features = featureExtractionFromDir(train_images,indexes);
+                cv::Mat_<float> Features = featureExtractionFromDir(train_images,FeaturesIndexes);
                 classifier->setFeatureVectorSize(Features.cols);
                 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -409,7 +420,7 @@ int main(int argc, char *argv[]){
                 cout << "Predict ... from " << test_dir << endl;
                 vector<string> test_imgs = Support::pathVector(test_dir,".jpg");
                 sort(test_imgs.begin(), test_imgs.end());
-                test_features = featureExtractionFromDir(test_imgs,indexes,false);
+                test_features = featureExtractionFromDir(test_imgs,FeaturesIndexes,false);
 
                 vector<uchar> predictions = classifier->predict(test_features);
                 vector<uchar> test_labels = classifier->extLabelFromFileName(test_imgs);

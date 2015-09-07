@@ -40,3 +40,13 @@ vector<vector <int> > FeaturesPicker::powerSetIndexes(int size){
     return powerSet;
 }
 
+
+vector<int> FeaturesPicker::getIndexesFromArguments(string args){
+
+    vector<string> indexes = Support::splitString(args,',');
+    vector<int> iIndexes;
+    for(int i = 0; i < indexes.size();++i){
+        iIndexes.push_back(stoi(indexes[i]));
+    }
+    return iIndexes;
+}
