@@ -16,6 +16,9 @@ public:
     uchar predictResponse(cv::Mat_<float> &testData);
     void showGraph(int featuresNum);
 
+    int loadFromFile(const char *filename);
+    int save2file(const char *filename);
+
 
     cv::DecisionTree * cvDT;
 

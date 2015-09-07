@@ -14,7 +14,7 @@ CC            = gcc
 CXX           = g++
 DEFINES       = 
 CFLAGS        = -pipe -g -Wall -W -fPIE $(DEFINES)
-CXXFLAGS      = -pipe -g -Wall -W -fPIE $(DEFINES)
+CXXFLAGS      = -pipe -g -std=c++0x -Wall -W -fPIE $(DEFINES)
 INCPATH       = -I../../dev/Qt/5.4/gcc_64/mkspecs/linux-g++ -I.
 QMAKE         = /home/pajus/dev/Qt/5.4/gcc_64/bin/qmake
 DEL_FILE      = rm -f
@@ -71,7 +71,8 @@ SOURCES       = main.cpp \
 		lib_classifiers/kn.cpp \
 		lib_classifiers/decisiontree.cpp \
 		lib_features/brightfeature.cpp \
-		lib_features/featurespicker.cpp 
+		lib_features/featurespicker.cpp \
+		lib_classifiers/myann.cpp 
 OBJECTS       = main.o \
 		cornerfeatures.o \
 		edgefeatures.o \
@@ -95,7 +96,8 @@ OBJECTS       = main.o \
 		kn.o \
 		decisiontree.o \
 		brightfeature.o \
-		featurespicker.o
+		featurespicker.o \
+		myann.o
 DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/common/shell-unix.conf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/common/unix.conf \
@@ -205,6 +207,7 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		deployment.pri \
 		../../dev/Qt/5.4/gcc_64/mkspecs/features/resolve_config.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/features/default_post.prf \
+		../../dev/Qt/5.4/gcc_64/mkspecs/features/c++11.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/features/warn_on.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/features/testcase_targets.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/features/exceptions.prf \
@@ -233,7 +236,8 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		lib_classifiers/kn.h \
 		lib_classifiers/decisiontree.h \
 		lib_features/brightfeature.h \
-		lib_features/featurespicker.h main.cpp \
+		lib_features/featurespicker.h \
+		lib_classifiers/myann.h main.cpp \
 		lib_features/cornerfeatures.cpp \
 		lib_features/edgefeatures.cpp \
 		lib_features/experimentfeature.cpp \
@@ -256,7 +260,8 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		lib_classifiers/kn.cpp \
 		lib_classifiers/decisiontree.cpp \
 		lib_features/brightfeature.cpp \
-		lib_features/featurespicker.cpp
+		lib_features/featurespicker.cpp \
+		lib_classifiers/myann.cpp
 QMAKE_TARGET  = AnnFeatures
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = AnnFeatures
@@ -396,6 +401,7 @@ Makefile: AnnFeatures.pro ../../dev/Qt/5.4/gcc_64/mkspecs/linux-g++/qmake.conf .
 		deployment.pri \
 		../../dev/Qt/5.4/gcc_64/mkspecs/features/resolve_config.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/features/default_post.prf \
+		../../dev/Qt/5.4/gcc_64/mkspecs/features/c++11.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/features/warn_on.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/features/testcase_targets.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/features/exceptions.prf \
@@ -512,6 +518,7 @@ Makefile: AnnFeatures.pro ../../dev/Qt/5.4/gcc_64/mkspecs/linux-g++/qmake.conf .
 deployment.pri:
 ../../dev/Qt/5.4/gcc_64/mkspecs/features/resolve_config.prf:
 ../../dev/Qt/5.4/gcc_64/mkspecs/features/default_post.prf:
+../../dev/Qt/5.4/gcc_64/mkspecs/features/c++11.prf:
 ../../dev/Qt/5.4/gcc_64/mkspecs/features/warn_on.prf:
 ../../dev/Qt/5.4/gcc_64/mkspecs/features/testcase_targets.prf:
 ../../dev/Qt/5.4/gcc_64/mkspecs/features/exceptions.prf:
@@ -572,12 +579,8 @@ main.o: main.cpp lib_support/support.h \
 		lib_features/lbpfeatures.h \
 		lib_features/brightfeature.h \
 		lib_features/featurespicker.h \
-		lib_classifiers/svm.h \
-		lib_classifiers/classifier.h \
 		lib_classifiers/ann.h \
-		lib_classifiers/boostclass.h \
-		lib_classifiers/kn.h \
-		lib_classifiers/decisiontree.h
+		lib_classifiers/classifier.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 cornerfeatures.o: lib_features/cornerfeatures.cpp lib_features/cornerfeatures.h \
@@ -647,26 +650,32 @@ lbpfeatures.o: lib_features/lbpfeatures.cpp lib_features/lbpfeatures.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o lbpfeatures.o lib_features/lbpfeatures.cpp
 
 ann.o: lib_classifiers/ann.cpp lib_classifiers/ann.h \
-		lib_classifiers/classifier.h
+		lib_classifiers/classifier.h \
+		lib_support/support.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ann.o lib_classifiers/ann.cpp
 
-classifier.o: lib_classifiers/classifier.cpp lib_classifiers/classifier.h
+classifier.o: lib_classifiers/classifier.cpp lib_classifiers/classifier.h \
+		lib_support/support.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o classifier.o lib_classifiers/classifier.cpp
 
 svm.o: lib_classifiers/svm.cpp lib_classifiers/svm.h \
-		lib_classifiers/classifier.h
+		lib_classifiers/classifier.h \
+		lib_support/support.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o svm.o lib_classifiers/svm.cpp
 
 boostclass.o: lib_classifiers/boostclass.cpp lib_classifiers/boostclass.h \
-		lib_classifiers/classifier.h
+		lib_classifiers/classifier.h \
+		lib_support/support.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o boostclass.o lib_classifiers/boostclass.cpp
 
 kn.o: lib_classifiers/kn.cpp lib_classifiers/kn.h \
-		lib_classifiers/classifier.h
+		lib_classifiers/classifier.h \
+		lib_support/support.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o kn.o lib_classifiers/kn.cpp
 
 decisiontree.o: lib_classifiers/decisiontree.cpp lib_classifiers/decisiontree.h \
-		lib_classifiers/classifier.h
+		lib_classifiers/classifier.h \
+		lib_support/support.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o decisiontree.o lib_classifiers/decisiontree.cpp
 
 brightfeature.o: lib_features/brightfeature.cpp lib_features/brightfeature.h \
@@ -676,6 +685,11 @@ brightfeature.o: lib_features/brightfeature.cpp lib_features/brightfeature.h \
 featurespicker.o: lib_features/featurespicker.cpp lib_features/featurespicker.h \
 		lib_features/featureextractor.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o featurespicker.o lib_features/featurespicker.cpp
+
+myann.o: lib_classifiers/myann.cpp lib_classifiers/myann.h \
+		lib_classifiers/classifier.h \
+		lib_support/support.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o myann.o lib_classifiers/myann.cpp
 
 ####### Install
 

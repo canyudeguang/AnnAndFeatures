@@ -1,5 +1,6 @@
 TEMPLATE = app
 CONFIG += console
+CONFIG += c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
@@ -26,7 +27,8 @@ SOURCES += main.cpp \
     lib_classifiers/kn.cpp \
     lib_classifiers/decisiontree.cpp \
     lib_features/brightfeature.cpp \
-    lib_features/featurespicker.cpp
+    lib_features/featurespicker.cpp \
+    lib_classifiers/myann.cpp
 
 INCLUDE += /usr/local/include/opencv /usr/local/include/opencv2
 LIBS += -L/usr/local/lib \
@@ -68,5 +70,6 @@ HEADERS += \
     lib_classifiers/kn.h \
     lib_classifiers/decisiontree.h \
     lib_features/brightfeature.h \
-    lib_features/featurespicker.h
+    lib_features/featurespicker.h \
+    lib_classifiers/myann.h
 

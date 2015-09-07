@@ -1,9 +1,12 @@
 #include "classifier.h"
 
+const string Classifier::C_ANN = "ANN";
+
 Classifier::Classifier(){
     this->nullLabel = false;
     this->isRestMember = false;
 }
+
 
 cv::Mat Classifier::cr8ResponseMat(std::vector<uchar> &labels, int numberOfSamples){
     // Prepare labels in required format
@@ -50,6 +53,21 @@ void Classifier::evaluate(vector<uchar> predictedLabels, vector<uchar> trueLabel
 
     cout << "Confusion matrix:" << endl;
     cout << confMatrix << endl;
+}
+//==============================================================================
+double Classifier::evaluateVerbose(vector<uchar> predictedLabels, vector<uchar> trueLabels, int numClasses)
+{
+    // Print true and predicted labels and precision rate
+    //--------------------------------------------------------------------------
+
+    int correctCount = 0;
+    for(unsigned int i = 0; i < trueLabels.size(); i++) {
+        if(trueLabels[i] == predictedLabels[i]) {
+            correctCount++;
+        }
+    }
+    cout << double((correctCount * 100) / float(trueLabels.size())) << "%" << endl;
+    return double((correctCount * 100) / float(trueLabels.size()));
 }
 
 
@@ -118,4 +136,19 @@ uchar Classifier::findStrLabel(const string & filename){
 //==============================================================================
 bool Classifier::hasNullLabel(){
     return this->nullLabel;
+}
+//==============================================================================
+string Classifier::getStrLabels(){
+    string labels;
+    for(int i = 0; i < this->strLabels.size();++i){
+        labels = labels+strLabels[i];
+        if(i < this->strLabels.size()-1){
+            labels = labels + "_";
+        }
+    }
+    return labels;
+}
+
+void Classifier::setFeatureVectorSize(int attributesPerSample){
+    this->attributesPerSample = attributesPerSample;
 }

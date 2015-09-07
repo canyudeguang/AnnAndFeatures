@@ -59,3 +59,10 @@ uchar DecisionTrees::predictResponse(cv::Mat_<float> &testData){
 void DecisionTrees::showGraph(int featuresNum){
 
 }
+
+int DecisionTrees::loadFromFile(const char *filename){
+    return -1;
+}
+int DecisionTrees::save2file(const char *filename){
+    this->cvDT->save(filename);
+}

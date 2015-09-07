@@ -8,6 +8,11 @@ ANN::ANN(){
     this->nullLabel = false;
 }
 
+int ANN::loadFromParams(string params){
+
+return 0;
+}
+
 
 uchar ANN::getEYE_CLOSE(){
     return ANN::EYE_CLOSE;
@@ -158,22 +163,24 @@ void ANN::parametricTrain(cv::Mat_<float> &trainData, std::vector<uchar> &labels
 //==============================================================================
 void ANN::train(Mat_<float> &trainData, vector<uchar> &labels, int numClasses)
 {
+#if INFO
     cout << "ANN training..." << endl;
-
+#endif
     attributesPerSample = trainData.cols;
     numberOfClasses = numClasses;
     int numberOfSamples = trainData.rows;
 
     Mat layers = Mat(1, 3, CV_32SC1);
     layers.at<int>(0,0) = attributesPerSample; // input
-    layers.at<int>(0,1) = 2; // hidden
+    layers.at<int>(0,1) = 4; // hidden
     layers.at<int>(0,2) = numberOfClasses; // output
+
 
 
     // Create the network using a sigmoid function
     //--------------------------------------------------------------------------
     nnetwork = new CvANN_MLP();
-    nnetwork->create(layers, CvANN_MLP::SIGMOID_SYM, 1.0, 1.0);
+    nnetwork->create(layers, CvANN_MLP::SIGMOID_SYM, 2.0, 2.0);
 
 
     // Prepare labels in required format
@@ -184,6 +191,7 @@ void ANN::train(Mat_<float> &trainData, vector<uchar> &labels, int numClasses)
     for(int i = 0; i < numberOfSamples; i++) {
         trainLabels(i, labels[i]) = 1.0;
     }
+
 
     // Set the training parameters
     //--------------------------------------------------------------------------
@@ -197,14 +205,21 @@ void ANN::train(Mat_<float> &trainData, vector<uchar> &labels, int numClasses)
 
         // Coefficients for back-propagation training
         0.1,
-        0.1
+        0.2
     );
 
-    // Train the neural network
+
+    //cout << params.bp_dw_scale << " train" << endl;
+    //cout << params.bp_moment_scale << " train" << endl;
+    //cout << params.rp_dw0 << " " <<params.rp_dw_max << " " << params.rp_dw_min << "  " << params.rp_dw_plus << " " <<params.rp_dw_minus << endl;
+    // Train the neural netwdouble dork
     //--------------------------------------------------------------------------
     int iters = nnetwork->train(trainData, trainLabels, Mat(), Mat(), params);
 
+    //cout <<  nnetwork->get_layer_count() <<  " " << cv::Mat(nnetwork->get_layer_sizes()) << endl;
+#if INFO
     cout << "Number of iterations: " << iters << endl;
+#endif
 }
 
 

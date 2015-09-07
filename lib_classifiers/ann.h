@@ -6,7 +6,6 @@
 #include "classifier.h"
 
 #define DEBUG 0
-#define INFO 1
 
 /*
  *  AnnTrainer for Images
@@ -43,6 +42,8 @@ public:
     static uchar getEYE_CLOSE();
     // Ctor
     ANN();
+    int loadFromParams(string params);
+
     // Member functions
     void saveTofile(char *filename);
     int save2file(const char *filename);

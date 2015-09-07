@@ -9,8 +9,10 @@
 // Standard library header files
 #include <iostream>
 #include <string>
+#include <vector>
 
-#define INFO 1
+#include "lib_support/support.h"
+
 using namespace std;
 using namespace cv;
 
@@ -22,6 +24,7 @@ enum classifierTypes{CLASS_ANN, CLASS_SVM};
 class Classifier {
 
 public:
+    static const string C_ANN;
     Classifier();
 
     // Virtual functions implemented in a child class
@@ -30,12 +33,14 @@ public:
     virtual uchar predictResponse(cv::Mat_<float> &testData) = 0;
     virtual void showGraph(int featuresNum) = 0;
 
+    virtual int loadFromParams(string params) = 0;
+
 
     virtual int loadFromFile(const char * filename) = 0;
     virtual int save2file(const char * filename) = 0;
 
     void evaluate(std::vector<uchar> predictedLabels, std::vector<uchar> trueLabels, int numClasses);
-
+    double evaluateVerbose(std::vector<uchar> predictedLabels, std::vector<uchar> trueLabels, int numClasses);
     static cv::Mat cr8ResponseMat(std::vector<uchar> & labels, int numberOfSamples);
     // Classifier methods
     /**
@@ -76,11 +81,18 @@ public:
      * @return uchar ID of the class given by string label name
      */
     uchar findStrLabel(const string & filename);
+
+    void setFeatureVectorSize(int attributesPerSample);
+
+    string getStrLabels();
+
+    int numberOfClasses;
+    int attributesPerSample;
 private:
     bool isRestMember;
     std::vector<string> strLabels;
 
-    int numberOfClasses;
+
     bool nullLabel;
 };
 
