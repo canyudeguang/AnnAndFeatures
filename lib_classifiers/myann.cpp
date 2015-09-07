@@ -5,7 +5,7 @@
 /// Ctor and D tor
 ////////////////////////////////////////////////////////////////////////////////////
 
-const double myANN::DEFAULT_EPS = 0.0001;
+const double myANN::DEFAULT_EPS = 0.01;
 const double myANN::DEFAULT_BP1 = 0.1;
 const double myANN::DEFAULT_BP2 = 0.1;
 const int myANN::DEFAULT_ITER = 100;

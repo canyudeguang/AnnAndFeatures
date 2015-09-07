@@ -366,43 +366,55 @@ int main(int argc, char *argv[]){
         if(string(argv[3]) == "-c"){
             Classifier * classifier;
             if(string(argv[4]) == Classifier::C_ANN){
-
-
+/// Cosntant functions
+            // Setting repetitions
             int repetitions = 1;
             if(argc == 9) repetitions = stoi(argv[8]);
-            cout << "Reps" << repetitions << endl;
-            for(int REPEAT = 0; REPEAT < repetitions; ++REPEAT){
 
-                vector<int> FeaturesIndexes;
-                if(argc >= 7){
-                    if(string(argv[6]) == "-f"){
-                        FeaturesIndexes = FeaturesPicker::getIndexesFromArguments(string(argv[7]));
-                    }
+            // Setting Feature Vector Indexes
+            vector<int> FeaturesIndexes;
+            if(argc >= 7){
+                if(string(argv[6]) == "-f"){
+                    FeaturesIndexes = FeaturesPicker::getIndexesFromArguments(string(argv[7]));
                 }
+            }
+            //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+            // Load Train from Directory
+            string directory(argv[1]);
+            vector<string> train_images = Support::pathVector(directory,".jpg");
+            cout << "From: " << directory << " "<< train_images.size() << " images loaded." << endl;
+            //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+            // Predict & testing
+
+            string test_dir(argv[2]);
+            cout << "Predict ... from " << test_dir << endl;
+            vector<string> test_imgs = Support::pathVector(test_dir,".jpg");
+            sort(test_imgs.begin(), test_imgs.end());
+            //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+            // Feature extraction
+            cv::Mat_<float> test_features = featureExtractionFromDir(test_imgs,FeaturesIndexes,false);
+            cv::Mat_<float> Features = featureExtractionFromDir(train_images,FeaturesIndexes);
+            //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/////^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/// Training
+            // Load Testing Directory
+
+            for(int REPEAT = 0; REPEAT < repetitions; ++REPEAT){
                 // Set Classifier
                 classifier = new myANN();
+                classifier->setFeatureVectorSize(Features.cols);
 
-
-                // Load Train from Directory
-                string directory(argv[1]);
-                vector<string> train_images = Support::pathVector(directory,".jpg");
-                cout << "From: " << directory << " "<< train_images.size() << " images loaded." << endl;
-                //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                 // Lebel extraction
                 // set labels
                 static const int numClasses = 2;
                 string str_labels[numClasses] = {"DEFAULT","REST"};
                 classifier->setLabels(str_labels,numClasses);
                 vector<uchar> eLabels = classifier->extLabelFromFileName(train_images);
-                cout << classifier->getStrLabels() << endl;
-                // set features
 
-                //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-                // Feature Extraction
-                cv::Mat_<float> Features = featureExtractionFromDir(train_images,FeaturesIndexes);
-                classifier->setFeatureVectorSize(Features.cols);
-                //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                cout << "Classes: " << classifier->getStrLabels() << endl;
 
                 // set Classifier Params
                 classifier->loadFromParams(string(argv[5]));
@@ -413,14 +425,6 @@ int main(int argc, char *argv[]){
                     classifier->train(Features, eLabels, numClasses);
                 }
                 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-                // Predict & testing
-                cv::Mat_<float> test_features;
-                string test_dir(argv[2]);
-                cout << "Predict ... from " << test_dir << endl;
-                vector<string> test_imgs = Support::pathVector(test_dir,".jpg");
-                sort(test_imgs.begin(), test_imgs.end());
-                test_features = featureExtractionFromDir(test_imgs,FeaturesIndexes,false);
 
                 vector<uchar> predictions = classifier->predict(test_features);
                 vector<uchar> test_labels = classifier->extLabelFromFileName(test_imgs);
