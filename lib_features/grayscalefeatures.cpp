@@ -2,7 +2,7 @@
 
 
 string GrayScaleFeatures::name(){
-    return "GrayscaleFeatures";
+    return "fGS";
 }
 
 cv::Mat_<float> GrayScaleFeatures::getFeature(Mat &image){

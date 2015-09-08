@@ -35,6 +35,8 @@ public:
 
     virtual int loadFromParams(string params) = 0;
 
+    virtual string getStrSettings() = 0;
+
 
     virtual int loadFromFile(const char * filename) = 0;
     virtual int save2file(const char * filename) = 0;

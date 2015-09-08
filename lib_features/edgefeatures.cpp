@@ -1,7 +1,7 @@
 #include "edgefeatures.h"
 
 string EdgeFeatures::name(){
-    return "EdgeFeatures";
+    return "fEdge";
 }
 
 Mat_<float> EdgeFeatures::getFeature(Mat &image)

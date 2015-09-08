@@ -1,7 +1,7 @@
 #include "rawfeatures.h"
 
 string RawFeatures::name(){
-    return "RawFeatures";
+    return "fRaw";
 }
 
 /* Ctor */

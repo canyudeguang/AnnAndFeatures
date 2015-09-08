@@ -10,7 +10,7 @@ LBPFeatures::~LBPFeatures()
 
 }
 string LBPFeatures::name(){
-    return "LBPFeatures";
+    return "fLBP";
 }
 
 void LBPFeatures::setSize(int width, int height){

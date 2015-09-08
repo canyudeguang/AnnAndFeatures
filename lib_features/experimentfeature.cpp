@@ -2,7 +2,7 @@
 
 
 string experimentFeature::name(){
-    return "experimantalFeatures";
+    return "fExper";
 }
 
 /** @function thresh_callback */

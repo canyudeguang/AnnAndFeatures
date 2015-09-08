@@ -5,7 +5,7 @@
 /// Ctor and D tor
 ////////////////////////////////////////////////////////////////////////////////////
 
-const double myANN::DEFAULT_EPS = 0.01;
+const double myANN::DEFAULT_EPS = 0.00000001;
 const double myANN::DEFAULT_BP1 = 0.1;
 const double myANN::DEFAULT_BP2 = 0.1;
 const int myANN::DEFAULT_ITER = 100;
@@ -102,10 +102,19 @@ int myANN::loadFromParams(string params){
 }
 //==============================================================================
 int myANN::loadFromFile(const char *filename){
+#ifdef INFO
+    cout << "ANN INFO: opening=" << filename << endl;
+#endif
+    nnetwork = new CvANN_MLP();
+    nnetwork->load(filename);
     return -1;
 }
 //==============================================================================
 int myANN::save2file(const char *filename){
+    this->nnetwork->save(filename);
+#ifdef INFO
+    cout << "ANN INFO: saving=" << filename << endl;
+#endif
     return -1;
 }
 
@@ -210,4 +219,26 @@ uchar myANN::predictResponse(cv::Mat_<float> &testData){
 //==============================================================================
 void myANN::showGraph(int featuresNum)
 {
+}
+
+
+string myANN::getStrSettings(){
+    string settings("");
+    settings += to_string(this->iters) + "_";
+
+    string bp1 = to_string(this->bp_param1);
+    bp1 = bp1.substr(0,3);
+    bp1.erase(std::remove(bp1.begin(), bp1.end(), '.'), bp1.end());
+    string bp2 = to_string(this->bp_param2);
+    bp2 = bp2.substr(0,3);
+    bp2.erase(std::remove(bp2.begin(), bp2.end(), '.'), bp2.end());
+
+    settings+= bp1 + "_" + bp2+"_";
+
+    for(int i = 0; i < this->nn_layers.size(); ++i){
+        settings += "_"+to_string(this->nn_layers[i]);
+    }
+    settings+="_";
+
+    return settings;
 }

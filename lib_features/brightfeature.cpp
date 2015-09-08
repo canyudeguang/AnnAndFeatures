@@ -6,7 +6,7 @@ BrightFeature::BrightFeature()
 }
 
 string BrightFeature::name(){
-    return "BrightFeature";
+    return "fBright";
 }
 
 BrightFeature::~BrightFeature()

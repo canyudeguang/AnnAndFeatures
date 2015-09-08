@@ -2,7 +2,7 @@
 
 
 string HistogramFeatures::name(){
-    return "HistogramFeature";
+    return "fHisto";
 }
 
 HistogramFeatures::HistogramFeatures(){

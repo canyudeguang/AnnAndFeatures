@@ -17,6 +17,8 @@ using namespace std;
 #include "lib_features/hogfeatures.h"
 #include "lib_features/lbpfeatures.h"
 #include "lib_features/brightfeature.h"
+#include "lib_features/maskfeatures.h"
+#include "lib_features/grayscalefeatures.h"
 
 #include "lib_features/featurespicker.h"
 
@@ -96,7 +98,7 @@ void TestAllConfig(vector<string> & train_images, string directory, string test_
                    Features.push_back(fjoined); // add feature_vector to mat of all features
                }
                /** SVM Training */
-               Classifier * classifier = new ANN();
+               Classifier * classifier = new myANN();
 
 
                // set labels
@@ -224,7 +226,7 @@ int mainOld(int argc, char ** argv)
             Features.push_back(fjoined); // add feature_vector to mat of all features
         }
         /** SVM Training */
-        Classifier * classifier = new ANN();
+        Classifier * classifier = new myANN();
         cout << "Training from " << directory << endl;
 
         // set labels
@@ -310,37 +312,7 @@ void help(){
     cout << "\t example -c ANN {1000,0.1,0.1,[2,4,6]} = " << "100 iterations, 0.1, 0.1 BP coef are default, 3 hidden layers with 2,4 and 6 neurons." << endl;
 }
 
-cv::Mat_<float> featureExtractionFromDir(vector<string> & train_images, vector<int> indexes, bool print = true){
-    // All features;
-    HistogramFeatures fHisto; // histogram features
-    fHisto.setNumberOfBins(256); // set number of histogram bins
-    EdgeFeatures fEdge;
-    experimentFeature fExper;
-    RawFeatures fRaw;
-    SkeletFeatures fSkelet;
-    HOGFeatures fHog;
-    BrightFeature fBright;
-    LBPFeatures fLbp;
-    vector<FeatureExtractor *> allPointers;
-    allPointers.push_back(&fExper);
-    allPointers.push_back(&fEdge);
-    allPointers.push_back(&fHisto);
-    allPointers.push_back(&fRaw);
-    allPointers.push_back(&fHog);
-    allPointers.push_back(&fLbp);
-    allPointers.push_back(&fBright);
-    allPointers.push_back(&fSkelet);
-
-
-    // Select Features;
-    vector<FeatureExtractor *> vec_extractors;
-    for(int i = 0; i < allPointers.size();++i){
-        for(int j = 0; j < indexes.size();++j){
-            if(i == indexes[j]){
-                vec_extractors.push_back(allPointers[i]);
-            }
-        }
-    }
+cv::Mat_<float> featureExtractionFromDir(vector<string> & train_images, vector<FeatureExtractor * > & vec_extractors, bool print = true){
 
     cv::Mat_<float> Features;
     for(uint i = 0; i < train_images.size(); ++i){
@@ -350,15 +322,59 @@ cv::Mat_<float> featureExtractionFromDir(vector<string> & train_images, vector<i
         Mat_<float> fjoined;
         fjoined.setTo(0);
 
+
         for(uint j = 0; j < vec_extractors.size(); ++j){
             Mat_<float> f = vec_extractors[j]->getFeature(img);
             FeatureExtractor::joinFeatures(fjoined,f);
         }
+
         Features.push_back(fjoined); // add feature_vector to mat of all features
     }
 
-    if(print)printFeaturesConfig(vec_extractors);
     return Features;
+}
+
+void selectFeatures(vector<int> indexes, vector<FeatureExtractor * > & features){
+    // All features;
+
+    EdgeFeatures fEdge;
+    experimentFeature fExper;
+    RawFeatures fRaw;
+    SkeletFeatures fSkelet;
+    HOGFeatures fHog;
+    BrightFeature fBright;
+    LBPFeatures fLbp;
+    maskfeatures fMask;
+    GrayScaleFeatures fGS;
+    CornerFeatures fCor;
+
+    HistogramFeatures * fhisto  = new HistogramFeatures();
+    fhisto->setNumberOfBins(256);
+
+    vector<FeatureExtractor * > allPointers;
+    allPointers.push_back(new EdgeFeatures());
+    allPointers.push_back(new experimentFeature());
+    allPointers.push_back(fhisto);
+    allPointers.push_back(new RawFeatures());
+    allPointers.push_back(new HOGFeatures());
+    allPointers.push_back(new LBPFeatures());
+    allPointers.push_back(new BrightFeature());
+    allPointers.push_back(new SkeletFeatures());
+
+    allPointers.push_back(new GrayScaleFeatures());
+    allPointers.push_back(new CornerFeatures());
+    allPointers.push_back(new maskfeatures());
+
+
+    // Select Features;
+    for(int i = 0; i < allPointers.size();++i){
+        for(int j = 0; j < indexes.size();++j){
+            if(i == indexes[j]){
+                features.push_back(allPointers[i]);
+            }
+        }
+
+    }
 }
 
 int main(int argc, char *argv[]){
@@ -378,6 +394,10 @@ int main(int argc, char *argv[]){
                     FeaturesIndexes = FeaturesPicker::getIndexesFromArguments(string(argv[7]));
                 }
             }
+            // Select Feature vectors
+            vector<FeatureExtractor * > vec_features;
+            selectFeatures(FeaturesIndexes,vec_features);
+
             //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
             // Load Train from Directory
@@ -387,52 +407,66 @@ int main(int argc, char *argv[]){
             //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
             // Predict & testing
-
             string test_dir(argv[2]);
             cout << "Predict ... from " << test_dir << endl;
             vector<string> test_imgs = Support::pathVector(test_dir,".jpg");
             sort(test_imgs.begin(), test_imgs.end());
             //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+
             // Feature extraction
-            cv::Mat_<float> test_features = featureExtractionFromDir(test_imgs,FeaturesIndexes,false);
-            cv::Mat_<float> Features = featureExtractionFromDir(train_images,FeaturesIndexes);
+            cv::Mat_<float> test_features = featureExtractionFromDir(test_imgs,vec_features);
+            cv::Mat_<float> Features = featureExtractionFromDir(train_images,vec_features);
             //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 /////^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-/// Training
-            // Load Testing Directory
+                /// Training
+                for(int REPEAT = 0; REPEAT < repetitions; ++REPEAT){
+                    // Set Classifier
+                    classifier = new myANN();
+                    classifier->setFeatureVectorSize(Features.cols);
+                    // Lebel extraction
+                    static const int numClasses = 2;
+                    string str_labels[numClasses] = {"OPEN","REST"};
+                    classifier->setLabels(str_labels,numClasses);
+                    vector<uchar> eLabels = classifier->extLabelFromFileName(train_images);
+                    //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    cout << "Classes: " << classifier->getStrLabels() << endl;
+                    // set Classifier Params
+                    classifier->loadFromParams(string(argv[5]));
+                    //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-            for(int REPEAT = 0; REPEAT < repetitions; ++REPEAT){
-                // Set Classifier
-                classifier = new myANN();
-                classifier->setFeatureVectorSize(Features.cols);
 
-                // Lebel extraction
-                // set labels
-                static const int numClasses = 2;
-                string str_labels[numClasses] = {"DEFAULT","REST"};
-                classifier->setLabels(str_labels,numClasses);
-                vector<uchar> eLabels = classifier->extLabelFromFileName(train_images);
+                    // Training
+                    if(eLabels.size() == Features.rows){
+                        classifier->train(Features, eLabels, numClasses);
+                    }
+                    //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    // Prediction and Evaluation
+                    vector<uchar> predictions = classifier->predict(test_features);
+                    vector<uchar> test_labels = classifier->extLabelFromFileName(test_imgs);
+                    double perc = classifier->evaluateVerbose(predictions,test_labels,numClasses);
+                    //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-                cout << "Classes: " << classifier->getStrLabels() << endl;
+                    //Saving
+                    string toSave = "nets/"+ classifier->getStrLabels() + "_";
+                    string features ="";
+                    for(int i = 0; i < vec_features.size();++i){
+                        features += vec_features[i]->name() + "_";
+                    }
+                    toSave += features;
+                    toSave += classifier->getStrSettings() + "_";
+                    toSave += to_string(int(perc)) + "_" + to_string(REPEAT) + ".yml";
 
-                // set Classifier Params
-                classifier->loadFromParams(string(argv[5]));
-                //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    if(perc > 75){
+                        classifier->save2file(toSave.c_str());
+                    }
+                    cout << "FEATURES: " << features << endl;
+                    cout << "------------------------------------------" << endl;
+                    delete classifier;
 
-                // Training
-                if(eLabels.size() == Features.rows){
-                    classifier->train(Features, eLabels, numClasses);
                 }
-                //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-                vector<uchar> predictions = classifier->predict(test_features);
-                vector<uchar> test_labels = classifier->extLabelFromFileName(test_imgs);
-                classifier->evaluateVerbose(predictions,test_labels,numClasses);
-                //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-            }
-            delete classifier;
             }// END FOR
         }
     }

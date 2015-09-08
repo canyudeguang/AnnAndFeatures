@@ -3,7 +3,6 @@
 
 #include "lib_classifiers/classifier.h"
 
-#define DEBUG
 #define INFO
 
 
@@ -39,6 +38,7 @@ public:
     int loadFromFile(const char *filename);
     int loadFromParams(string params);
     int save2file(const char *filename);
+    string getStrSettings();
 
     // Inteface of the Parent
     void train(cv::Mat_<float> &trainData, std::vector<uchar> &labels, int numClasses);
@@ -54,18 +54,18 @@ public:
     Mat_<float> predictions;
     vector<uchar> predictLabels;
 
-
+    int iters;
+    double bp_param1, bp_param2;
+    Mat layers;
 private:
     CvANN_MLP* nnetwork;
 
-    int iters;
-    double bp_param1, bp_param2;
+
     double eps;
 
     vector<int> nn_layers;
     int feature_vec_size;
     int num_of_classes;
-    Mat layers;
 
 
 

@@ -6,7 +6,7 @@ HOGFeatures::HOGFeatures()
 }
 
 string HOGFeatures::name(){
-    return "HOGFeatures";
+    return "fHOG";
 }
 
 HOGFeatures::~HOGFeatures()

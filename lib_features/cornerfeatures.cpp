@@ -1,7 +1,7 @@
 #include "cornerfeatures.h"
 
 string CornerFeatures::name(){
-    return "CornerFeature";
+    return "fCorner";
 }
 
 Mat_<float> CornerFeatures::getFeature(Mat &image)

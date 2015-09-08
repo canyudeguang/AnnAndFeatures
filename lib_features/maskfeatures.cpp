@@ -2,7 +2,7 @@
 
 
 string maskfeatures::name(){
-    return "MastFeatures";
+    return "fMask";
 }
 
 cv::Mat_<float> maskfeatures::getFeature(Mat &image){

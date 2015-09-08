@@ -1,7 +1,7 @@
 #include "skeletfeatures.h"
 
 string SkeletFeatures::name(){
-    return "SkeletonFeatures";
+    return "fSkelet";
 }
 
 SkeletFeatures::SkeletFeatures()
