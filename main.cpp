@@ -378,6 +378,7 @@ void selectFeatures(vector<int> indexes, vector<FeatureExtractor * > & features)
 }
 
 int main(int argc, char *argv[]){
+
     if(argc > 5){
         if(string(argv[3]) == "-c"){
             Classifier * classifier;
@@ -458,8 +459,11 @@ int main(int argc, char *argv[]){
                     toSave += classifier->getStrSettings() + "_";
                     toSave += to_string(int(perc)) + "_" + to_string(REPEAT) + ".yml";
 
-                    if(perc > 75){
+                    if(perc > 85){
                         classifier->save2file(toSave.c_str());
+                    }
+                    else{
+                        cout  << toSave << endl;
                     }
                     cout << "FEATURES: " << features << endl;
                     cout << "------------------------------------------" << endl;
