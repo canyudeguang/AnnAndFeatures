@@ -354,15 +354,15 @@ void selectFeatures(vector<int> indexes, vector<FeatureExtractor * > & features)
     vector<FeatureExtractor * > allPointers;
     allPointers.push_back(new EdgeFeatures());
     allPointers.push_back(new experimentFeature());
-    allPointers.push_back(fhisto);
-    allPointers.push_back(new RawFeatures());
+    //allPointers.push_back(fhisto);
+    //allPointers.push_back(new RawFeatures());
     allPointers.push_back(new HOGFeatures());
     allPointers.push_back(new LBPFeatures());
     allPointers.push_back(new BrightFeature());
-    allPointers.push_back(new SkeletFeatures());
+   // allPointers.push_back(new SkeletFeatures());
 
-    allPointers.push_back(new GrayScaleFeatures());
-    allPointers.push_back(new CornerFeatures());
+   // allPointers.push_back(new GrayScaleFeatures());
+   // allPointers.push_back(new CornerFeatures());
     allPointers.push_back(new maskfeatures());
 
 
