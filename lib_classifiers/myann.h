@@ -2,6 +2,7 @@
 #define MYANN_H
 
 #include "lib_classifiers/classifier.h"
+#include "lib_features/featureextractor.h"
 
 #define INFO
 
@@ -66,9 +67,7 @@ private:
     vector<int> nn_layers;
     int feature_vec_size;
     int num_of_classes;
-
-
-
 };
+
 
 #endif // MYANN_H

@@ -72,7 +72,9 @@ SOURCES       = main.cpp \
 		lib_classifiers/decisiontree.cpp \
 		lib_features/brightfeature.cpp \
 		lib_features/featurespicker.cpp \
-		lib_classifiers/myann.cpp 
+		lib_classifiers/myann.cpp \
+		mainold.cpp \
+		lib_classifiers/myannsettings.cpp 
 OBJECTS       = main.o \
 		cornerfeatures.o \
 		edgefeatures.o \
@@ -97,7 +99,9 @@ OBJECTS       = main.o \
 		decisiontree.o \
 		brightfeature.o \
 		featurespicker.o \
-		myann.o
+		myann.o \
+		mainold.o \
+		myannsettings.o
 DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/common/shell-unix.conf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/common/unix.conf \
@@ -237,7 +241,8 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		lib_classifiers/decisiontree.h \
 		lib_features/brightfeature.h \
 		lib_features/featurespicker.h \
-		lib_classifiers/myann.h main.cpp \
+		lib_classifiers/myann.h \
+		lib_classifiers/myannsettings.h main.cpp \
 		lib_features/cornerfeatures.cpp \
 		lib_features/edgefeatures.cpp \
 		lib_features/experimentfeature.cpp \
@@ -261,7 +266,9 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		lib_classifiers/decisiontree.cpp \
 		lib_features/brightfeature.cpp \
 		lib_features/featurespicker.cpp \
-		lib_classifiers/myann.cpp
+		lib_classifiers/myann.cpp \
+		mainold.cpp \
+		lib_classifiers/myannsettings.cpp
 QMAKE_TARGET  = AnnFeatures
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = AnnFeatures
@@ -578,9 +585,12 @@ main.o: main.cpp lib_support/support.h \
 		lib_features/hogfeatures.h \
 		lib_features/lbpfeatures.h \
 		lib_features/brightfeature.h \
+		lib_features/maskfeatures.h \
+		lib_features/grayscalefeatures.h \
 		lib_features/featurespicker.h \
 		lib_classifiers/ann.h \
-		lib_classifiers/classifier.h
+		lib_classifiers/classifier.h \
+		lib_classifiers/myann.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 cornerfeatures.o: lib_features/cornerfeatures.cpp lib_features/cornerfeatures.h \
@@ -683,13 +693,41 @@ brightfeature.o: lib_features/brightfeature.cpp lib_features/brightfeature.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o brightfeature.o lib_features/brightfeature.cpp
 
 featurespicker.o: lib_features/featurespicker.cpp lib_features/featurespicker.h \
-		lib_features/featureextractor.h
+		lib_features/featureextractor.h \
+		lib_support/support.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o featurespicker.o lib_features/featurespicker.cpp
 
 myann.o: lib_classifiers/myann.cpp lib_classifiers/myann.h \
 		lib_classifiers/classifier.h \
-		lib_support/support.h
+		lib_support/support.h \
+		lib_features/featureextractor.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o myann.o lib_classifiers/myann.cpp
+
+mainold.o: mainold.cpp lib_support/support.h \
+		lib_support/cvSupport.h \
+		lib_features/histogramfeatures.h \
+		lib_features/featureextractor.h \
+		lib_features/histogram.h \
+		lib_features/cornerfeatures.h \
+		lib_features/edgefeatures.h \
+		lib_features/experimentfeature.h \
+		lib_features/rawfeatures.h \
+		lib_features/skeletfeatures.h \
+		lib_features/hogfeatures.h \
+		lib_features/lbpfeatures.h \
+		lib_features/brightfeature.h \
+		lib_features/maskfeatures.h \
+		lib_features/grayscalefeatures.h \
+		lib_features/featurespicker.h \
+		lib_classifiers/ann.h \
+		lib_classifiers/classifier.h \
+		lib_classifiers/myann.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainold.o mainold.cpp
+
+myannsettings.o: lib_classifiers/myannsettings.cpp lib_classifiers/myannsettings.h \
+		lib_support/support.h \
+		lib_features/featureextractor.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o myannsettings.o lib_classifiers/myannsettings.cpp
 
 ####### Install
 

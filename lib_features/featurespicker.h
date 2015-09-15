@@ -15,4 +15,5 @@ public:
     static vector<int> getIndexesFromArguments(string args);
 };
 
+
 #endif // FEATURESPICKER_H

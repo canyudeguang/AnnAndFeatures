@@ -242,3 +242,5 @@ string myANN::getStrSettings(){
 
     return settings;
 }
+
+

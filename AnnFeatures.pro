@@ -28,7 +28,9 @@ SOURCES += main.cpp \
     lib_classifiers/decisiontree.cpp \
     lib_features/brightfeature.cpp \
     lib_features/featurespicker.cpp \
-    lib_classifiers/myann.cpp
+    lib_classifiers/myann.cpp \
+    mainold.cpp \
+    lib_classifiers/myannsettings.cpp
 
 INCLUDE += /usr/local/include/opencv /usr/local/include/opencv2
 LIBS += -L/usr/local/lib \
@@ -71,5 +73,6 @@ HEADERS += \
     lib_classifiers/decisiontree.h \
     lib_features/brightfeature.h \
     lib_features/featurespicker.h \
-    lib_classifiers/myann.h
+    lib_classifiers/myann.h \
+    lib_classifiers/myannsettings.h
 
