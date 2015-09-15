@@ -367,7 +367,7 @@ void selectFeatures(vector<int> indexes, vector<FeatureExtractor * > & features)
 
 
     // Select Features;
-    for(int i = 0; i < allPointers.size();++i){
+    for(int i = 0; i < allPointers.size(s);++i){
         for(int j = 0; j < indexes.size();++j){
             if(i == indexes[j]){
                 features.push_back(allPointers[i]);
