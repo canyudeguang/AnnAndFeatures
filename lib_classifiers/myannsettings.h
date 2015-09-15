@@ -31,6 +31,8 @@ public:
     int processFileName(string filename);
     int getNumClasses();
 
+    string * getStrLabelsArray();
+
     vector<string> vec_labels;
     vector<FeatureExtractor *> vec_features;
 };

@@ -12,7 +12,11 @@ int myAnnSettings::getNumClasses(){
     return this->vec_labels.size();
 }
 
-
+string * myAnnSettings::getStrLabelsArray(){
+    string label_array[this->vec_labels.size()];
+    copy(this->vec_labels.begin(), this->vec_labels.end(), label_array);
+    return label_array;
+}
 
 int myAnnSettings::processFileName(string filename){
 
