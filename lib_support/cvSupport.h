@@ -18,6 +18,59 @@ using namespace cv;
   */
 namespace cvSupport{
 
+class DoublePoint{
+public:
+    DoublePoint();
+    void setL_XY(int x, int y);
+    void setR_XY(int x, int y);
+    void setPointL_XY(cv::Point left);
+    void setPointR_XY(cv::Point right);
+
+    void rotate(Mat m);
+    void draw(cv::Mat img, cv::Scalar color);
+
+    cv::Point getLPoint();
+    cv::Point getRPoint();
+
+    cv::Point getCenter();
+
+    double distance();
+private:
+    cv::Point left,right;
+};
+
+void onMouse(int event, int x, int y, int flags, void *userData);
+class PixUnderCursor{
+public:
+    PixUnderCursor(string windowName, cv::Mat & img);
+    void show_img();
+    void print(int x, int y);
+private:
+    string win_name;
+    cv::Mat img;
+};
+
+class RGBHash{
+public:
+    RGBHash(uchar r, uchar g, uchar b);
+    RGBHash(cv::Vec3b Vec3bgr);
+    uchar R,G,B;
+    u_int32_t hash;
+    string print();
+    string rgbPrint();
+    bool operator<(const RGBHash & rgbh);
+    double distance(const RGBHash & rgbh);
+private:
+    void init(uchar r, uchar g, uchar b);
+};
+
+class RGBHashCoord : public RGBHash{
+public:
+    RGBHashCoord(cv::Vec3b Vec3bgr, int x, int y);
+    string print();
+    int x,y;
+};
+
 const int N_COLORS = 8;
 const cv::Scalar COLORS[N_COLORS] = { cv::Scalar(0,0,255),
                                 cv::Scalar(0,255,0),
@@ -62,6 +115,13 @@ cv::Mat drawHistogram(vector<float> hist_values, int val, int range, int w, int 
 
 void show(const char* name, cv::Mat & image, cv::Size size);
 void show(const char* name, cv::Mat & image, double sizeModifier);
+
+cv::Mat subImage(cv::Mat & img, cv::Point tl, cv::Point br);
+
+void setPixColor(cv::Mat & img, int x, int y, cv::Scalar color);
+
+
+void colorReduce(cv::Mat & img, int divisor = 8);
 }
 
 

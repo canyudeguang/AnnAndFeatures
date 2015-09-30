@@ -1,6 +1,42 @@
 #include "cvSupport.h"
 
 
+cvSupport::PixUnderCursor::PixUnderCursor(string windowName, Mat &img){
+    // set object data
+    this->win_name = windowName;
+    this->img = img;
+    // create named window
+    cv::namedWindow(this->win_name,CV_WINDOW_AUTOSIZE);
+    // set callback
+    setMouseCallback(this->win_name, cvSupport::onMouse, this);
+
+}
+
+
+void cvSupport::onMouse(int event, int x, int y, int flags, void *userData){
+    PixUnderCursor *p = (PixUnderCursor * ) userData;
+    p->print(x,y);
+}
+
+void cvSupport::PixUnderCursor::show_img(){
+    cv::imshow(this->win_name,this->img);
+    cv::waitKey(0);
+}
+
+void cvSupport::PixUnderCursor::print(int x, int y){
+    if(this->img.channels() == 3){
+        cv::Vec3b pix = this->img.at<Vec3b>(y,x);
+        cout << pix << endl;
+    }
+    else if(this->img.channels() == 1) {
+        uchar pix = this->img.at<uchar>(y,x);
+        cout << int(pix) << endl;
+    }
+    else{
+        cout << " No sé " << endl;
+    }
+}
+
 vector<uchar> cvSupport::pixsUnderLine(Mat &image, Point A, Point B){
     vector<uchar> pixsLine;
 
@@ -301,4 +337,75 @@ void cvSupport::show(const char* name, cv::Mat & image, double sizeModifier){
     Mat resized;
     resize(image,resized,cv::Size(sizeModifier*image.cols, sizeModifier*image.rows));
     imshow(name,resized);
+}
+
+cv::Mat cvSupport::subImage(Mat &img, Point tl, Point br){
+    cv::Mat subimg = img(Rect(tl,br));
+    return subimg;
+}
+
+
+cvSupport::RGBHash::RGBHash(uchar r, uchar g, uchar b){
+    this->init(r,g,b);
+}
+
+cvSupport::RGBHash::RGBHash(cv::Vec3b Vec3bgr){
+    this->init(Vec3bgr[2], Vec3bgr[1], Vec3bgr[0]);
+
+}
+
+void cvSupport::RGBHash::init(uchar r, uchar g, uchar b){
+    this->R = r;
+    this->G = g;
+    this->B = b;
+
+    this->hash = 0;
+    this->hash = this->hash | (this->R << 16);
+    this->hash = this->hash | (this->G <<8);
+    this->hash = this->hash | this->B;
+}
+string cvSupport::RGBHash::print(){
+    cout << "(" << int(this->R) << ", " << int(this->G) << ", " << int(this->B) << ") #" << uint(this->hash) << endl;
+    return "";
+}
+string cvSupport::RGBHash::rgbPrint(){
+    cout << int(this->R) << " " << int(this->G) << " " << int(this->B) << endl;
+    return "";
+}
+
+double cvSupport::RGBHash::distance(const cvSupport::RGBHash &rgbh){
+    cv::Point3f thisPoint(this->R, this->G, this->B);
+    cv::Point3f elsePoint(rgbh.R, rgbh.G, rgbh.B);
+    return cv::norm(thisPoint - elsePoint);
+}
+
+cvSupport::RGBHashCoord::RGBHashCoord(cv::Vec3b Vec3bgr, int x, int y) : cvSupport::RGBHash(Vec3bgr){
+    this->x = x;
+    this->y = y;
+}
+
+//Override
+string cvSupport::RGBHashCoord::print(){
+    cout << "[" << int(this->x) << ", " << int(this->y)  << "] " << "(";
+    cout << int(this->R) << ", " << int(this->G) << ", " << int(this->B) << ")" << endl;
+    return "";
+}
+
+void cvSupport::setPixColor(Mat &img, int x, int y, Scalar color){
+    img.at<cv::Vec3b>(y,x)[0] = color[0];
+    img.at<cv::Vec3b>(y,x)[1] = color[1];
+    img.at<cv::Vec3b>(y,x)[2] = color[2];
+}
+
+
+bool cvSupport::RGBHash::operator <(const cvSupport::RGBHash & rgbh){
+    return (this->hash < rgbh.hash);
+}
+
+void cvSupport::colorReduce(Mat &img, int divisor){
+
+//    for(int x = 0; x < img.cols; ++x){
+//        for(int y = 0; y < img.rows; ++y){
+//        }
+//    }
 }

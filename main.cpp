@@ -16,7 +16,9 @@ using namespace std;
 #include "lib_features/skeletfeatures.h"
 #include "lib_features/hogfeatures.h"
 #include "lib_features/integralfeature.h"
+#include "lib_features/maskfeatures.h"
 #include "lib_features/brightfeature.h"
+#include "lib_features/pointyfeature.h"
 
 #include "lib_features/lbpfeatures.h"
 
@@ -51,6 +53,9 @@ int main(int argc, char ** argv)
         LBPFeatures fLbp;
         HistogramFeatures fhist;
         BrightFeature fBright;
+        maskfeatures fMask;
+
+        PointyFeature fPoint;
 
         fLbp.setSize(512,256);
 
@@ -60,9 +65,9 @@ int main(int argc, char ** argv)
        // vec_extractors.push_back(&fExper);
        // vec_extractors.push_back(&fHisto);
         //vec_extractors.push_back(&fRaw);
-       //vec_extractors.push_back(&fLbp);
-       // vec_extractors.push_back(&fSkelet);
-        vec_extractors.push_back(&fBright);
+      // vec_extractors.push_back(&fHog);
+        //vec_extractors.push_back(&fBright);
+        vec_extractors.push_back(&fPoint);
 
         /** Feature Extraction */
         /*
@@ -71,6 +76,7 @@ int main(int argc, char ** argv)
          * extract label
          * save them into final feature vector
          */
+
 
         cv::Mat_<float> Features; // Mat of feature vectors, each row is featureVec from one image
 
@@ -86,7 +92,6 @@ int main(int argc, char ** argv)
                 FeatureExtractor::joinFeatures(fjoined,f);
             }
             Features.push_back(fjoined); // add feature_vector to mat of all features
-
             imshow("Image",img);
            // moveWindow("Image",0,0);
            cvSupport::indexBrowser(i,train_images.size());

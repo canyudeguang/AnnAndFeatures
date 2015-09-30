@@ -180,6 +180,7 @@ Mat get_hogdescriptor_visual_image(Mat& origImg,
     delete[] gradientStrengths;
     delete[] cellUpdateCounter;
 
+    transpose(visual_image,visual_image);
     return visual_image;
 
 }
@@ -208,7 +209,7 @@ cv::Mat_<float> HOGFeatures::getFeature(Mat &image){
     }
 
 
- //    imshow("hog",get_hogdescriptor_visual_image(img_gray,ders,Size(64,128),Size(8,8),5,1));
+     imshow("hog",get_hogdescriptor_visual_image(img_gray,ders,Size(64,128),Size(8,8),5,1));
 //        cvWaitKey(0);
 
     return feat;
