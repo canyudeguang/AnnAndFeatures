@@ -5,6 +5,11 @@ DoublePoint::DoublePoint(){
 
 }
 
+DoublePoint::DoublePoint(Point left, Point right){
+    this->left = left;
+    this->right = right;
+}
+
 void DoublePoint::setL_XY(int x, int y){
     this->left = Point(x,y);
 }
@@ -250,6 +255,11 @@ FaceState::FaceState(){
   //  init();
 }
 
+FaceState::FaceState(Eye leye, Eye reye, MouthSimple mouth){
+    this->lEye = leye;
+    this->rEye = reye;
+    this->mouth = mouth;
+}
 
 void FaceState::draw(Mat &img, cv::Scalar color){
     mouth.draw(img, color);

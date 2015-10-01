@@ -14,7 +14,7 @@ CC            = gcc
 CXX           = g++
 DEFINES       = 
 CFLAGS        = -pipe -g -Wall -W -fPIE $(DEFINES)
-CXXFLAGS      = -pipe -g -Wall -W -fPIE $(DEFINES)
+CXXFLAGS      = -pipe -g -std=c++0x -Wall -W -fPIE $(DEFINES)
 INCPATH       = -I../../dev/Qt/5.4/gcc_64/mkspecs/linux-g++ -I.
 QMAKE         = /home/pajus/dev/Qt/5.4/gcc_64/bin/qmake
 DEL_FILE      = rm -f
@@ -69,7 +69,29 @@ SOURCES       = main.cpp \
 		lib_features/lbpfeatures.cpp \
 		lib_features/integralfeature.cpp \
 		lib_features/brightfeature.cpp \
-		lib_features/pointyfeature.cpp 
+		lib_features/pointyfeature.cpp \
+		lib_detector/detector.cpp \
+		lib_stasm/stasm_lib.cpp \
+		lib_stasm/stasm.cpp \
+		lib_stasm/startshape.cpp \
+		lib_stasm/shapemod.cpp \
+		lib_stasm/shapehacks.cpp \
+		lib_stasm/shape17.cpp \
+		lib_stasm/print.cpp \
+		lib_stasm/pinstart.cpp \
+		lib_stasm/misc.cpp \
+		lib_stasm/landmarks.cpp \
+		lib_stasm/hatdesc.cpp \
+		lib_stasm/hat.cpp \
+		lib_stasm/faceroi.cpp \
+		lib_stasm/eyedist.cpp \
+		lib_stasm/eyedet.cpp \
+		lib_stasm/err.cpp \
+		lib_stasm/convshape.cpp \
+		lib_stasm/classicdesc.cpp \
+		lib_stasm/asm.cpp \
+		lib_stasm/MOD_1/facedet.cpp \
+		lib_stasm/MOD_1/initasm.cpp 
 OBJECTS       = main.o \
 		ann.o \
 		classifier.o \
@@ -91,7 +113,29 @@ OBJECTS       = main.o \
 		lbpfeatures.o \
 		integralfeature.o \
 		brightfeature.o \
-		pointyfeature.o
+		pointyfeature.o \
+		detector.o \
+		stasm_lib.o \
+		stasm.o \
+		startshape.o \
+		shapemod.o \
+		shapehacks.o \
+		shape17.o \
+		print.o \
+		pinstart.o \
+		misc.o \
+		landmarks.o \
+		hatdesc.o \
+		hat.o \
+		faceroi.o \
+		eyedist.o \
+		eyedet.o \
+		err.o \
+		convshape.o \
+		classicdesc.o \
+		asm.o \
+		facedet.o \
+		initasm.o
 DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/common/shell-unix.conf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/common/unix.conf \
@@ -201,6 +245,7 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		deployment.pri \
 		../../dev/Qt/5.4/gcc_64/mkspecs/features/resolve_config.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/features/default_post.prf \
+		../../dev/Qt/5.4/gcc_64/mkspecs/features/c++11.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/features/warn_on.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/features/testcase_targets.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/features/exceptions.prf \
@@ -227,7 +272,34 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		lib_features/lbpfeatures.h \
 		lib_features/integralfeature.h \
 		lib_features/brightfeature.h \
-		lib_features/pointyfeature.h main.cpp \
+		lib_features/pointyfeature.h \
+		lib_detector/detector.h \
+		lib_stasm/stasm_landmarks.h \
+		lib_stasm/stasm.h \
+		lib_stasm/stasm_lib_ext.h \
+		lib_stasm/stasm_lib.h \
+		lib_stasm/startshape.h \
+		lib_stasm/shapemod.h \
+		lib_stasm/shapehacks.h \
+		lib_stasm/shape17.h \
+		lib_stasm/print.h \
+		lib_stasm/pinstart.h \
+		lib_stasm/misc.h \
+		lib_stasm/landtab_muct77.h \
+		lib_stasm/landmarks.h \
+		lib_stasm/hatdesc.h \
+		lib_stasm/hat.h \
+		lib_stasm/faceroi.h \
+		lib_stasm/eyedist.h \
+		lib_stasm/eyedet.h \
+		lib_stasm/err.h \
+		lib_stasm/convshape.h \
+		lib_stasm/classicdesc.h \
+		lib_stasm/basedesc.h \
+		lib_stasm/atface.h \
+		lib_stasm/asm.h \
+		lib_stasm/MOD_1/initasm.h \
+		lib_stasm/MOD_1/facedet.h main.cpp \
 		lib_ann/ann.cpp \
 		lib_ann/classifier.cpp \
 		lib_features/cornerfeatures.cpp \
@@ -248,7 +320,29 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		lib_features/lbpfeatures.cpp \
 		lib_features/integralfeature.cpp \
 		lib_features/brightfeature.cpp \
-		lib_features/pointyfeature.cpp
+		lib_features/pointyfeature.cpp \
+		lib_detector/detector.cpp \
+		lib_stasm/stasm_lib.cpp \
+		lib_stasm/stasm.cpp \
+		lib_stasm/startshape.cpp \
+		lib_stasm/shapemod.cpp \
+		lib_stasm/shapehacks.cpp \
+		lib_stasm/shape17.cpp \
+		lib_stasm/print.cpp \
+		lib_stasm/pinstart.cpp \
+		lib_stasm/misc.cpp \
+		lib_stasm/landmarks.cpp \
+		lib_stasm/hatdesc.cpp \
+		lib_stasm/hat.cpp \
+		lib_stasm/faceroi.cpp \
+		lib_stasm/eyedist.cpp \
+		lib_stasm/eyedet.cpp \
+		lib_stasm/err.cpp \
+		lib_stasm/convshape.cpp \
+		lib_stasm/classicdesc.cpp \
+		lib_stasm/asm.cpp \
+		lib_stasm/MOD_1/facedet.cpp \
+		lib_stasm/MOD_1/initasm.cpp
 QMAKE_TARGET  = AnnFeatures
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = AnnFeatures
@@ -388,6 +482,7 @@ Makefile: AnnFeatures.pro ../../dev/Qt/5.4/gcc_64/mkspecs/linux-g++/qmake.conf .
 		deployment.pri \
 		../../dev/Qt/5.4/gcc_64/mkspecs/features/resolve_config.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/features/default_post.prf \
+		../../dev/Qt/5.4/gcc_64/mkspecs/features/c++11.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/features/warn_on.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/features/testcase_targets.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/features/exceptions.prf \
@@ -504,6 +599,7 @@ Makefile: AnnFeatures.pro ../../dev/Qt/5.4/gcc_64/mkspecs/linux-g++/qmake.conf .
 deployment.pri:
 ../../dev/Qt/5.4/gcc_64/mkspecs/features/resolve_config.prf:
 ../../dev/Qt/5.4/gcc_64/mkspecs/features/default_post.prf:
+../../dev/Qt/5.4/gcc_64/mkspecs/features/c++11.prf:
 ../../dev/Qt/5.4/gcc_64/mkspecs/features/warn_on.prf:
 ../../dev/Qt/5.4/gcc_64/mkspecs/features/testcase_targets.prf:
 ../../dev/Qt/5.4/gcc_64/mkspecs/features/exceptions.prf:
@@ -564,9 +660,38 @@ main.o: main.cpp lib_support/support.h \
 		lib_features/integralfeature.h \
 		lib_features/maskfeatures.h \
 		lib_features/brightfeature.h \
+		lib_features/pointyfeature.h \
 		lib_features/lbpfeatures.h \
+		lib_detector/detector.h \
+		lib_detector/facedescription.h \
 		lib_ann/ann.h \
-		lib_ann/classifier.h
+		lib_ann/classifier.h \
+		lib_stasm/stasm.h \
+		lib_stasm/misc.h \
+		lib_stasm/print.h \
+		lib_stasm/err.h \
+		lib_stasm/stasm_landmarks.h \
+		lib_stasm/stasm_lib.h \
+		lib_stasm/stasm_lib_ext.h \
+		lib_stasm/atface.h \
+		lib_stasm/landmarks.h \
+		lib_stasm/landtab_muct77.h \
+		lib_stasm/basedesc.h \
+		lib_stasm/classicdesc.h \
+		lib_stasm/hat.h \
+		lib_stasm/hatdesc.h \
+		lib_stasm/shapehacks.h \
+		lib_stasm/shapemod.h \
+		lib_stasm/asm.h \
+		lib_stasm/MOD_1/facedet.h \
+		lib_stasm/MOD_1/initasm.h \
+		lib_stasm/eyedet.h \
+		lib_stasm/convshape.h \
+		lib_stasm/eyedist.h \
+		lib_stasm/faceroi.h \
+		lib_stasm/pinstart.h \
+		lib_stasm/shape17.h \
+		lib_stasm/startshape.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 ann.o: lib_ann/ann.cpp lib_ann/ann.h \
@@ -664,6 +789,909 @@ brightfeature.o: lib_features/brightfeature.cpp lib_features/brightfeature.h \
 pointyfeature.o: lib_features/pointyfeature.cpp lib_features/pointyfeature.h \
 		lib_features/featureextractor.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pointyfeature.o lib_features/pointyfeature.cpp
+
+detector.o: lib_detector/detector.cpp lib_detector/detector.h \
+		lib_support/cvSupport.h \
+		lib_support/support.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o detector.o lib_detector/detector.cpp
+
+stasm_lib.o: lib_stasm/stasm_lib.cpp lib_stasm/stasm.h \
+		lib_stasm/misc.h \
+		lib_stasm/print.h \
+		lib_stasm/err.h \
+		lib_stasm/stasm_landmarks.h \
+		lib_stasm/stasm_lib.h \
+		lib_stasm/stasm_lib_ext.h \
+		lib_stasm/atface.h \
+		lib_stasm/landmarks.h \
+		lib_stasm/landtab_muct77.h \
+		lib_stasm/basedesc.h \
+		lib_stasm/classicdesc.h \
+		lib_stasm/hat.h \
+		lib_stasm/hatdesc.h \
+		lib_stasm/shapehacks.h \
+		lib_stasm/shapemod.h \
+		lib_stasm/asm.h \
+		lib_stasm/MOD_1/facedet.h \
+		lib_stasm/MOD_1/initasm.h \
+		lib_stasm/eyedet.h \
+		lib_stasm/convshape.h \
+		lib_stasm/eyedist.h \
+		lib_stasm/faceroi.h \
+		lib_stasm/pinstart.h \
+		lib_stasm/shape17.h \
+		lib_stasm/startshape.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o stasm_lib.o lib_stasm/stasm_lib.cpp
+
+stasm.o: lib_stasm/stasm.cpp lib_stasm/stasm.h \
+		lib_stasm/misc.h \
+		lib_stasm/print.h \
+		lib_stasm/err.h \
+		lib_stasm/stasm_landmarks.h \
+		lib_stasm/stasm_lib.h \
+		lib_stasm/stasm_lib_ext.h \
+		lib_stasm/atface.h \
+		lib_stasm/landmarks.h \
+		lib_stasm/landtab_muct77.h \
+		lib_stasm/basedesc.h \
+		lib_stasm/classicdesc.h \
+		lib_stasm/hat.h \
+		lib_stasm/hatdesc.h \
+		lib_stasm/shapehacks.h \
+		lib_stasm/shapemod.h \
+		lib_stasm/asm.h \
+		lib_stasm/MOD_1/facedet.h \
+		lib_stasm/MOD_1/initasm.h \
+		lib_stasm/eyedet.h \
+		lib_stasm/convshape.h \
+		lib_stasm/eyedist.h \
+		lib_stasm/faceroi.h \
+		lib_stasm/pinstart.h \
+		lib_stasm/shape17.h \
+		lib_stasm/startshape.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o stasm.o lib_stasm/stasm.cpp
+
+startshape.o: lib_stasm/startshape.cpp lib_stasm/stasm.h \
+		lib_stasm/misc.h \
+		lib_stasm/print.h \
+		lib_stasm/err.h \
+		lib_stasm/stasm_landmarks.h \
+		lib_stasm/stasm_lib.h \
+		lib_stasm/stasm_lib_ext.h \
+		lib_stasm/atface.h \
+		lib_stasm/landmarks.h \
+		lib_stasm/landtab_muct77.h \
+		lib_stasm/basedesc.h \
+		lib_stasm/classicdesc.h \
+		lib_stasm/hat.h \
+		lib_stasm/hatdesc.h \
+		lib_stasm/shapehacks.h \
+		lib_stasm/shapemod.h \
+		lib_stasm/asm.h \
+		lib_stasm/MOD_1/facedet.h \
+		lib_stasm/MOD_1/initasm.h \
+		lib_stasm/eyedet.h \
+		lib_stasm/convshape.h \
+		lib_stasm/eyedist.h \
+		lib_stasm/faceroi.h \
+		lib_stasm/pinstart.h \
+		lib_stasm/shape17.h \
+		lib_stasm/startshape.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o startshape.o lib_stasm/startshape.cpp
+
+shapemod.o: lib_stasm/shapemod.cpp lib_stasm/stasm.h \
+		lib_stasm/misc.h \
+		lib_stasm/print.h \
+		lib_stasm/err.h \
+		lib_stasm/stasm_landmarks.h \
+		lib_stasm/stasm_lib.h \
+		lib_stasm/stasm_lib_ext.h \
+		lib_stasm/atface.h \
+		lib_stasm/landmarks.h \
+		lib_stasm/landtab_muct77.h \
+		lib_stasm/basedesc.h \
+		lib_stasm/classicdesc.h \
+		lib_stasm/hat.h \
+		lib_stasm/hatdesc.h \
+		lib_stasm/shapehacks.h \
+		lib_stasm/shapemod.h \
+		lib_stasm/asm.h \
+		lib_stasm/MOD_1/facedet.h \
+		lib_stasm/MOD_1/initasm.h \
+		lib_stasm/eyedet.h \
+		lib_stasm/convshape.h \
+		lib_stasm/eyedist.h \
+		lib_stasm/faceroi.h \
+		lib_stasm/pinstart.h \
+		lib_stasm/shape17.h \
+		lib_stasm/startshape.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o shapemod.o lib_stasm/shapemod.cpp
+
+shapehacks.o: lib_stasm/shapehacks.cpp lib_stasm/stasm.h \
+		lib_stasm/misc.h \
+		lib_stasm/print.h \
+		lib_stasm/err.h \
+		lib_stasm/stasm_landmarks.h \
+		lib_stasm/stasm_lib.h \
+		lib_stasm/stasm_lib_ext.h \
+		lib_stasm/atface.h \
+		lib_stasm/landmarks.h \
+		lib_stasm/landtab_muct77.h \
+		lib_stasm/basedesc.h \
+		lib_stasm/classicdesc.h \
+		lib_stasm/hat.h \
+		lib_stasm/hatdesc.h \
+		lib_stasm/shapehacks.h \
+		lib_stasm/shapemod.h \
+		lib_stasm/asm.h \
+		lib_stasm/MOD_1/facedet.h \
+		lib_stasm/MOD_1/initasm.h \
+		lib_stasm/eyedet.h \
+		lib_stasm/convshape.h \
+		lib_stasm/eyedist.h \
+		lib_stasm/faceroi.h \
+		lib_stasm/pinstart.h \
+		lib_stasm/shape17.h \
+		lib_stasm/startshape.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o shapehacks.o lib_stasm/shapehacks.cpp
+
+shape17.o: lib_stasm/shape17.cpp lib_stasm/stasm.h \
+		lib_stasm/misc.h \
+		lib_stasm/print.h \
+		lib_stasm/err.h \
+		lib_stasm/stasm_landmarks.h \
+		lib_stasm/stasm_lib.h \
+		lib_stasm/stasm_lib_ext.h \
+		lib_stasm/atface.h \
+		lib_stasm/landmarks.h \
+		lib_stasm/landtab_muct77.h \
+		lib_stasm/basedesc.h \
+		lib_stasm/classicdesc.h \
+		lib_stasm/hat.h \
+		lib_stasm/hatdesc.h \
+		lib_stasm/shapehacks.h \
+		lib_stasm/shapemod.h \
+		lib_stasm/asm.h \
+		lib_stasm/MOD_1/facedet.h \
+		lib_stasm/MOD_1/initasm.h \
+		lib_stasm/eyedet.h \
+		lib_stasm/convshape.h \
+		lib_stasm/eyedist.h \
+		lib_stasm/faceroi.h \
+		lib_stasm/pinstart.h \
+		lib_stasm/shape17.h \
+		lib_stasm/startshape.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o shape17.o lib_stasm/shape17.cpp
+
+print.o: lib_stasm/print.cpp lib_stasm/stasm.h \
+		lib_stasm/misc.h \
+		lib_stasm/print.h \
+		lib_stasm/err.h \
+		lib_stasm/stasm_landmarks.h \
+		lib_stasm/stasm_lib.h \
+		lib_stasm/stasm_lib_ext.h \
+		lib_stasm/atface.h \
+		lib_stasm/landmarks.h \
+		lib_stasm/landtab_muct77.h \
+		lib_stasm/basedesc.h \
+		lib_stasm/classicdesc.h \
+		lib_stasm/hat.h \
+		lib_stasm/hatdesc.h \
+		lib_stasm/shapehacks.h \
+		lib_stasm/shapemod.h \
+		lib_stasm/asm.h \
+		lib_stasm/MOD_1/facedet.h \
+		lib_stasm/MOD_1/initasm.h \
+		lib_stasm/eyedet.h \
+		lib_stasm/convshape.h \
+		lib_stasm/eyedist.h \
+		lib_stasm/faceroi.h \
+		lib_stasm/pinstart.h \
+		lib_stasm/shape17.h \
+		lib_stasm/startshape.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o print.o lib_stasm/print.cpp
+
+pinstart.o: lib_stasm/pinstart.cpp lib_stasm/stasm.h \
+		lib_stasm/misc.h \
+		lib_stasm/print.h \
+		lib_stasm/err.h \
+		lib_stasm/stasm_landmarks.h \
+		lib_stasm/stasm_lib.h \
+		lib_stasm/stasm_lib_ext.h \
+		lib_stasm/atface.h \
+		lib_stasm/landmarks.h \
+		lib_stasm/landtab_muct77.h \
+		lib_stasm/basedesc.h \
+		lib_stasm/classicdesc.h \
+		lib_stasm/hat.h \
+		lib_stasm/hatdesc.h \
+		lib_stasm/shapehacks.h \
+		lib_stasm/shapemod.h \
+		lib_stasm/asm.h \
+		lib_stasm/MOD_1/facedet.h \
+		lib_stasm/MOD_1/initasm.h \
+		lib_stasm/eyedet.h \
+		lib_stasm/convshape.h \
+		lib_stasm/eyedist.h \
+		lib_stasm/faceroi.h \
+		lib_stasm/pinstart.h \
+		lib_stasm/shape17.h \
+		lib_stasm/startshape.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pinstart.o lib_stasm/pinstart.cpp
+
+misc.o: lib_stasm/misc.cpp lib_stasm/stasm.h \
+		lib_stasm/misc.h \
+		lib_stasm/print.h \
+		lib_stasm/err.h \
+		lib_stasm/stasm_landmarks.h \
+		lib_stasm/stasm_lib.h \
+		lib_stasm/stasm_lib_ext.h \
+		lib_stasm/atface.h \
+		lib_stasm/landmarks.h \
+		lib_stasm/landtab_muct77.h \
+		lib_stasm/basedesc.h \
+		lib_stasm/classicdesc.h \
+		lib_stasm/hat.h \
+		lib_stasm/hatdesc.h \
+		lib_stasm/shapehacks.h \
+		lib_stasm/shapemod.h \
+		lib_stasm/asm.h \
+		lib_stasm/MOD_1/facedet.h \
+		lib_stasm/MOD_1/initasm.h \
+		lib_stasm/eyedet.h \
+		lib_stasm/convshape.h \
+		lib_stasm/eyedist.h \
+		lib_stasm/faceroi.h \
+		lib_stasm/pinstart.h \
+		lib_stasm/shape17.h \
+		lib_stasm/startshape.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o misc.o lib_stasm/misc.cpp
+
+landmarks.o: lib_stasm/landmarks.cpp lib_stasm/stasm.h \
+		lib_stasm/misc.h \
+		lib_stasm/print.h \
+		lib_stasm/err.h \
+		lib_stasm/stasm_landmarks.h \
+		lib_stasm/stasm_lib.h \
+		lib_stasm/stasm_lib_ext.h \
+		lib_stasm/atface.h \
+		lib_stasm/landmarks.h \
+		lib_stasm/landtab_muct77.h \
+		lib_stasm/basedesc.h \
+		lib_stasm/classicdesc.h \
+		lib_stasm/hat.h \
+		lib_stasm/hatdesc.h \
+		lib_stasm/shapehacks.h \
+		lib_stasm/shapemod.h \
+		lib_stasm/asm.h \
+		lib_stasm/MOD_1/facedet.h \
+		lib_stasm/MOD_1/initasm.h \
+		lib_stasm/eyedet.h \
+		lib_stasm/convshape.h \
+		lib_stasm/eyedist.h \
+		lib_stasm/faceroi.h \
+		lib_stasm/pinstart.h \
+		lib_stasm/shape17.h \
+		lib_stasm/startshape.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o landmarks.o lib_stasm/landmarks.cpp
+
+hatdesc.o: lib_stasm/hatdesc.cpp lib_stasm/stasm.h \
+		lib_stasm/misc.h \
+		lib_stasm/print.h \
+		lib_stasm/err.h \
+		lib_stasm/stasm_landmarks.h \
+		lib_stasm/stasm_lib.h \
+		lib_stasm/stasm_lib_ext.h \
+		lib_stasm/atface.h \
+		lib_stasm/landmarks.h \
+		lib_stasm/landtab_muct77.h \
+		lib_stasm/basedesc.h \
+		lib_stasm/classicdesc.h \
+		lib_stasm/hat.h \
+		lib_stasm/hatdesc.h \
+		lib_stasm/shapehacks.h \
+		lib_stasm/shapemod.h \
+		lib_stasm/asm.h \
+		lib_stasm/MOD_1/facedet.h \
+		lib_stasm/MOD_1/initasm.h \
+		lib_stasm/eyedet.h \
+		lib_stasm/convshape.h \
+		lib_stasm/eyedist.h \
+		lib_stasm/faceroi.h \
+		lib_stasm/pinstart.h \
+		lib_stasm/shape17.h \
+		lib_stasm/startshape.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o hatdesc.o lib_stasm/hatdesc.cpp
+
+hat.o: lib_stasm/hat.cpp lib_stasm/stasm.h \
+		lib_stasm/misc.h \
+		lib_stasm/print.h \
+		lib_stasm/err.h \
+		lib_stasm/stasm_landmarks.h \
+		lib_stasm/stasm_lib.h \
+		lib_stasm/stasm_lib_ext.h \
+		lib_stasm/atface.h \
+		lib_stasm/landmarks.h \
+		lib_stasm/landtab_muct77.h \
+		lib_stasm/basedesc.h \
+		lib_stasm/classicdesc.h \
+		lib_stasm/hat.h \
+		lib_stasm/hatdesc.h \
+		lib_stasm/shapehacks.h \
+		lib_stasm/shapemod.h \
+		lib_stasm/asm.h \
+		lib_stasm/MOD_1/facedet.h \
+		lib_stasm/MOD_1/initasm.h \
+		lib_stasm/eyedet.h \
+		lib_stasm/convshape.h \
+		lib_stasm/eyedist.h \
+		lib_stasm/faceroi.h \
+		lib_stasm/pinstart.h \
+		lib_stasm/shape17.h \
+		lib_stasm/startshape.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o hat.o lib_stasm/hat.cpp
+
+faceroi.o: lib_stasm/faceroi.cpp lib_stasm/stasm.h \
+		lib_stasm/misc.h \
+		lib_stasm/print.h \
+		lib_stasm/err.h \
+		lib_stasm/stasm_landmarks.h \
+		lib_stasm/stasm_lib.h \
+		lib_stasm/stasm_lib_ext.h \
+		lib_stasm/atface.h \
+		lib_stasm/landmarks.h \
+		lib_stasm/landtab_muct77.h \
+		lib_stasm/basedesc.h \
+		lib_stasm/classicdesc.h \
+		lib_stasm/hat.h \
+		lib_stasm/hatdesc.h \
+		lib_stasm/shapehacks.h \
+		lib_stasm/shapemod.h \
+		lib_stasm/asm.h \
+		lib_stasm/MOD_1/facedet.h \
+		lib_stasm/MOD_1/initasm.h \
+		lib_stasm/eyedet.h \
+		lib_stasm/convshape.h \
+		lib_stasm/eyedist.h \
+		lib_stasm/faceroi.h \
+		lib_stasm/pinstart.h \
+		lib_stasm/shape17.h \
+		lib_stasm/startshape.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o faceroi.o lib_stasm/faceroi.cpp
+
+eyedist.o: lib_stasm/eyedist.cpp lib_stasm/stasm.h \
+		lib_stasm/misc.h \
+		lib_stasm/print.h \
+		lib_stasm/err.h \
+		lib_stasm/stasm_landmarks.h \
+		lib_stasm/stasm_lib.h \
+		lib_stasm/stasm_lib_ext.h \
+		lib_stasm/atface.h \
+		lib_stasm/landmarks.h \
+		lib_stasm/landtab_muct77.h \
+		lib_stasm/basedesc.h \
+		lib_stasm/classicdesc.h \
+		lib_stasm/hat.h \
+		lib_stasm/hatdesc.h \
+		lib_stasm/shapehacks.h \
+		lib_stasm/shapemod.h \
+		lib_stasm/asm.h \
+		lib_stasm/MOD_1/facedet.h \
+		lib_stasm/MOD_1/initasm.h \
+		lib_stasm/eyedet.h \
+		lib_stasm/convshape.h \
+		lib_stasm/eyedist.h \
+		lib_stasm/faceroi.h \
+		lib_stasm/pinstart.h \
+		lib_stasm/shape17.h \
+		lib_stasm/startshape.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o eyedist.o lib_stasm/eyedist.cpp
+
+eyedet.o: lib_stasm/eyedet.cpp lib_stasm/stasm.h \
+		lib_stasm/misc.h \
+		lib_stasm/print.h \
+		lib_stasm/err.h \
+		lib_stasm/stasm_landmarks.h \
+		lib_stasm/stasm_lib.h \
+		lib_stasm/stasm_lib_ext.h \
+		lib_stasm/atface.h \
+		lib_stasm/landmarks.h \
+		lib_stasm/landtab_muct77.h \
+		lib_stasm/basedesc.h \
+		lib_stasm/classicdesc.h \
+		lib_stasm/hat.h \
+		lib_stasm/hatdesc.h \
+		lib_stasm/shapehacks.h \
+		lib_stasm/shapemod.h \
+		lib_stasm/asm.h \
+		lib_stasm/MOD_1/facedet.h \
+		lib_stasm/MOD_1/initasm.h \
+		lib_stasm/eyedet.h \
+		lib_stasm/convshape.h \
+		lib_stasm/eyedist.h \
+		lib_stasm/faceroi.h \
+		lib_stasm/pinstart.h \
+		lib_stasm/shape17.h \
+		lib_stasm/startshape.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o eyedet.o lib_stasm/eyedet.cpp
+
+err.o: lib_stasm/err.cpp lib_stasm/stasm.h \
+		lib_stasm/misc.h \
+		lib_stasm/print.h \
+		lib_stasm/err.h \
+		lib_stasm/stasm_landmarks.h \
+		lib_stasm/stasm_lib.h \
+		lib_stasm/stasm_lib_ext.h \
+		lib_stasm/atface.h \
+		lib_stasm/landmarks.h \
+		lib_stasm/landtab_muct77.h \
+		lib_stasm/basedesc.h \
+		lib_stasm/classicdesc.h \
+		lib_stasm/hat.h \
+		lib_stasm/hatdesc.h \
+		lib_stasm/shapehacks.h \
+		lib_stasm/shapemod.h \
+		lib_stasm/asm.h \
+		lib_stasm/MOD_1/facedet.h \
+		lib_stasm/MOD_1/initasm.h \
+		lib_stasm/eyedet.h \
+		lib_stasm/convshape.h \
+		lib_stasm/eyedist.h \
+		lib_stasm/faceroi.h \
+		lib_stasm/pinstart.h \
+		lib_stasm/shape17.h \
+		lib_stasm/startshape.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o err.o lib_stasm/err.cpp
+
+convshape.o: lib_stasm/convshape.cpp lib_stasm/stasm.h \
+		lib_stasm/misc.h \
+		lib_stasm/print.h \
+		lib_stasm/err.h \
+		lib_stasm/stasm_landmarks.h \
+		lib_stasm/stasm_lib.h \
+		lib_stasm/stasm_lib_ext.h \
+		lib_stasm/atface.h \
+		lib_stasm/landmarks.h \
+		lib_stasm/landtab_muct77.h \
+		lib_stasm/basedesc.h \
+		lib_stasm/classicdesc.h \
+		lib_stasm/hat.h \
+		lib_stasm/hatdesc.h \
+		lib_stasm/shapehacks.h \
+		lib_stasm/shapemod.h \
+		lib_stasm/asm.h \
+		lib_stasm/MOD_1/facedet.h \
+		lib_stasm/MOD_1/initasm.h \
+		lib_stasm/eyedet.h \
+		lib_stasm/convshape.h \
+		lib_stasm/eyedist.h \
+		lib_stasm/faceroi.h \
+		lib_stasm/pinstart.h \
+		lib_stasm/shape17.h \
+		lib_stasm/startshape.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o convshape.o lib_stasm/convshape.cpp
+
+classicdesc.o: lib_stasm/classicdesc.cpp lib_stasm/stasm.h \
+		lib_stasm/misc.h \
+		lib_stasm/print.h \
+		lib_stasm/err.h \
+		lib_stasm/stasm_landmarks.h \
+		lib_stasm/stasm_lib.h \
+		lib_stasm/stasm_lib_ext.h \
+		lib_stasm/atface.h \
+		lib_stasm/landmarks.h \
+		lib_stasm/landtab_muct77.h \
+		lib_stasm/basedesc.h \
+		lib_stasm/classicdesc.h \
+		lib_stasm/hat.h \
+		lib_stasm/hatdesc.h \
+		lib_stasm/shapehacks.h \
+		lib_stasm/shapemod.h \
+		lib_stasm/asm.h \
+		lib_stasm/MOD_1/facedet.h \
+		lib_stasm/MOD_1/initasm.h \
+		lib_stasm/eyedet.h \
+		lib_stasm/convshape.h \
+		lib_stasm/eyedist.h \
+		lib_stasm/faceroi.h \
+		lib_stasm/pinstart.h \
+		lib_stasm/shape17.h \
+		lib_stasm/startshape.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o classicdesc.o lib_stasm/classicdesc.cpp
+
+asm.o: lib_stasm/asm.cpp lib_stasm/stasm.h \
+		lib_stasm/misc.h \
+		lib_stasm/print.h \
+		lib_stasm/err.h \
+		lib_stasm/stasm_landmarks.h \
+		lib_stasm/stasm_lib.h \
+		lib_stasm/stasm_lib_ext.h \
+		lib_stasm/atface.h \
+		lib_stasm/landmarks.h \
+		lib_stasm/landtab_muct77.h \
+		lib_stasm/basedesc.h \
+		lib_stasm/classicdesc.h \
+		lib_stasm/hat.h \
+		lib_stasm/hatdesc.h \
+		lib_stasm/shapehacks.h \
+		lib_stasm/shapemod.h \
+		lib_stasm/asm.h \
+		lib_stasm/MOD_1/facedet.h \
+		lib_stasm/MOD_1/initasm.h \
+		lib_stasm/eyedet.h \
+		lib_stasm/convshape.h \
+		lib_stasm/eyedist.h \
+		lib_stasm/faceroi.h \
+		lib_stasm/pinstart.h \
+		lib_stasm/shape17.h \
+		lib_stasm/startshape.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o asm.o lib_stasm/asm.cpp
+
+facedet.o: lib_stasm/MOD_1/facedet.cpp lib_stasm/stasm.h \
+		lib_stasm/misc.h \
+		lib_stasm/print.h \
+		lib_stasm/err.h \
+		lib_stasm/stasm_landmarks.h \
+		lib_stasm/stasm_lib.h \
+		lib_stasm/stasm_lib_ext.h \
+		lib_stasm/atface.h \
+		lib_stasm/landmarks.h \
+		lib_stasm/landtab_muct77.h \
+		lib_stasm/basedesc.h \
+		lib_stasm/classicdesc.h \
+		lib_stasm/hat.h \
+		lib_stasm/hatdesc.h \
+		lib_stasm/shapehacks.h \
+		lib_stasm/shapemod.h \
+		lib_stasm/asm.h \
+		lib_stasm/MOD_1/facedet.h \
+		lib_stasm/MOD_1/initasm.h \
+		lib_stasm/eyedet.h \
+		lib_stasm/convshape.h \
+		lib_stasm/eyedist.h \
+		lib_stasm/faceroi.h \
+		lib_stasm/pinstart.h \
+		lib_stasm/shape17.h \
+		lib_stasm/startshape.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o facedet.o lib_stasm/MOD_1/facedet.cpp
+
+initasm.o: lib_stasm/MOD_1/initasm.cpp lib_stasm/stasm.h \
+		lib_stasm/misc.h \
+		lib_stasm/print.h \
+		lib_stasm/err.h \
+		lib_stasm/stasm_landmarks.h \
+		lib_stasm/stasm_lib.h \
+		lib_stasm/stasm_lib_ext.h \
+		lib_stasm/atface.h \
+		lib_stasm/landmarks.h \
+		lib_stasm/landtab_muct77.h \
+		lib_stasm/basedesc.h \
+		lib_stasm/classicdesc.h \
+		lib_stasm/hat.h \
+		lib_stasm/hatdesc.h \
+		lib_stasm/shapehacks.h \
+		lib_stasm/shapemod.h \
+		lib_stasm/asm.h \
+		lib_stasm/MOD_1/facedet.h \
+		lib_stasm/MOD_1/initasm.h \
+		lib_stasm/eyedet.h \
+		lib_stasm/convshape.h \
+		lib_stasm/eyedist.h \
+		lib_stasm/faceroi.h \
+		lib_stasm/pinstart.h \
+		lib_stasm/shape17.h \
+		lib_stasm/startshape.h \
+		lib_stasm/MOD_1/mh/yaw00.mh \
+		lib_stasm/MOD_1/mh/yaw00_shapemodel.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p00_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p01_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p02_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p03_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p04_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p05_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p06_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p07_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p08_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p09_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p10_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p11_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p12_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p13_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p14_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p15_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p16_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p17_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p18_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p19_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p20_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p21_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p22_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p23_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p24_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p25_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p26_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p27_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p28_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p29_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p30_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p31_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p32_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p33_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p34_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p35_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p36_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p37_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p38_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p39_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p40_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p41_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p42_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p43_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p44_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p45_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p46_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p47_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p48_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p49_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p50_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p51_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p52_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p53_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p54_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p55_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p56_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p57_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p58_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p59_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p60_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p61_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p62_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p63_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p64_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p65_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p66_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p67_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p68_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p69_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p70_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p71_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p72_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p73_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p74_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p75_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev0_p76_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p00_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p01_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p02_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p03_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p04_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p05_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p06_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p07_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p08_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p09_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p10_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p11_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p12_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p13_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p14_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p15_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p16_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p17_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p18_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p19_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p20_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p21_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p22_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p23_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p24_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p25_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p26_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p27_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p28_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p29_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p30_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p31_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p32_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p33_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p34_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p35_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p36_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p37_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p38_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p39_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p40_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p41_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p42_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p43_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p44_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p45_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p46_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p47_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p48_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p49_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p50_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p51_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p52_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p53_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p54_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p55_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p56_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p57_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p58_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p59_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p60_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p61_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p62_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p63_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p64_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p65_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p66_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p67_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p68_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p69_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p70_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p71_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p72_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p73_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p74_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p75_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev1_p76_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p00_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p01_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p02_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p03_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p04_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p05_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p06_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p07_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p08_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p09_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p10_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p11_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p12_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p13_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p14_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p15_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p16_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p17_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p18_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p19_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p20_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p21_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p22_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p23_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p24_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p25_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p26_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p27_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p28_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p29_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p30_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p31_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p32_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p33_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p34_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p35_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p36_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p37_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p38_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p39_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p40_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p41_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p42_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p43_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p44_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p45_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p46_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p47_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p48_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p49_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p50_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p51_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p52_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p53_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p54_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p55_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p56_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p57_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p58_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p59_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p60_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p61_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p62_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p63_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p64_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p65_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p66_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p67_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p68_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p69_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p70_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p71_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p72_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p73_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p74_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p75_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev2_p76_hat.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p00_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p01_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p02_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p03_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p04_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p05_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p06_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p07_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p08_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p09_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p10_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p11_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p12_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p13_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p14_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p15_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p16_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p17_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p18_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p19_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p20_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p21_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p22_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p23_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p24_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p25_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p26_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p27_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p28_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p29_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p30_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p31_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p32_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p33_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p34_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p35_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p36_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p37_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p38_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p39_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p40_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p41_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p42_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p43_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p44_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p45_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p46_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p47_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p48_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p49_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p50_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p51_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p52_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p53_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p54_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p55_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p56_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p57_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p58_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p59_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p60_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p61_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p62_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p63_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p64_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p65_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p66_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p67_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p68_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p69_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p70_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p71_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p72_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p73_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p74_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p75_classic.mh \
+		lib_stasm/MOD_1/mh/yaw00_lev3_p76_classic.mh
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o initasm.o lib_stasm/MOD_1/initasm.cpp
 
 ####### Install
 

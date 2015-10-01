@@ -29,6 +29,8 @@ static const string MOUTH_STATE_STR[] = {"DEFAULT", "SMILE", "TONGUE", "TEETH", 
 class DoublePoint{
 public:
     DoublePoint();
+    DoublePoint(cv::Point left, cv::Point right);
+
     void setL_XY(int x, int y);
     void setR_XY(int x, int y);
     void setPointL_XY(Point left);
@@ -128,7 +130,7 @@ private:
 class FaceState{
 public:
     FaceState();
-
+    FaceState(Eye leye, Eye reye, MouthSimple mouth);
     void openFromFile(string filepath);
     void openFromFileRaw(string filepath, string imgPath);
     void setDefault();
