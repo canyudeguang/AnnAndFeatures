@@ -19,6 +19,7 @@ using namespace std;
 #include "lib_features/maskfeatures.h"
 #include "lib_features/brightfeature.h"
 #include "lib_features/pointyfeature.h"
+#include "lib_features/siftfeatures.h"
 
 #include "lib_features/lbpfeatures.h"
 
@@ -99,6 +100,7 @@ vector<cv::Point> performStasm(cv::Mat & image){
     }
     else{
         cerr << "No faces found" << endl;
+        cout << "Face NOT found: ";
     }
     return vecLandmarks;
 }
@@ -139,19 +141,21 @@ int main(int argc, char ** argv)
         BrightFeature fBright;
         maskfeatures fMask;
 
+
         PointyFeature fPoint;
 
         fLbp.setSize(512,256);
 
+        SiftFeatures fSift;
         // put all pointers tp FeatureExtractors objecst into vector
         vector<FeatureExtractor *> vec_extractors;
        // vec_extractors.push_back(&fEdge);
-        vec_extractors.push_back(&fExper);
+       // vec_extractors.push_back(&fExper);
        // vec_extractors.push_back(&fHisto);
         //vec_extractors.push_back(&fRaw);
       // vec_extractors.push_back(&fHog);
         //vec_extractors.push_back(&fBright);
-        vec_extractors.push_back(&fPoint);
+        vec_extractors.push_back(&fSift);
 
         /** Feature Extraction */
         /*
@@ -162,12 +166,11 @@ int main(int argc, char ** argv)
          */
 
 
+         FaceDetector * fd = new FaceDetector();
         cv::Mat_<float> Features; // Mat of feature vectors, each row is featureVec from one image
 
         for(uint i = 0; i < train_images.size(); ++i){
             cv::Mat img = imread(train_images[i],CV_LOAD_IMAGE_ANYCOLOR);
-
-            vector<cv::Point> vec_landmarks = performStasm(img);
 
             // joined features from all extractors
             Mat_<float> fjoined;
@@ -177,7 +180,8 @@ int main(int argc, char ** argv)
                 Mat_<float> f;
                 // is instance of? PointyFeature
                 if( PointyFeature * p = dynamic_cast<PointyFeature *>(vec_extractors[j])){
-                    cout  << "Pointy" << endl;
+                    //Detect face;
+                    vector<cv::Point> vec_landmarks = performStasm(img);
                     PointyFeature * pf = (PointyFeature *) vec_extractors[j];
                     pf->setPoints(vec_landmarks);
                     f = pf->getFeature(img);
@@ -190,16 +194,18 @@ int main(int argc, char ** argv)
             }
             Features.push_back(fjoined); // add feature_vector to mat of all features
 
+           // FaceState fs;
+            //fs.openFromFile(train_labels[i]);
 
-            imshow("Image",img);
+            cout << Features.row(i) <<  " " << train_images[i] << endl;
+
+
+           // imshow("Image",img);
            // moveWindow("Image",0,0);
-           cvSupport::indexBrowser(i,train_images.size());
+           // cvSupport::indexBrowser(i,train_images.size());
 
         }
 
-        for(int i = 0; i <  Features.rows;++i){
-            cout << Features.row(i) << ";" <<train_images[i] << endl;
-        }
 
     }
     return 0;

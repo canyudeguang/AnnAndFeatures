@@ -36,7 +36,7 @@ DISTNAME      = AnnFeatures1.0.0
 DISTDIR = /home/pajus/Development/AnnFeatures/.tmp/AnnFeatures1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-rpath,/home/pajus/dev/Qt/5.4/gcc_64
-LIBS          = $(SUBLIBS) -L/usr/local/lib -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_ml -lopencv_video -lopencv_features2d -lopencv_calib3d -lopencv_objdetect -lopencv_contrib -lopencv_legacy 
+LIBS          = $(SUBLIBS) -L/usr/local/lib -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_ml -lopencv_video -lopencv_features2d -lopencv_calib3d -lopencv_objdetect -lopencv_contrib -lopencv_nonfree -lopencv_legacy 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -91,7 +91,8 @@ SOURCES       = main.cpp \
 		lib_stasm/classicdesc.cpp \
 		lib_stasm/asm.cpp \
 		lib_stasm/MOD_1/facedet.cpp \
-		lib_stasm/MOD_1/initasm.cpp 
+		lib_stasm/MOD_1/initasm.cpp \
+		lib_features/siftfeatures.cpp 
 OBJECTS       = main.o \
 		ann.o \
 		classifier.o \
@@ -135,7 +136,8 @@ OBJECTS       = main.o \
 		classicdesc.o \
 		asm.o \
 		facedet.o \
-		initasm.o
+		initasm.o \
+		siftfeatures.o
 DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/common/shell-unix.conf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/common/unix.conf \
@@ -299,7 +301,8 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		lib_stasm/atface.h \
 		lib_stasm/asm.h \
 		lib_stasm/MOD_1/initasm.h \
-		lib_stasm/MOD_1/facedet.h main.cpp \
+		lib_stasm/MOD_1/facedet.h \
+		lib_features/siftfeatures.h main.cpp \
 		lib_ann/ann.cpp \
 		lib_ann/classifier.cpp \
 		lib_features/cornerfeatures.cpp \
@@ -342,7 +345,8 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		lib_stasm/classicdesc.cpp \
 		lib_stasm/asm.cpp \
 		lib_stasm/MOD_1/facedet.cpp \
-		lib_stasm/MOD_1/initasm.cpp
+		lib_stasm/MOD_1/initasm.cpp \
+		lib_features/siftfeatures.cpp
 QMAKE_TARGET  = AnnFeatures
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = AnnFeatures
@@ -661,11 +665,6 @@ main.o: main.cpp lib_support/support.h \
 		lib_features/maskfeatures.h \
 		lib_features/brightfeature.h \
 		lib_features/pointyfeature.h \
-		lib_features/lbpfeatures.h \
-		lib_detector/detector.h \
-		lib_detector/facedescription.h \
-		lib_ann/ann.h \
-		lib_ann/classifier.h \
 		lib_stasm/stasm.h \
 		lib_stasm/misc.h \
 		lib_stasm/print.h \
@@ -691,7 +690,13 @@ main.o: main.cpp lib_support/support.h \
 		lib_stasm/faceroi.h \
 		lib_stasm/pinstart.h \
 		lib_stasm/shape17.h \
-		lib_stasm/startshape.h
+		lib_stasm/startshape.h \
+		lib_features/siftfeatures.h \
+		lib_features/lbpfeatures.h \
+		lib_detector/detector.h \
+		lib_features/facedescription.h \
+		lib_ann/ann.h \
+		lib_ann/classifier.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 ann.o: lib_ann/ann.cpp lib_ann/ann.h \
@@ -787,7 +792,33 @@ brightfeature.o: lib_features/brightfeature.cpp lib_features/brightfeature.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o brightfeature.o lib_features/brightfeature.cpp
 
 pointyfeature.o: lib_features/pointyfeature.cpp lib_features/pointyfeature.h \
-		lib_features/featureextractor.h
+		lib_features/featureextractor.h \
+		lib_stasm/stasm.h \
+		lib_stasm/misc.h \
+		lib_stasm/print.h \
+		lib_stasm/err.h \
+		lib_stasm/stasm_landmarks.h \
+		lib_stasm/stasm_lib.h \
+		lib_stasm/stasm_lib_ext.h \
+		lib_stasm/atface.h \
+		lib_stasm/landmarks.h \
+		lib_stasm/landtab_muct77.h \
+		lib_stasm/basedesc.h \
+		lib_stasm/classicdesc.h \
+		lib_stasm/hat.h \
+		lib_stasm/hatdesc.h \
+		lib_stasm/shapehacks.h \
+		lib_stasm/shapemod.h \
+		lib_stasm/asm.h \
+		lib_stasm/MOD_1/facedet.h \
+		lib_stasm/MOD_1/initasm.h \
+		lib_stasm/eyedet.h \
+		lib_stasm/convshape.h \
+		lib_stasm/eyedist.h \
+		lib_stasm/faceroi.h \
+		lib_stasm/pinstart.h \
+		lib_stasm/shape17.h \
+		lib_stasm/startshape.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pointyfeature.o lib_features/pointyfeature.cpp
 
 detector.o: lib_detector/detector.cpp lib_detector/detector.h \
@@ -1692,6 +1723,12 @@ initasm.o: lib_stasm/MOD_1/initasm.cpp lib_stasm/stasm.h \
 		lib_stasm/MOD_1/mh/yaw00_lev3_p75_classic.mh \
 		lib_stasm/MOD_1/mh/yaw00_lev3_p76_classic.mh
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o initasm.o lib_stasm/MOD_1/initasm.cpp
+
+siftfeatures.o: lib_features/siftfeatures.cpp lib_features/siftfeatures.h \
+		lib_features/featureextractor.h \
+		lib_support/cvSupport.h \
+		lib_support/support.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o siftfeatures.o lib_features/siftfeatures.cpp
 
 ####### Install
 

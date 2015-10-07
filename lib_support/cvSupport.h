@@ -71,6 +71,20 @@ public:
     int x,y;
 };
 
+
+class LineParametric{
+public:
+    cv::Point a,b;
+    cv::Vec2b slope, normal;
+    LineParametric(cv::Point a, cv::Point b);
+    LineParametric(cv::Point a, cv::Vec2b slope, int lenght = 1);
+
+    cv::Vec2b SlopeVector();
+    cv::Vec2b NormalVector();
+
+    void draw(cv::Mat &img, cv::Scalar color = cv::Scalar(0,0,255), int thick = 1 );
+};
+
 const int N_COLORS = 8;
 const cv::Scalar COLORS[N_COLORS] = { cv::Scalar(0,0,255),
                                 cv::Scalar(0,255,0),

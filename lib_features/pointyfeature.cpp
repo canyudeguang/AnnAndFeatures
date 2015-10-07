@@ -67,19 +67,19 @@ double PointyFeature::avgEyeDist(){
     return double(dLeft + dRight)/2;
 }
 
-cv::Mat_<float> PointyFeature::getFeature(Mat &image){
+cv::Mat_<float> PointyFeature::mouthFeature(Mat &image){
     image.copyTo(this->_img);
     this->showStasm("stasm");
 
     // mouth Inner from left to right upper 68,67,66
 
-    circle(image,_vecStasmLandmarks[68],2,Scalar(0,0,255));
-    circle(image,_vecStasmLandmarks[67],2,Scalar(0,255,0));
-    circle(image,_vecStasmLandmarks[66],2,Scalar(255,0,0));
-    // bottum 69,70,71 from left to right
-    circle(image,_vecStasmLandmarks[69],2,Scalar(255,0,0));
-    circle(image,_vecStasmLandmarks[70],2,Scalar(0,255,0));
-    circle(image,_vecStasmLandmarks[71],2,Scalar(0,0,255));
+//    circle(image,_vecStasmLandmarks[68],2,Scalar(0,0,255));
+//    circle(image,_vecStasmLandmarks[67],2,Scalar(0,255,0));
+//    circle(image,_vecStasmLandmarks[66],2,Scalar(255,0,0));
+//    // bottum 69,70,71 from left to right
+//    circle(image,_vecStasmLandmarks[69],2,Scalar(255,0,0));
+//    circle(image,_vecStasmLandmarks[70],2,Scalar(0,255,0));
+//    circle(image,_vecStasmLandmarks[71],2,Scalar(0,0,255));
 
     double avgEyeDist = this->avgEyeDist();
     double o1,o2,o3;
@@ -87,11 +87,107 @@ cv::Mat_<float> PointyFeature::getFeature(Mat &image){
     o2 = cv::norm(this->_vecStasmLandmarks[67] - this->_vecStasmLandmarks[70]);
     o3 = cv::norm(this->_vecStasmLandmarks[66] - this->_vecStasmLandmarks[71]);
 
-    cout <<  o1 << " " << o2 << " " << o3 << endl;
+    //cout <<  o1 << " " << o2 << " " << o3 << endl;
 
     Mat_<float> Features(1,3);
-    Features(0,0) = o1/avgEyeDist;
-    Features(0,1) = o2/avgEyeDist;
-    Features(0,2) = o3/avgEyeDist;
+    Features(0,0) = o1/avgEyeDist*100;
+    Features(0,1) = o2/avgEyeDist*100;
+    Features(0,2) = o3/avgEyeDist*100;
+    return Features;
+}
+
+cv::Mat_<float> PointyFeature::LeyeFeature(Mat &image){
+    image.copyTo(this->_img);
+    this->showStasm("stasm");
+
+    // mouth Inner from left to right upper 68,67,66
+
+//    circle(image,_vecStasmLandmarks[31],2,Scalar(0,0,255));
+//    circle(image,_vecStasmLandmarks[32],2,Scalar(0,255,0));
+//    circle(image,_vecStasmLandmarks[33],2,Scalar(255,0,0));
+//    // bottum 69,70,71 from left to right
+//    circle(image,_vecStasmLandmarks[35],2,Scalar(255,0,0));
+//    circle(image,_vecStasmLandmarks[36],2,Scalar(0,255,0));
+//    circle(image,_vecStasmLandmarks[37],2,Scalar(0,0,255));
+
+
+    double avgEyeDist = this->avgEyeDist();
+    double o1,o2,o3;
+    o1 = cv::norm(this->_vecStasmLandmarks[31] - this->_vecStasmLandmarks[35]);
+    o2 = cv::norm(this->_vecStasmLandmarks[32] - this->_vecStasmLandmarks[36]);
+    o3 = cv::norm(this->_vecStasmLandmarks[33] - this->_vecStasmLandmarks[37]);
+
+    //cout <<  o1 << " " << o2 << " " << o3 << endl;
+
+    Mat_<float> Features(1,3);
+    Features(0,0) = o1/avgEyeDist*100;
+    Features(0,1) = o2/avgEyeDist*100;
+    Features(0,2) = o3/avgEyeDist*100;
+    return Features;
+}
+
+cv::Mat_<float> PointyFeature::ReyeFeature(Mat &image){
+    image.copyTo(this->_img);
+    this->showStasm("stasm");
+
+    // mouth Inner from left to right upper 68,67,66
+
+//    circle(image,_vecStasmLandmarks[41],2,Scalar(0,0,255));
+//    circle(image,_vecStasmLandmarks[42],2,Scalar(0,255,0));
+//    circle(image,_vecStasmLandmarks[43],2,Scalar(255,0,0));
+//    // bottum 69,70,71 from left to right
+//    circle(image,_vecStasmLandmarks[45],2,Scalar(255,0,0));
+//    circle(image,_vecStasmLandmarks[46],2,Scalar(0,255,0));
+//    circle(image,_vecStasmLandmarks[47],2,Scalar(0,0,255));
+
+
+    double avgEyeDist = this->avgEyeDist();
+    double o1,o2,o3;
+    o1 = cv::norm(this->_vecStasmLandmarks[41] - this->_vecStasmLandmarks[45]);
+    o2 = cv::norm(this->_vecStasmLandmarks[42] - this->_vecStasmLandmarks[46]);
+    o3 = cv::norm(this->_vecStasmLandmarks[43] - this->_vecStasmLandmarks[47]);
+
+    //cout <<  o1 << " " << o2 << " " << o3 << endl;
+
+    Mat_<float> Features(1,3);
+    Features(0,0) = o1/avgEyeDist*100;
+    Features(0,1) = o2/avgEyeDist*100;
+    Features(0,2) = o3/avgEyeDist*100;
+    return Features;
+}
+
+cv::Mat_<float> PointyFeature::smileFeature(Mat &image){
+    image.copyTo(this->_img);
+    this->showStasm("stasm");
+
+    // mouth Inner from left to right upper 68,67,66
+
+    circle(image,_vecStasmLandmarks[59],2,Scalar(0,0,255));
+    circle(image,_vecStasmLandmarks[65],2,Scalar(0,255,0));
+    circle(image,_vecStasmLandmarks[74],2,Scalar(255,0,0));
+    // bottum 69,70,71 from left to right
+    circle(image,_vecStasmLandmarks[56],2,Scalar(255,0,0));
+   // circle(image,_vecStasmLandmarks[46],2,Scalar(0,255,0));
+   // circle(image,_vecStasmLandmarks[47],2,Scalar(0,0,255));
+
+
+    double avgEyeDist = this->avgEyeDist();
+    double o1,o2,o3;
+    o1 = cv::norm(this->_vecStasmLandmarks[56] - this->_vecStasmLandmarks[59]);
+    o2 = cv::norm(this->_vecStasmLandmarks[56] - this->_vecStasmLandmarks[65]);
+    o3 = cv::norm(this->_vecStasmLandmarks[56] - this->_vecStasmLandmarks[74]);
+
+    //cout <<  o1 << " " << o2 << " " << o3 << endl;
+
+    Mat_<float> Features(1,3);
+    Features(0,0) = o1/avgEyeDist*100;
+    Features(0,1) = o2/avgEyeDist*100;
+    Features(0,2) = o3/avgEyeDist*100;
+    return Features;
+}
+
+
+cv::Mat_<float> PointyFeature::getFeature(Mat &image){
+    Mat_<float> Features = this->smileFeature(image);
     return Features;
 }

@@ -409,3 +409,42 @@ void cvSupport::colorReduce(Mat &img, int divisor){
 //        }
 //    }
 }
+
+
+cvSupport::LineParametric::LineParametric(Point a, Point b){
+    this->a = a;
+    this->b = b;
+    cout << a << b << endl;
+    this->SlopeVector();
+    this->NormalVector();
+    cout << this->slope << this->normal << endl;
+}
+
+cvSupport::LineParametric::LineParametric(Point a, Vec2b slope, int lenght){
+    this->a = a;
+    this->slope = slope;
+
+    this->b.x = this->a.x + lenght * this->slope[0];
+    this->b.y = this->a.y + lenght * this->slope[1];
+
+    this->NormalVector();
+
+}
+
+cv::Vec2b cvSupport::LineParametric::SlopeVector(){
+
+    this->slope[0] = this->b.x - this->a.x;
+    this->slope[1] = this->b.y - this->a.y;
+
+    return this->slope;
+}
+
+cv::Vec2b cvSupport::LineParametric::NormalVector(){
+    this->normal[0] = - this->slope[1];
+    this->normal[1] = this->slope[0];
+    return this->normal;
+}
+
+void cvSupport::LineParametric::draw(Mat &img, Scalar color, int thick){
+    line(img,this->a, this->b, color, thick);
+}

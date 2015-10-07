@@ -47,7 +47,8 @@ SOURCES += main.cpp \
     lib_stasm/classicdesc.cpp \
     lib_stasm/asm.cpp \
     lib_stasm/MOD_1/facedet.cpp \
-    lib_stasm/MOD_1/initasm.cpp
+    lib_stasm/MOD_1/initasm.cpp \
+    lib_features/siftfeatures.cpp
 
 INCLUDE += /usr/local/include/opencv /usr/local/include/opencv2
 LIBS += -L/usr/local/lib \
@@ -60,6 +61,7 @@ LIBS += -L/usr/local/lib \
 -lopencv_calib3d \
 -lopencv_objdetect \
 -lopencv_contrib \
+-lopencv_nonfree \
 -lopencv_legacy
 
 include(deployment.pri)
@@ -114,5 +116,6 @@ HEADERS += \
     lib_stasm/atface.h \
     lib_stasm/asm.h \
     lib_stasm/MOD_1/initasm.h \
-    lib_stasm/MOD_1/facedet.h
+    lib_stasm/MOD_1/facedet.h \
+    lib_features/siftfeatures.h
 

@@ -10,6 +10,11 @@ public:
     string name();
     cv::Mat_<float> getFeature(cv::Mat &image);
 
+    cv::Mat_<float> mouthFeature(cv::Mat &image);
+    cv::Mat_<float> LeyeFeature(cv::Mat &image);
+    cv::Mat_<float> ReyeFeature(cv::Mat &image);
+    cv::Mat_<float> smileFeature(cv::Mat &image);
+
     void setPoints(vector<cv::Point> vec_landmarks);
     PointyFeature();
     ~PointyFeature();
