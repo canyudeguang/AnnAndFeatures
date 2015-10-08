@@ -20,6 +20,9 @@ using namespace std;
 #include "lib_features/brightfeature.h"
 #include "lib_features/pointyfeature.h"
 #include "lib_features/siftfeatures.h"
+#include "lib_features/surffeatures.h"
+#include "lib_features/fastfeatures.h"
+#include "lib_features/geffeatures.h"
 
 #include "lib_features/lbpfeatures.h"
 
@@ -140,6 +143,7 @@ int main(int argc, char ** argv)
         HistogramFeatures fhist;
         BrightFeature fBright;
         maskfeatures fMask;
+        IntegralFeature fInte;
 
 
         PointyFeature fPoint;
@@ -147,6 +151,9 @@ int main(int argc, char ** argv)
         fLbp.setSize(512,256);
 
         SiftFeatures fSift;
+        SurfFeatures fSurf;
+        FastFeatures fFast;
+        GEFfeatures fGef;
         // put all pointers tp FeatureExtractors objecst into vector
         vector<FeatureExtractor *> vec_extractors;
        // vec_extractors.push_back(&fEdge);
@@ -155,8 +162,7 @@ int main(int argc, char ** argv)
         //vec_extractors.push_back(&fRaw);
       // vec_extractors.push_back(&fHog);
         //vec_extractors.push_back(&fBright);
-        vec_extractors.push_back(&fSift);
-
+        vec_extractors.push_back(&fInte);
         /** Feature Extraction */
         /*
          * Open each image from training set
@@ -195,14 +201,14 @@ int main(int argc, char ** argv)
             Features.push_back(fjoined); // add feature_vector to mat of all features
 
            // FaceState fs;
-            //fs.openFromFile(train_labels[i]);
+            //fs.openFromFile(train_labels[i]);q
 
             cout << Features.row(i) <<  " " << train_images[i] << endl;
 
 
-           // imshow("Image",img);
-           // moveWindow("Image",0,0);
-           // cvSupport::indexBrowser(i,train_images.size());
+//            imshow("Image",img);
+  //          moveWindow("Image",0,0);
+    //        cvSupport::indexBrowser(i,train_images.size());
 
         }
 

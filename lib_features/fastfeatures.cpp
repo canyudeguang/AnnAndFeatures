@@ -1,25 +1,25 @@
-#include "siftfeatures.h"
+#include "fastfeatures.h"
 
-SiftFeatures::SiftFeatures()
+FastFeatures::FastFeatures()
 {
 
 }
 
-SiftFeatures::~SiftFeatures()
+FastFeatures::~FastFeatures()
 {
 
 }
 
-string SiftFeatures::name(){
+string FastFeatures::name(){
     return "fSift";
 }
 
 
-cv::Mat_<float> SiftFeatures::getFeature(Mat &image){
+cv::Mat_<float> FastFeatures::getFeature(Mat &image){
 
 
     vector<KeyPoint> kp;
-    SiftFeatureDetector detector;
+    FastFeatureDetector detector;
     detector.detect(image,kp);
 
     Mat drawing;
@@ -27,7 +27,7 @@ cv::Mat_<float> SiftFeatures::getFeature(Mat &image){
 
     drawKeypoints(drawing,kp,drawing);
 
-    imshow("SIFT",drawing);
+    imshow("FAST",drawing);
 
     cv::Mat_<float> Features(1,3);
 

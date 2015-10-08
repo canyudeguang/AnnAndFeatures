@@ -24,24 +24,29 @@ private:
     cv::Point _tlW, _brW, _tlB, _brB;
     std::vector<IntegralRect> Whites, Blacks;
 
+    int sumWhites(cv::Mat &integralImage);
+    int sumBlacks(cv::Mat &integralImage);
+
 
 public:
     int sumWhite;
     int sumBlack;
 
-    IntegralF(cv::Point tlW, cv::Point brW, cv::Point tlB, cv::Point brB);
+    IntegralF(cv::Mat & img, cv::Point tlW, cv::Point brW, cv::Point tlB, cv::Point brB);
     IntegralF(cv::Mat & img, int type);
 
     static void showFeature(cv::Mat &image, IntegralF & feature);
     void showFeature(Mat &image);
 
     int calcFromIntegralImage(cv::Mat &integralImage);
+    float getBlackWhiteRatio();
 
     static enum TYPE {
         Edge = 0,
         Edges,
         Cross,
-        Centroid
+        Centroid,
+        CenterMouth
     } types;
 
 

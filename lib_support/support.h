@@ -70,6 +70,7 @@ bool ofSameName(string name1, string name2);
 string binaryPrint(unsigned long number, bool print = 0);
 
 
+
 class myString{
 public:
     //ctor

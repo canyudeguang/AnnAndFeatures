@@ -48,7 +48,10 @@ SOURCES += main.cpp \
     lib_stasm/asm.cpp \
     lib_stasm/MOD_1/facedet.cpp \
     lib_stasm/MOD_1/initasm.cpp \
-    lib_features/siftfeatures.cpp
+    lib_features/siftfeatures.cpp \
+    lib_features/surffeatures.cpp \
+    lib_features/fastfeatures.cpp \
+    lib_features/geffeatures.cpp
 
 INCLUDE += /usr/local/include/opencv /usr/local/include/opencv2
 LIBS += -L/usr/local/lib \
@@ -117,5 +120,8 @@ HEADERS += \
     lib_stasm/asm.h \
     lib_stasm/MOD_1/initasm.h \
     lib_stasm/MOD_1/facedet.h \
-    lib_features/siftfeatures.h
+    lib_features/siftfeatures.h \
+    lib_features/surffeatures.h \
+    lib_features/fastfeatures.h \
+    lib_features/geffeatures.h
 

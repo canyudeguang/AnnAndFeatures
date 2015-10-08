@@ -1,5 +1,5 @@
-#ifndef SIFTFEATURES_H
-#define SIFTFEATURES_H
+#ifndef FASTFEATURES_H
+#define FASTFEATURES_H
 
 #include "featureextractor.h"
 #include "lib_support/cvSupport.h"
@@ -9,17 +9,15 @@
 #include <opencv2/nonfree/nonfree.hpp>
 #include <opencv2/legacy/legacy.hpp>
 
-class SiftFeatures : public FeatureExtractor
+
+class FastFeatures :  public FeatureExtractor
 {
 public:
-
     string name();
     cv::Mat_<float> getFeature(Mat &image);
 
-
-
-    SiftFeatures();
-    ~SiftFeatures();
+    FastFeatures();
+    ~FastFeatures();
 };
 
-#endif // SIFTFEATURES_H
+#endif // FASTFEATURES_H

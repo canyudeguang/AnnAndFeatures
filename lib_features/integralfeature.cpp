@@ -18,7 +18,8 @@ int IntegralRect::calcIntegral(Mat &integralImage){
     int b = integralImage.at<int>(B.y, B.x);
     int c = integralImage.at<int>(C.y, C.x);
     int d = integralImage.at<int>(D.y, D.x);
-
+\
+   // cout << a << " " << b << " " << c << " " << d << endl;
     int Isum = a-b-c+d;
     return Isum;
 }
@@ -50,46 +51,67 @@ void IntegralRect::imprint(Mat &img){
 ** Integral Feature - packed rectangles
 ** *************************************************************************************
 */
-IntegralF::IntegralF(cv::Point tlW, cv::Point brW, cv::Point tlB, cv::Point brB){
+IntegralF::IntegralF(cv::Mat & img, cv::Point tlW, cv::Point brW, cv::Point tlB, cv::Point brB){
     this->_tlW = tlW;
     this->_brW = brW;
     this->_tlB = tlB;
     this->_brB = brB;
+
+    this->Whites.push_back(IntegralRect(tlW,brW,true));
+    this->Blacks.push_back(IntegralRect(tlB,brB,false));
+
+    this->sumBlack = 0;
+    this->sumWhite = 0;
+    this->sumBlacks(img);
+    this->sumWhites(img);
+
 }
 
 // Based on the image and type
 //
 IntegralF::IntegralF(Mat &img, int type){
+
+    this->sumBlack = 0;
+    this->sumWhite = 0;
     switch(type){
     case IntegralF::Edge:{
-        this->Whites.push_back(IntegralRect(Point(0,0),Point(img.cols,img.rows/2),true));
-        this->Blacks.push_back(IntegralRect(Point(0,img.rows/2),Point(img.cols,img.rows),false));
+        this->Whites.push_back(IntegralRect(Point(0,0),Point(img.cols-1,img.rows/2),true));
+        this->Blacks.push_back(IntegralRect(Point(0,img.rows/2),Point(img.cols-1,img.rows-1),false));
         break;
     }
     case IntegralF::Edges:{
-        this->Whites.push_back(IntegralRect(Point(0,0),Point(img.cols,img.rows/3),true));
+        this->Whites.push_back(IntegralRect(Point(0,0),Point(img.cols-1,img.rows/3),true));
         this->Blacks.push_back(IntegralRect(Point(0,img.rows/3),Point(img.cols*2.3,img.rows*2/3),false));
-        this->Whites.push_back(IntegralRect(Point(0,img.rows*2/3),Point(img.cols,img.rows),true));
+        this->Whites.push_back(IntegralRect(Point(0,img.rows*2/3),Point(img.cols-1,img.rows-1),true));
         break;
     }
     case IntegralF::Cross:{
         this->Whites.push_back(IntegralRect(Point(0,0),Point(img.cols/3,img.rows/3),true));
-        this->Whites.push_back(IntegralRect(Point(img.cols*2/3,img.rows*2/3),Point(img.cols,img.rows),true));
-        this->Whites.push_back(IntegralRect(Point(0,img.rows*2/3),Point(img.cols/3,img.rows),true));
-        this->Whites.push_back(IntegralRect(Point(img.cols*2/3,0),Point(img.cols,img.rows/3),true));
+        this->Whites.push_back(IntegralRect(Point(img.cols*2/3,img.rows*2/3),Point(img.cols-1,img.rows-1),true));
+        this->Whites.push_back(IntegralRect(Point(0,img.rows*2/3),Point(img.cols/3,img.rows-1),true));
+        this->Whites.push_back(IntegralRect(Point(img.cols*2/3,0),Point(img.cols-1,img.rows/3),true));
 
-        this->Blacks.push_back(IntegralRect(Point(0,img.rows/3),Point(img.cols,img.rows*2/3),false));
+        this->Blacks.push_back(IntegralRect(Point(0,img.rows/3),Point(img.cols-1,img.rows*2/3),false));
         this->Blacks.push_back(IntegralRect(Point(img.cols/3,0),Point(img.cols*2/3,img.rows/3),false));
-        this->Blacks.push_back(IntegralRect(Point(img.cols/3,img.rows*2/3),Point(img.cols*2/3,img.rows),false));
+        this->Blacks.push_back(IntegralRect(Point(img.cols/3,img.rows*2/3),Point(img.cols*2/3,img.rows-1),false));
         break;
     }
     case IntegralF::Centroid:{
-        this->Whites.push_back(IntegralRect(Point(0,0),Point(img.cols,img.rows/3),true));
-        this->Whites.push_back(IntegralRect(Point(0,img.rows*2/3),Point(img.cols,img.rows),true));
+        this->Whites.push_back(IntegralRect(Point(0,0),Point(img.cols-1,img.rows/3),true));
+        this->Whites.push_back(IntegralRect(Point(0,img.rows*2/3),Point(img.cols-1,img.rows-1),true));
         this->Whites.push_back(IntegralRect(Point(0,img.rows/3),Point(img.cols/3,img.rows*2/3),true));
         this->Whites.push_back(IntegralRect(Point(img.cols*2/3,img.rows/3),Point(img.cols,img.rows*2/3),true));
 
         this->Blacks.push_back(IntegralRect(Point(img.cols/3,img.rows/3),Point(img.cols*2/3,img.rows*2/3),false));
+        break;
+    }
+    case IntegralF::CenterMouth:{
+        this->Whites.push_back(IntegralRect(Point(0,0),Point(img.cols-1,img.rows*0.2),true));
+        this->Whites.push_back(IntegralRect(Point(0,img.rows*0.8),Point(img.cols-1,img.rows-1),true));
+        this->Whites.push_back(IntegralRect(Point(0,img.rows*0.2),Point(img.cols*0.2,img.rows*0.8),true));
+        this->Whites.push_back(IntegralRect(Point(img.cols*0.8,img.rows*0.2),Point(img.cols-1,img.rows*0.8),true));
+
+        this->Blacks.push_back(IntegralRect(Point(img.cols*0.2,img.rows*0.2),Point(img.cols*0.8,img.rows*0.8),false));
         break;
     }
     default:{
@@ -97,6 +119,9 @@ IntegralF::IntegralF(Mat &img, int type){
         break;
     }
     }
+
+    this->sumBlacks(img);
+    this->sumWhites(img);
 }
 
 void IntegralF::showFeature(Mat &image, IntegralF &feature){
@@ -117,17 +142,26 @@ void IntegralF::showFeature(Mat &image){
     imshow("Feature",copy);
 }
 
-int IntegralF::calcFromIntegralImage(Mat &integralImage){
-    int whiteSum = 0;
-    int blackSum = 0;
-    for(int i = 0; i < Whites.size(); ++i){
-        whiteSum += Whites[i].calcIntegral(integralImage);
-    }
+int IntegralF::sumBlacks(Mat &integralImage){
     for(int i = 0; i < Blacks.size(); ++i){
-        blackSum+= Blacks[i].calcIntegral(integralImage);
+        this->sumBlack+= Blacks[i].calcIntegral(integralImage);
     }
+    return this->sumBlack;
+}
 
-    return whiteSum - blackSum;
+int IntegralF::sumWhites(Mat &integralImage){
+    for(int i = 0; i < Whites.size(); ++i){
+        this->sumWhite += Whites[i].calcIntegral(integralImage);
+    }\
+    return this->sumWhite;
+}
+
+int IntegralF::calcFromIntegralImage(Mat &integralImage){
+    return this->sumWhites(integralImage) - this->sumBlacks(integralImage);
+}
+
+float IntegralF::getBlackWhiteRatio(){
+    return float(this->sumBlack)/float(this->sumWhite);
 }
 
 IntegralFeature::IntegralFeature()
@@ -155,18 +189,22 @@ cv::Mat_<float> IntegralFeature::getFeature(Mat &image){
     cvtColor(image,grscale,CV_BGR2GRAY);
     integral(grscale,integralImage);
 
-    IntegralF edges(image,IntegralF::Edges);
-    IntegralF cross(image,IntegralF::Cross);
-    IntegralF center(image,IntegralF::Centroid);
-
-    cross.showFeature(image);
+    imshow("integral",integralImage);
+    imshow("grs",grscale);
 
 
-    cv::Mat_<float> Features(1,3);
-    Features(0,0) = edges.calcFromIntegralImage(integralImage);
-    Features(0,1) = cross.calcFromIntegralImage(integralImage);
-    Features(0,2) = center.calcFromIntegralImage(integralImage);
+    IntegralF center(integralImage,IntegralF::CenterMouth);
+    IntegralF a(integralImage,IntegralF::Centroid);
+    IntegralF b(integralImage,IntegralF::Cross);
+    IntegralF c(integralImage,IntegralF::Edge);
 
+
+
+    cv::Mat_<float> Features(1,4);
+    Features(0,0) = center.sumBlack;
+    Features(0,1) = center.sumWhite;
+    Features(0,2) = b.sumBlack
+    //Features(0,3) = a.getBlackWhiteRatio() * 100;
 
     return Features;
 }

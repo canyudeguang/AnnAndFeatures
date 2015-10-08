@@ -92,7 +92,10 @@ SOURCES       = main.cpp \
 		lib_stasm/asm.cpp \
 		lib_stasm/MOD_1/facedet.cpp \
 		lib_stasm/MOD_1/initasm.cpp \
-		lib_features/siftfeatures.cpp 
+		lib_features/siftfeatures.cpp \
+		lib_features/surffeatures.cpp \
+		lib_features/fastfeatures.cpp \
+		lib_features/geffeatures.cpp 
 OBJECTS       = main.o \
 		ann.o \
 		classifier.o \
@@ -137,7 +140,10 @@ OBJECTS       = main.o \
 		asm.o \
 		facedet.o \
 		initasm.o \
-		siftfeatures.o
+		siftfeatures.o \
+		surffeatures.o \
+		fastfeatures.o \
+		geffeatures.o
 DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/common/shell-unix.conf \
 		../../dev/Qt/5.4/gcc_64/mkspecs/common/unix.conf \
@@ -302,7 +308,10 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		lib_stasm/asm.h \
 		lib_stasm/MOD_1/initasm.h \
 		lib_stasm/MOD_1/facedet.h \
-		lib_features/siftfeatures.h main.cpp \
+		lib_features/siftfeatures.h \
+		lib_features/surffeatures.h \
+		lib_features/fastfeatures.h \
+		lib_features/geffeatures.h main.cpp \
 		lib_ann/ann.cpp \
 		lib_ann/classifier.cpp \
 		lib_features/cornerfeatures.cpp \
@@ -346,7 +355,10 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		lib_stasm/asm.cpp \
 		lib_stasm/MOD_1/facedet.cpp \
 		lib_stasm/MOD_1/initasm.cpp \
-		lib_features/siftfeatures.cpp
+		lib_features/siftfeatures.cpp \
+		lib_features/surffeatures.cpp \
+		lib_features/fastfeatures.cpp \
+		lib_features/geffeatures.cpp
 QMAKE_TARGET  = AnnFeatures
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = AnnFeatures
@@ -692,6 +704,9 @@ main.o: main.cpp lib_support/support.h \
 		lib_stasm/shape17.h \
 		lib_stasm/startshape.h \
 		lib_features/siftfeatures.h \
+		lib_features/surffeatures.h \
+		lib_features/fastfeatures.h \
+		lib_features/geffeatures.h \
 		lib_features/lbpfeatures.h \
 		lib_detector/detector.h \
 		lib_features/facedescription.h \
@@ -1729,6 +1744,24 @@ siftfeatures.o: lib_features/siftfeatures.cpp lib_features/siftfeatures.h \
 		lib_support/cvSupport.h \
 		lib_support/support.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o siftfeatures.o lib_features/siftfeatures.cpp
+
+surffeatures.o: lib_features/surffeatures.cpp lib_features/surffeatures.h \
+		lib_features/featureextractor.h \
+		lib_support/cvSupport.h \
+		lib_support/support.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o surffeatures.o lib_features/surffeatures.cpp
+
+fastfeatures.o: lib_features/fastfeatures.cpp lib_features/fastfeatures.h \
+		lib_features/featureextractor.h \
+		lib_support/cvSupport.h \
+		lib_support/support.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o fastfeatures.o lib_features/fastfeatures.cpp
+
+geffeatures.o: lib_features/geffeatures.cpp lib_features/geffeatures.h \
+		lib_features/featureextractor.h \
+		lib_support/cvSupport.h \
+		lib_support/support.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o geffeatures.o lib_features/geffeatures.cpp
 
 ####### Install
 
