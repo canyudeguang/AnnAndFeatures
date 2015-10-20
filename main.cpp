@@ -23,6 +23,7 @@ using namespace std;
 #include "lib_features/surffeatures.h"
 #include "lib_features/fastfeatures.h"
 #include "lib_features/geffeatures.h"
+#include "lib_features/testfeature.h"
 
 #include "lib_features/lbpfeatures.h"
 
@@ -145,6 +146,8 @@ int main(int argc, char ** argv)
         maskfeatures fMask;
         IntegralFeature fInte;
 
+        testFeature fTest;
+
 
         PointyFeature fPoint;
 
@@ -162,7 +165,7 @@ int main(int argc, char ** argv)
         //vec_extractors.push_back(&fRaw);
       // vec_extractors.push_back(&fHog);
         //vec_extractors.push_back(&fBright);
-        vec_extractors.push_back(&fInte);
+        vec_extractors.push_back(&fTest);
         /** Feature Extraction */
         /*
          * Open each image from training set
@@ -206,9 +209,9 @@ int main(int argc, char ** argv)
             cout << Features.row(i) <<  " " << train_images[i] << endl;
 
 
-//            imshow("Image",img);
-  //          moveWindow("Image",0,0);
-    //        cvSupport::indexBrowser(i,train_images.size());
+            imshow("Image",img);
+            moveWindow("Image",0,0);
+            cvSupport::indexBrowser(i,train_images.size());
 
         }
 

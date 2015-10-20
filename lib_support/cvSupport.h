@@ -136,6 +136,10 @@ void setPixColor(cv::Mat & img, int x, int y, cv::Scalar color);
 
 
 void colorReduce(cv::Mat & img, int divisor = 8);
+
+cv::Mat cutObject(cv::Mat & srcImg, cv::Point A, cv::Point B, int bbox, int bboxup);
+cv::Mat cutObject(Mat &srcImg, Point A, int d, int d_up = 0);
+double avgIntensity(cv::Mat & img);
 }
 
 

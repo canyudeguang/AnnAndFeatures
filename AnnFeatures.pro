@@ -51,7 +51,8 @@ SOURCES += main.cpp \
     lib_features/siftfeatures.cpp \
     lib_features/surffeatures.cpp \
     lib_features/fastfeatures.cpp \
-    lib_features/geffeatures.cpp
+    lib_features/geffeatures.cpp \
+    lib_features/testfeature.cpp
 
 INCLUDE += /usr/local/include/opencv /usr/local/include/opencv2
 LIBS += -L/usr/local/lib \
@@ -123,5 +124,6 @@ HEADERS += \
     lib_features/siftfeatures.h \
     lib_features/surffeatures.h \
     lib_features/fastfeatures.h \
-    lib_features/geffeatures.h
+    lib_features/geffeatures.h \
+    lib_features/testfeature.h
 

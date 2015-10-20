@@ -101,6 +101,8 @@ public:
     cv::Mat showHistogram(Mat_<float> &histogram);
 
 
+
+
 private:
     vector<float> R,G,B;
     string HIST_NAME[NUM_OF_HISTS];

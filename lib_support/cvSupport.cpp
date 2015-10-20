@@ -1,5 +1,57 @@
 #include "cvSupport.h"
 
+cvSupport::DoublePoint::DoublePoint(){
+
+}
+
+void cvSupport::DoublePoint::setL_XY(int x, int y){
+    this->left = cv::Point(x,y);
+}
+void cvSupport::DoublePoint::setR_XY(int x, int y){
+    this->right = cv::Point(x,y);
+}
+void cvSupport::DoublePoint::setPointL_XY(cv::Point left){
+    this->left = left;
+}
+void cvSupport::DoublePoint::setPointR_XY(cv::Point right){
+    this->right = right;
+}
+
+cv::Point cvSupport::DoublePoint::getLPoint(){
+    return left;
+}
+cv::Point cvSupport::DoublePoint::getRPoint(){
+    return right;
+}
+
+void cvSupport::DoublePoint::rotate(Mat m){
+    setPointL_XY(cvSupport::rotatePoint2D(getLPoint(),m));
+    setPointR_XY(cvSupport::rotatePoint2D(getRPoint(),m));
+}
+
+void cvSupport::DoublePoint::draw(Mat img, cv::Scalar color){
+    circle(img,getLPoint(),2,color,2);
+    circle(img,getRPoint(),2,color,2);
+    circle(img,getCenter(),2,Scalar(200,200,255),1);
+}
+
+cv::Point cvSupport::DoublePoint::getCenter(){
+    int x_min = (this->left.x < this->right.x) ? this->left.x : this->right.x;
+    int y_min = (this->left.y < this->right.y) ? this->left.y : this->right.y;
+
+    cv::Point center = cv::Point(
+    x_min+
+    abs(this->right.x - this->left.x)/2,
+    y_min +
+    abs(this->right.y - this->left.y)/2);
+    return center;
+}
+
+double cvSupport::DoublePoint::distance(){
+    return cv::norm(this->left - this->right);
+}
+
+
 
 cvSupport::PixUnderCursor::PixUnderCursor(string windowName, Mat &img){
     // set object data
@@ -447,4 +499,96 @@ cv::Vec2b cvSupport::LineParametric::NormalVector(){
 
 void cvSupport::LineParametric::draw(Mat &img, Scalar color, int thick){
     line(img,this->a, this->b, color, thick);
+}
+
+cv::Mat cvSupport::cutObject(Mat &srcImg, Point A, Point B, int bbox, int bboxup){
+    // copy of the image
+    Mat img;
+    srcImg.copyTo(img);
+
+    cvSupport::DoublePoint object;
+    object.setPointL_XY(A);
+    object.setPointR_XY(B);
+
+    // find the rotation angle
+    double angle = cvSupport::angleBottom(A,B);
+    // rotate image
+    Mat rotM = cvSupport::rotateImg(img,angle,object.getCenter());
+    object.rotate(rotM);
+
+    cv::Point org = cv::Point(object.getLPoint());
+    cv::Point end = cv::Point(object.getRPoint());
+
+    double d = bbox;
+
+        if(bboxup != 0){
+            double dd = bboxup;
+            //check if points are in the image !!!
+            if(org.x-d < 0 || org.x-d > img.cols || org.y-dd < 0 || org.y-dd > img.rows
+                    || end.x+dd < 0 || end.y+dd < 0 || end.y+d > img.rows || end.x+d > img.cols){
+                cout << "Point out of bounds: " << endl;
+            }
+            else{
+                cv::Rect rect(cv::Point(org.x - d, org.y - dd),
+                              cv::Point(end.x + d, end.y + dd));
+                cv::Mat img_rect = cv::Mat(img,rect);
+
+                return img_rect;
+            }
+        }
+        //check if points are in the image !!!
+        if(org.x-d < 0 || org.x-d >= img.cols || org.y-d < 0 || org.y-d >= img.rows
+                || end.x+d < 0 || end.y+d < 0 || end.y+d >= img.rows || end.x+d >= img.cols){
+            cout << "Point out of bounds: " << endl;
+        }
+        else{
+            cv::Rect rect(cv::Point(org.x - d, org.y - d),
+                          cv::Point(end.x + d, end.y + d));
+            cv::Mat img_rect = cv::Mat(img,rect);
+
+            return img_rect;
+        }
+        return Mat();
+}
+
+cv::Mat cvSupport::cutObject(Mat &srcImg, Point A, int d, int d_up){
+    // copy of the image
+    Mat img;
+    srcImg.copyTo(img);
+
+    if(d_up <= 0.0){
+        d_up = d;
+    }
+
+    if( A.x - d < 0 ||
+        A.x + d >= srcImg.cols ||
+        A.y - d_up < 0 ||
+        A.y + d_up >= srcImg.rows){
+        cerr << "cv::Suppore ERROR: cut of image out of bounds!" << endl;
+    }
+    else{
+        cv::Point tl(A.x - d, A.y - d_up);
+        cv::Point br(A.x + d, A.y + d_up);
+        cv::Rect rect(tl,br);
+        cv::Mat img_rect = cv::Mat(img,rect);
+        return img_rect;
+    }
+    return cv::Mat();
+}
+
+double cvSupport::avgIntensity(Mat &img){
+    if(img.channels() > 1){
+        return -1;
+    }
+
+    int sum = 0;
+    for(int y = 0; y < img.rows; ++y){
+        for(int x = 0; x < img.cols; ++x){
+            int pixVal = img.at<uchar>(y,x);
+            sum += pixVal;
+        }
+    }
+
+    return (sum/(img.rows*img.cols));
+
 }

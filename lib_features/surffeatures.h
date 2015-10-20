@@ -9,6 +9,8 @@
 #include <opencv2/nonfree/nonfree.hpp>
 #include <opencv2/legacy/legacy.hpp>
 
+#include "lib_features/histogram.h"
+
 class SurfFeatures: public FeatureExtractor
 {
 public:
@@ -20,6 +22,7 @@ public:
     double avgAngle(vector<KeyPoint> & kp);
 
 
+    vector<int> getAvgIntensities(cv::Mat & img, vector<KeyPoint> & kp, double dp = 10.0);
     SurfFeatures();
     ~SurfFeatures();
 };

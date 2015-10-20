@@ -203,8 +203,8 @@ cv::Mat_<float> IntegralFeature::getFeature(Mat &image){
     cv::Mat_<float> Features(1,4);
     Features(0,0) = center.sumBlack;
     Features(0,1) = center.sumWhite;
-    Features(0,2) = b.sumBlack
-    //Features(0,3) = a.getBlackWhiteRatio() * 100;
+    Features(0,2) = b.sumBlack;
+    Features(0,3) = a.getBlackWhiteRatio() * 100;
 
     return Features;
 }

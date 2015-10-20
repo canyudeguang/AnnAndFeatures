@@ -643,6 +643,7 @@ vector<float> Histogram::getFeatureHisto(){
     return histValues;
 }
 
+
 cv::Mat Histogram::showHistogram(Mat_<float> &histogram){
     //to draw histogram
     // histogram image size
