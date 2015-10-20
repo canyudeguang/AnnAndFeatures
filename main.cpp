@@ -165,7 +165,7 @@ int main(int argc, char ** argv)
         //vec_extractors.push_back(&fRaw);
       // vec_extractors.push_back(&fHog);
         //vec_extractors.push_back(&fBright);
-        vec_extractors.push_back(&fTest);
+        vec_extractors.push_back(&fInte);
         /** Feature Extraction */
         /*
          * Open each image from training set

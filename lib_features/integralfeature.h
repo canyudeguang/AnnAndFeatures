@@ -42,11 +42,25 @@ public:
     float getBlackWhiteRatio();
 
     static enum TYPE {
-        Edge = 0,
-        Edges,
-        Cross,
-        Centroid,
-        CenterMouth
+        EdgeVertical = 0,
+        EdgeHorizontal,
+        LineHorizontal,
+        LineHorizontalThick,
+        LineVertical,
+        LineVerticalThick,
+        CenterDot3,
+        CenterDot5,
+        CenterDot6,
+        CenterDot10,
+        CenterDotLower,
+        CenterDotLow, // good for tongue
+        CenterRect,
+        LowRect,
+        CenterCrossRect,
+        CenterCross,
+        CenterCrossFull,
+        MouthHoles,
+        CenterMouth // 0.2 of image widht and height inner rect
     } types;
 
 

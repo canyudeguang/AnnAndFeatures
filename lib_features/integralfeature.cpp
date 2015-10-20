@@ -74,18 +74,103 @@ IntegralF::IntegralF(Mat &img, int type){
     this->sumBlack = 0;
     this->sumWhite = 0;
     switch(type){
-    case IntegralF::Edge:{
+    case IntegralF::EdgeVertical:{
+        this->Whites.push_back(IntegralRect(Point(0,0),Point(img.cols/2, img.rows-1),true));
+        this->Blacks.push_back(IntegralRect(Point(img.cols/2,0),Point(img.cols-1,img.rows-1),false));
+        break;
+    }
+    case IntegralF::EdgeHorizontal:{
         this->Whites.push_back(IntegralRect(Point(0,0),Point(img.cols-1,img.rows/2),true));
         this->Blacks.push_back(IntegralRect(Point(0,img.rows/2),Point(img.cols-1,img.rows-1),false));
         break;
     }
-    case IntegralF::Edges:{
+    case IntegralF::LineHorizontal:{
         this->Whites.push_back(IntegralRect(Point(0,0),Point(img.cols-1,img.rows/3),true));
         this->Blacks.push_back(IntegralRect(Point(0,img.rows/3),Point(img.cols*2.3,img.rows*2/3),false));
         this->Whites.push_back(IntegralRect(Point(0,img.rows*2/3),Point(img.cols-1,img.rows-1),true));
         break;
     }
-    case IntegralF::Cross:{
+    case IntegralF::LineHorizontalThick:{
+        this->Whites.push_back(IntegralRect(Point(0,0),Point(img.cols-1,img.rows*0.2),true));
+        this->Blacks.push_back(IntegralRect(Point(0,img.rows*0.2),Point(img.cols-1,img.rows*0.8),false));
+        this->Whites.push_back(IntegralRect(Point(0,img.rows*0.8),Point(img.cols-1,img.rows-1),true));
+        break;
+    }
+    case IntegralF::LineVertical:{
+        this->Whites.push_back(IntegralRect(Point(0,0),Point(img.cols/3,img.rows-1),true));
+        this->Blacks.push_back(IntegralRect(Point(img.cols/3,0),Point(img.cols*2/3,img.rows-1),false));
+        this->Whites.push_back(IntegralRect(Point(img.cols*2/3,0),Point(img.cols-1,img.rows-1),true));
+        break;
+    }
+    case IntegralF::LineVerticalThick:{
+        this->Whites.push_back(IntegralRect(Point(0,0),Point(img.cols*0.2,img.rows-1),true));
+        this->Blacks.push_back(IntegralRect(Point(img.cols*0.2,0),Point(img.cols*0.8,img.rows-1),false));
+        this->Whites.push_back(IntegralRect(Point(img.cols*0.8,0),Point(img.cols-1,img.rows-1),true));
+        break;
+    }
+    case IntegralF::CenterDot10:{
+        cv::Point center(img.cols/2, img.rows/2);
+        int d = img.rows/10; // diameter
+        this->Blacks.push_back(IntegralRect(Point(center.x - d, center.y - d),Point(center.x + d, center.y + d),false));
+        this->Whites.push_back(IntegralRect(Point(0,0),Point(center.x-d,img.rows-1),true));
+        this->Whites.push_back(IntegralRect(Point(center.x+d,0),Point(img.cols-1,img.rows-1),true));
+        this->Whites.push_back(IntegralRect(Point(center.x-d,0),Point(center.x+d,center.y-d),true));
+        this->Whites.push_back(IntegralRect(Point(center.x-d,center.y+d),Point(center.x+d,img.rows-1),true));
+        break;
+    }
+    case IntegralF::CenterDot6:{
+        cv::Point center(img.cols/2, img.rows/2);
+        int d = img.rows/6; // diameter
+        this->Blacks.push_back(IntegralRect(Point(center.x - d, center.y - d),Point(center.x + d, center.y + d),false));
+        this->Whites.push_back(IntegralRect(Point(0,0),Point(center.x-d,img.rows-1),true));
+        this->Whites.push_back(IntegralRect(Point(center.x+d,0),Point(img.cols-1,img.rows-1),true));
+        this->Whites.push_back(IntegralRect(Point(center.x-d,0),Point(center.x+d,center.y-d),true));
+        this->Whites.push_back(IntegralRect(Point(center.x-d,center.y+d),Point(center.x+d,img.rows-1),true));
+        break;
+    }
+    case IntegralF::CenterDot5:{
+        cv::Point center(img.cols/2, img.rows/2);
+        int d = img.rows/5; // diameter
+        this->Blacks.push_back(IntegralRect(Point(center.x - d, center.y - d),Point(center.x + d, center.y + d),false));
+        this->Whites.push_back(IntegralRect(Point(0,0),Point(center.x-d,img.rows-1),true));
+        this->Whites.push_back(IntegralRect(Point(center.x+d,0),Point(img.cols-1,img.rows-1),true));
+        this->Whites.push_back(IntegralRect(Point(center.x-d,0),Point(center.x+d,center.y-d),true));
+        this->Whites.push_back(IntegralRect(Point(center.x-d,center.y+d),Point(center.x+d,img.rows-1),true));
+        break;
+    }
+    case IntegralF::CenterDot3:{
+        cv::Point center(img.cols/2, img.rows/2);
+        int d = img.rows/3; // diameter
+        this->Blacks.push_back(IntegralRect(Point(center.x - d, center.y - d),Point(center.x + d, center.y + d),false));
+        this->Whites.push_back(IntegralRect(Point(0,0),Point(center.x-d,img.rows-1),true));
+        this->Whites.push_back(IntegralRect(Point(center.x+d,0),Point(img.cols-1,img.rows-1),true));
+        this->Whites.push_back(IntegralRect(Point(center.x-d,0),Point(center.x+d,center.y-d),true));
+        this->Whites.push_back(IntegralRect(Point(center.x-d,center.y+d),Point(center.x+d,img.rows-1),true));
+        break;
+    }
+    case IntegralF::CenterDotLower:{
+        int d = img.rows/5; // diameter
+        int off = img.rows/10;
+        cv::Point center(img.cols/2, img.rows/2+off);
+        this->Blacks.push_back(IntegralRect(Point(center.x - d, center.y - d),Point(center.x + d, center.y + d),false));
+        this->Whites.push_back(IntegralRect(Point(0,0),Point(center.x-d,img.rows-1),true));
+        this->Whites.push_back(IntegralRect(Point(center.x+d,0),Point(img.cols-1,img.rows-1),true));
+        this->Whites.push_back(IntegralRect(Point(center.x-d,0),Point(center.x+d,center.y-d),true));
+        this->Whites.push_back(IntegralRect(Point(center.x-d,center.y+d),Point(center.x+d,img.rows-1),true));
+        break;
+    }
+    case IntegralF::CenterDotLow:{
+        int d = img.rows/5; // diameter
+        int off = img.rows/3;
+        cv::Point center(img.cols/2, img.rows/2+off);
+        this->Blacks.push_back(IntegralRect(Point(center.x - d, center.y - d),Point(center.x + d, img.rows-1),false));
+        this->Whites.push_back(IntegralRect(Point(0,0),Point(center.x-d,img.rows-1),true));
+        this->Whites.push_back(IntegralRect(Point(center.x+d,0),Point(img.cols-1,img.rows-1),true));
+        this->Whites.push_back(IntegralRect(Point(center.x-d,0),Point(center.x+d,center.y-d),true));
+        break;
+    }
+
+    case IntegralF::CenterCrossRect:{
         this->Whites.push_back(IntegralRect(Point(0,0),Point(img.cols/3,img.rows/3),true));
         this->Whites.push_back(IntegralRect(Point(img.cols*2/3,img.rows*2/3),Point(img.cols-1,img.rows-1),true));
         this->Whites.push_back(IntegralRect(Point(0,img.rows*2/3),Point(img.cols/3,img.rows-1),true));
@@ -96,13 +181,22 @@ IntegralF::IntegralF(Mat &img, int type){
         this->Blacks.push_back(IntegralRect(Point(img.cols/3,img.rows*2/3),Point(img.cols*2/3,img.rows-1),false));
         break;
     }
-    case IntegralF::Centroid:{
+    case IntegralF::CenterRect:{
         this->Whites.push_back(IntegralRect(Point(0,0),Point(img.cols-1,img.rows/3),true));
         this->Whites.push_back(IntegralRect(Point(0,img.rows*2/3),Point(img.cols-1,img.rows-1),true));
         this->Whites.push_back(IntegralRect(Point(0,img.rows/3),Point(img.cols/3,img.rows*2/3),true));
         this->Whites.push_back(IntegralRect(Point(img.cols*2/3,img.rows/3),Point(img.cols,img.rows*2/3),true));
 
         this->Blacks.push_back(IntegralRect(Point(img.cols/3,img.rows/3),Point(img.cols*2/3,img.rows*2/3),false));
+        break;
+    }
+    case IntegralF::LowRect:{
+
+        this->Whites.push_back(IntegralRect(Point(0,0),Point(img.cols-1,img.rows*2/3),true));
+        this->Whites.push_back(IntegralRect(Point(0,img.rows*2/3),Point(img.cols/3,img.rows-1),true));
+        this->Whites.push_back(IntegralRect(Point(img.cols*2/3,img.rows*2/3),Point(img.cols-1,img.rows-1),true));
+
+        this->Blacks.push_back(IntegralRect(Point(img.cols/3,img.rows*2/3),Point(img.cols*2/3,img.rows-1),false));
         break;
     }
     case IntegralF::CenterMouth:{
@@ -112,6 +206,57 @@ IntegralF::IntegralF(Mat &img, int type){
         this->Whites.push_back(IntegralRect(Point(img.cols*0.8,img.rows*0.2),Point(img.cols-1,img.rows*0.8),true));
 
         this->Blacks.push_back(IntegralRect(Point(img.cols*0.2,img.rows*0.2),Point(img.cols*0.8,img.rows*0.8),false));
+        break;
+    }
+    case IntegralF::CenterCross:{
+        cv::Point center(img.cols/2, img.rows/2);
+        int d = img.rows/10; // diameter
+        this->Blacks.push_back(IntegralRect(Point(center.x - d*3, center.y - d),Point(center.x + d*3, center.y + d),false));
+        this->Blacks.push_back(IntegralRect(Point(center.x - d, center.y - d*3),Point(center.x + d, center.y - d),false));
+        this->Blacks.push_back(IntegralRect(Point(center.x - d, center.y + d),Point(center.x + d, center.y + d*3),false));
+
+        this->Whites.push_back(IntegralRect(Point(0,0),Point(center.x-d,center.y-d),true));
+        this->Whites.push_back(IntegralRect(Point(center.x+d,0),Point(img.cols-1, center.y-d),true));
+        this->Whites.push_back(IntegralRect(Point(0,center.y+d),Point(center.x-d,img.rows-1),true));
+        this->Whites.push_back(IntegralRect(Point(center.x+d, center.y+d),Point(img.cols-1, img.rows-1),true));
+
+        break;
+    }
+    case IntegralF::CenterCrossFull:{
+        cv::Point center(img.cols/2, img.rows/2);
+        int d = img.rows/10; // diameter
+        this->Blacks.push_back(IntegralRect(Point(center.x - d*3, center.y - d),Point(center.x + d*3, center.y + d),false));
+        this->Blacks.push_back(IntegralRect(Point(center.x - d, center.y - d*3),Point(center.x + d, center.y - d),false));
+        this->Blacks.push_back(IntegralRect(Point(center.x - d, center.y + d),Point(center.x + d, center.y + d*3),false));
+
+        this->Whites.push_back(IntegralRect(Point(0,0),Point(center.x-d,center.y-d),true));
+        this->Whites.push_back(IntegralRect(Point(center.x+d,0),Point(img.cols-1, center.y-d),true));
+        this->Whites.push_back(IntegralRect(Point(0,center.y+d),Point(center.x-d,img.rows-1),true));
+        this->Whites.push_back(IntegralRect(Point(center.x+d, center.y+d),Point(img.cols-1, img.rows-1),true));
+
+        this->Whites.push_back(IntegralRect(Point(center.x - d, 0),Point(center.x+d,center.y-d),true));
+        this->Whites.push_back(IntegralRect(Point(center.x - d, center.y + d),Point(center.x + d,img.rows-1),true));
+        this->Whites.push_back(IntegralRect(Point(0, center.y - d),Point(center.x-d*3,center.y+d),true));
+        this->Whites.push_back(IntegralRect(Point(center.x +d*3 , center.y-d),Point(img.cols-1,center.y+d),true));
+
+        break;
+    }
+    case IntegralF::MouthHoles:{
+        cv::Point centerL(img.cols*0.23, img.rows*0.5);
+        cv::Point centerR(img.cols*0.77, img.rows*0.5);
+        int d = img.rows/7; // diameter
+        this->Blacks.push_back(IntegralRect(Point(centerL.x - d, centerL.y - d),Point(centerL.x + d, centerL.y + d),false));
+        this->Blacks.push_back(IntegralRect(Point(centerR.x - d, centerR.y - d),Point(centerR.x + d, centerR.y + d),false));
+
+        this->Whites.push_back(IntegralRect(Point(0.0),Point(centerL.x-d,img.rows-1),true));
+        this->Whites.push_back(IntegralRect(Point(centerL.x + d, 0),Point(centerR.x-d,img.rows-1),true));
+        this->Whites.push_back(IntegralRect(Point(centerR.x + d, 0),Point(img.cols-1,img.rows-1),true));
+
+        this->Whites.push_back(IntegralRect(Point(centerL.x - d, 0),Point(centerL.x + d, centerL.y - d),true));
+        this->Whites.push_back(IntegralRect(Point(centerL.x - d, centerL.y + d),Point(centerL.x + d, img.rows-1),true));
+        this->Whites.push_back(IntegralRect(Point(centerR.x - d, 0),Point(centerR.x + d, centerR.y - d),true));
+        this->Whites.push_back(IntegralRect(Point(centerR.x - d, centerR.y + d),Point(centerR.x + d, img.rows-1),true));
+
         break;
     }
     default:{
@@ -189,22 +334,38 @@ cv::Mat_<float> IntegralFeature::getFeature(Mat &image){
     cvtColor(image,grscale,CV_BGR2GRAY);
     integral(grscale,integralImage);
 
-    imshow("integral",integralImage);
-    imshow("grs",grscale);
+//    imshow("integral",integralImage);
+//    imshow("grs",grscale);
 
+    vector<IntegralF> integralShapes;
 
-    IntegralF center(integralImage,IntegralF::CenterMouth);
-    IntegralF a(integralImage,IntegralF::Centroid);
-    IntegralF b(integralImage,IntegralF::Cross);
-    IntegralF c(integralImage,IntegralF::Edge);
+    integralShapes.push_back(IntegralF(integralImage,IntegralF::EdgeVertical));
+    integralShapes.push_back(IntegralF(integralImage,IntegralF::EdgeHorizontal));
+    integralShapes.push_back(IntegralF(integralImage,IntegralF::LineHorizontal));
+    integralShapes.push_back(IntegralF(integralImage,IntegralF::LineHorizontalThick));
+    integralShapes.push_back(IntegralF(integralImage,IntegralF::LineVertical));
+    integralShapes.push_back(IntegralF(integralImage,IntegralF::LineVerticalThick));
+    integralShapes.push_back(IntegralF(integralImage,IntegralF::CenterCross));
+    integralShapes.push_back(IntegralF(integralImage,IntegralF::CenterCrossFull));
+    integralShapes.push_back(IntegralF(integralImage,IntegralF::CenterCrossRect));
+    integralShapes.push_back(IntegralF(integralImage,IntegralF::CenterDot3));
+    integralShapes.push_back(IntegralF(integralImage,IntegralF::CenterDot5));
+    integralShapes.push_back(IntegralF(integralImage,IntegralF::CenterDot6));
+    integralShapes.push_back(IntegralF(integralImage,IntegralF::CenterDot10));
+    integralShapes.push_back(IntegralF(integralImage,IntegralF::CenterDotLow));
+    integralShapes.push_back(IntegralF(integralImage,IntegralF::CenterDotLower));
+    integralShapes.push_back(IntegralF(integralImage,IntegralF::CenterMouth));
+    integralShapes.push_back(IntegralF(integralImage,IntegralF::CenterRect));
+    integralShapes.push_back(IntegralF(integralImage,IntegralF::LowRect));
+    integralShapes.push_back(IntegralF(integralImage,IntegralF::MouthHoles));
 
+    cv::Mat_<float> Features(1,integralShapes.size()*2);
 
-
-    cv::Mat_<float> Features(1,4);
-    Features(0,0) = center.sumBlack;
-    Features(0,1) = center.sumWhite;
-    Features(0,2) = b.sumBlack;
-    Features(0,3) = a.getBlackWhiteRatio() * 100;
+    for(int i = 0; i < integralShapes.size(); ++i){
+        cout << 2*i << " " << 2*i + 1<< endl;
+        Features(0,2*i) = integralShapes[i].sumWhite;
+        Features(0,2*i + 1) = integralShapes[i].sumBlack;
+    }
 
     return Features;
 }
