@@ -5,8 +5,10 @@ const string Classifier::C_ANN = "ANN";
 Classifier::Classifier(){
     this->nullLabel = false;
     this->isRestMember = false;
+    this->numberOfClasses = 0;
 }
-
+Classifier::~Classifier(){
+}
 
 cv::Mat Classifier::cr8ResponseMat(std::vector<uchar> &labels, int numberOfSamples){
     // Prepare labels in required format
@@ -55,7 +57,7 @@ void Classifier::evaluate(vector<uchar> predictedLabels, vector<uchar> trueLabel
     cout << confMatrix << endl;
 }
 //==============================================================================
-double Classifier::evaluateVerbose(vector<uchar> predictedLabels, vector<uchar> trueLabels, int numClasses)
+double Classifier::evaluateVerbose(vector<uchar> predictedLabels, vector<uchar> trueLabels)
 {
     // Print true and predicted labels and precision rate
     //--------------------------------------------------------------------------
@@ -87,6 +89,19 @@ void Classifier::setLabels(string labels[], int numOfClasses){
  cout << endl;
 #endif
 }
+
+void Classifier::setLabels(vector<string> vec_labels){
+    this->numberOfClasses = vec_labels.size();
+
+
+    for(int i = 0; i < numberOfClasses; ++i){
+        this->strLabels.push_back(vec_labels[i]);
+        if(vec_labels[i] == "REST"){
+            this->isRestMember = true;
+        }
+    }
+}
+
 //==============================================================================
 int Classifier::getLabelIndex(string label){
     return find(this->strLabels.begin(), this->strLabels.end(), label) - this->strLabels.begin();
@@ -151,4 +166,19 @@ string Classifier::getStrLabels(){
 
 void Classifier::setFeatureVectorSize(int attributesPerSample){
     this->attributesPerSample = attributesPerSample;
+}
+
+void Classifier::printLabels(vector<string> filename, vector<uchar> labels){
+    int numFiles = filename.size();
+    int numLabels = labels.size();
+
+    if(numFiles != numLabels){
+        cerr << "Files and Labels are of different size" << endl;
+        return;
+    }
+
+    for(int i = 0; i < numFiles; ++i){
+        cout << filename[i] << "\t{" << int(labels[i]) << ", " << this->getLabelString(labels[i]) <<"}" << endl;
+    }
+
 }

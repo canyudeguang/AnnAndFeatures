@@ -19,12 +19,14 @@ using namespace std;
 #include "lib_features/brightfeature.h"
 #include "lib_features/maskfeatures.h"
 #include "lib_features/grayscalefeatures.h"
+#include "lib_features/integralfeature.h"
 
 #include "lib_features/featurespicker.h"
 
 #include "lib_classifiers/ann.h"
 #include "lib_classifiers/myann.h"
 #include "lib_classifiers/myannsettings.h"
+#include "lib_classifiers/svm.h"
 
 //#include "lib_classifiers/svm.h"
 //#include "lib_classifiers/boostclass.h"
@@ -47,11 +49,9 @@ cv::Mat_<float> featureExtractionFromDir(vector<string> & train_images, vector<F
     cv::Mat_<float> Features;
     for(uint i = 0; i < train_images.size(); ++i){
         cv::Mat img = imread(train_images[i],CV_LOAD_IMAGE_ANYCOLOR);
-
         // joined features from all extractors
         Mat_<float> fjoined;
         fjoined.setTo(0);
-
 
         for(uint j = 0; j < vec_extractors.size(); ++j){
             Mat_<float> f = vec_extractors[j]->getFeature(img);
@@ -64,140 +64,104 @@ cv::Mat_<float> featureExtractionFromDir(vector<string> & train_images, vector<F
     return Features;
 }
 
-void selectFeatures(vector<int> indexes, vector<FeatureExtractor * > & features){
-    // All features;
-
-    EdgeFeatures fEdge;
-    experimentFeature fExper;
-    RawFeatures fRaw;
-    SkeletFeatures fSkelet;
-    HOGFeatures fHog;
-    BrightFeature fBright;
-    LBPFeatures fLbp;
-    maskfeatures fMask;
-    GrayScaleFeatures fGS;
-    CornerFeatures fCor;
-
-    HistogramFeatures * fhisto  = new HistogramFeatures();
-    fhisto->setNumberOfBins(256);
-
-    vector<FeatureExtractor * > allPointers;
-    allPointers.push_back(new EdgeFeatures());
-    allPointers.push_back(new experimentFeature());
-    //allPointers.push_back(fhisto);
-    //allPointers.push_back(new RawFeatures());
-    allPointers.push_back(new HOGFeatures());
-    allPointers.push_back(new LBPFeatures());
-    allPointers.push_back(new BrightFeature());
-   // allPointers.push_back(new SkeletFeatures());
-
-   // allPointers.push_back(new GrayScaleFeatures());
-   // allPointers.push_back(new CornerFeatures());
-    allPointers.push_back(new maskfeatures());
-
-
-    // Select Features;
-    for(int i = 0; i < allPointers.size();++i){
-        for(int j = 0; j < indexes.size();++j){
-            if(i == indexes[j]){
-                features.push_back(allPointers[i]);
-            }
-        }
-
-    }
-}
+#define INFO
 
 int main(int argc, char *argv[]){
 
     if(argc > 5){
         if(string(argv[3]) == "-c"){
             Classifier * classifier;
+             ///@TODO set SVM classifier
             if(string(argv[4]) == Classifier::C_ANN){
+#ifdef INFO
+                cout << "Classifier selected: myANN" << endl;
+#endif
 
 /// Cosntant functions
+                ///@TODO erase! - I guess virtual destructor insteaf
                 // Setting repetitions
-                int repetitions = 10;
+                int repetitions = 3;
                 if(argc == 9) repetitions = stoi(argv[8]);
 
+                // Set Features and Classes
+                // format : DEFAULT_REST_fFeature1_fFeature2
+                // CAPITALS are classest
+                // fFeatureName are features to extract
+
                 if(string(argv[6]) == "-f"){
+
                     string strSettings(argv[7]);
                     myAnnSettings annSettings;
-                    annSettings.processFileName(strSettings);
 
-                    // Load Train from Directory
+                    if( annSettings.processFileName(strSettings) != -1){
+#ifdef INFO
+                        cout << "Classes:\t";
+                        annSettings.printClasses();
+                        cout << "Features:\t";
+                        annSettings.printFeatures();
+#endif
+                    }
+
+                    // Load Train and Test Images
                     string directory(argv[1]);
                     vector<string> train_images = Support::pathVector(directory,".jpg");
-                    cout << "From: " << directory << " "<< train_images.size() << " images loaded." << endl;
-                    //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-                    // Predict & testing
+#ifdef INFO
+                    cout << "Training from: \t" << directory << "\t" << train_images.size() << " images loaded." << endl;
+#endif
                     string test_dir(argv[2]);
-                    cout << "Predict ... from " << test_dir << endl;
                     vector<string> test_imgs = Support::pathVector(test_dir,".jpg");
+#ifdef INFO
+                    cout << "Predict from: \t" << test_dir << "\t" << test_imgs.size() << " images loadad." << endl;
+#endif
                     sort(test_imgs.begin(), test_imgs.end());
                     //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
                     // Feature extraction
                     cv::Mat_<float> test_features = featureExtractionFromDir(test_imgs,annSettings.vec_features);
                     cv::Mat_<float> Features = featureExtractionFromDir(train_images,annSettings.vec_features);
                     //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    // Training
+                    ///@TODO repetitions
+                    for(int REPEAT = 0; REPEAT < repetitions; ++REPEAT){}
 
+                    classifier = new myANN();
+                    classifier->setLabels(annSettings.vec_labels);
+                    classifier->setFeatureVectorSize(Features.cols);
 
-        /////^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-                        /// Training
-                        for(int REPEAT = 0; REPEAT < repetitions; ++REPEAT){
-                            classifier = new myANN();
-                            // Set Classifier
-                            classifier->setFeatureVectorSize(Features.cols);
+                    // Label extraction
+                    vector<uchar> train_labels = classifier->extLabelFromFileName(train_images);
+                    vector<uchar> test_labels = classifier->extLabelFromFileName(test_imgs);
 
-                            // Lebel extraction
-                            string str_labels[annSettings.vec_labels.size()];
-                            copy(annSettings.vec_labels.begin(), annSettings.vec_labels.end(), str_labels);
-                            int numClasses = annSettings.getNumClasses();
-                            classifier->setLabels(str_labels,numClasses);
+                    // set Classifier Params - from commandline
+                    // -c ANN {100,0.1,0.1[20]}
+                    // 100 iters; 0.1, 0.1 alpha, beta; 20 neurons in the first layer, 2 in the second
+                    classifier->loadFromParams(string(argv[5]));
+                    if(train_labels.size() == Features.rows){
+                        classifier->train(Features, train_labels);
+                    }
+                    //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    // Prediction and Evaluation
+                    vector<uchar> predictions = classifier->predict(test_features);
+                    double perc = classifier->evaluateVerbose(predictions,test_labels);
+                    //classifier->printLabels(test_imgs,test_labels);
+                    classifier->evaluate(predictions,test_labels,classifier->numberOfClasses);
+                    //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    // Saving the net:  Up 85 > Save
+                    string toSave = "nets/"+ classifier->getStrLabels() + "_";
+                    string features ="";
+                    for(int i = 0; i < annSettings.vec_features.size();++i){
+                        features += annSettings.vec_features[i]->name() + "_";
+                    }
+                    toSave += features;
+                    toSave += classifier->getStrSettings() + "_";
+                    toSave += to_string(int(perc)) + "_" + to_string(0) + ".yml";
+                    if(perc > 85){
+                        classifier->save2file(toSave.c_str());
+                    }
+                    else{
+                        cout  << toSave << endl;
+                    }
 
-                            vector<uchar> eLabels = classifier->extLabelFromFileName(train_images);
-
-                            //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-                            cout << "Classes: " << classifier->getStrLabels() << endl;
-                            // set Classifier Params
-                            classifier->loadFromParams(string(argv[5]));
-                            //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-
-                            // Training
-                            if(eLabels.size() == Features.rows){
-                                classifier->train(Features, eLabels, numClasses);
-                            }
-                            //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-                            // Prediction and Evaluation
-                            vector<uchar> predictions = classifier->predict(test_features);
-                            vector<uchar> test_labels = classifier->extLabelFromFileName(test_imgs);
-                            double perc = classifier->evaluateVerbose(predictions,test_labels,numClasses);
-                            classifier->evaluate(predictions,test_labels,numClasses);
-                            //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-                            //Saving
-                            string toSave = "nets/"+ classifier->getStrLabels() + "_";
-                            string features ="";
-                            for(int i = 0; i < annSettings.vec_features.size();++i){
-                                features += annSettings.vec_features[i]->name() + "_";
-                            }
-                            toSave += features;
-                            toSave += classifier->getStrSettings() + "_";
-                            toSave += to_string(int(perc)) + "_" + to_string(REPEAT) + ".yml";
-
-                            if(perc > 85){
-                                classifier->save2file(toSave.c_str());
-                            }
-                            else{
-                                cout  << toSave << endl;
-                            }
-                            cout << "FEATURES: " << features << endl;
-                            cout << "------------------------------------------" << endl;
-                            delete classifier;
-                        }
-
+                    delete classifier;
                 }// END -f arg
                 else{
                     help();

@@ -42,7 +42,7 @@ public:
     string getStrSettings();
 
     // Inteface of the Parent
-    void train(cv::Mat_<float> &trainData, std::vector<uchar> &labels, int numClasses);
+    void train(cv::Mat_<float> &trainData, std::vector<uchar> &labels);
     std::vector<uchar> predict(cv::Mat_<float> &testData);
     uchar predictResponse(cv::Mat_<float> &testData);
     void showGraph(int featuresNum);

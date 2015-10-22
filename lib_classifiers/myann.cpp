@@ -21,8 +21,7 @@ myANN::myANN()
 //==============================================================================
 myANN::~myANN()
 {
-
-
+    delete this->nnetwork;
 }
 ////////////////////////////////////////////////////////////////////////////////////
 /// Settings and init
@@ -121,7 +120,7 @@ int myANN::save2file(const char *filename){
 ////////////////////////////////////////////////////////////////////////////////////
 /// Training
 ////////////////////////////////////////////////////////////////////////////////////
-void myANN::train(Mat_<float> &trainData, vector<uchar> &labels, int numClasses)
+void myANN::train(Mat_<float> &trainData, vector<uchar> &labels)
 {
 #ifdef DEBUG
     cout << "ANN DEBUG: training..." << endl;

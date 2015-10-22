@@ -110,7 +110,7 @@ void TestAllConfig(vector<string> & train_images, string directory, string test_
                    cerr << "Training without UNKNOWNS" << endl;
                }
                if(eLabels.size() == Features.rows){
-                   classifier->train(Features, eLabels, numClasses);
+                   classifier->train(Features, eLabels);
                  //  classifier->save2file(string("ann_"+std::to_string(X)).c_str());
                }
                /** SVM Prediction */
@@ -137,7 +137,7 @@ void TestAllConfig(vector<string> & train_images, string directory, string test_
                vector<uchar> predictions = classifier->predict(test_features);
                vector<uchar> test_labels = classifier->extLabelFromFileName(test_imgs);
                //classifier->evaluate(predictions,test_labels,numClasses) ;
-               cout << classifier->evaluateVerbose(predictions,test_labels,numClasses) << "%" << endl;
+               cout << classifier->evaluateVerbose(predictions,test_labels) << "%" << endl;
                /// CODE ENDS HERE ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                vec_extractors.clear();
                delete classifier;
@@ -243,7 +243,7 @@ int mainOld(int argc, char ** argv)
 //        }
 
         if(eLabels.size() == Features.rows){
-            classifier->train(Features, eLabels, numClasses);
+            classifier->train(Features, eLabels);
             classifier->save2file("SVM_D_R.yml");
         }
 

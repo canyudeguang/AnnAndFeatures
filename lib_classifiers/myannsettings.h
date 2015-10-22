@@ -19,6 +19,7 @@
 #include "lib_features/brightfeature.h"
 #include "lib_features/maskfeatures.h"
 #include "lib_features/grayscalefeatures.h"
+#include "lib_features/integralfeature.h"
 
 
 using namespace std;
@@ -30,6 +31,10 @@ public:
     ~myAnnSettings();
     int processFileName(string filename);
     int getNumClasses();
+    int getNumFeatures();
+
+    void printFeatures();
+    void printClasses();
 
     string * getStrLabelsArray();
 

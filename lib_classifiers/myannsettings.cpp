@@ -11,6 +11,9 @@ myAnnSettings::~myAnnSettings()
 int myAnnSettings::getNumClasses(){
     return this->vec_labels.size();
 }
+int myAnnSettings::getNumFeatures(){
+    return this->vec_features.size();
+}
 
 string * myAnnSettings::getStrLabelsArray(){
     string label_array[this->vec_labels.size()];
@@ -35,10 +38,13 @@ int myAnnSettings::processFileName(string filename){
     all_pointers.push_back(new GrayScaleFeatures());
     all_pointers.push_back(new CornerFeatures());
     all_pointers.push_back(new maskfeatures());
+    all_pointers.push_back(new IntegralFeature(IntegralFeature::CLASS_TEETH));
+    all_pointers.push_back(new IntegralFeature(IntegralFeature::CLASS_TONGUE));
+    all_pointers.push_back(new IntegralFeature(IntegralFeature::CLASS_OPEN));
+    all_pointers.push_back(new IntegralFeature(IntegralFeature::CLASS_DEFAULT));
 
     filename = Support::getFileName(filename);
     vector<string> parts = Support::splitString(filename, '_');
-    cout << filename << endl;
 
     int cntFeatures = 0;
 
@@ -71,4 +77,28 @@ int myAnnSettings::processFileName(string filename){
     }
 
     return 0;
+}
+
+void myAnnSettings::printClasses(){
+    for(int i = 0; i < vec_labels.size(); ++i){
+        cout << vec_labels[i];
+        if(i < vec_labels.size()-1){
+            cout << ", ";
+        }
+        else{
+            cout << endl;
+        }
+    }
+}
+
+void myAnnSettings::printFeatures(){
+    for(int i = 0; i < vec_features.size(); ++i){
+        cout << vec_features[i]->name();
+        if(i < vec_features.size()-1){
+            cout << ", ";
+        }
+        else{
+            cout << endl;
+        }
+    }
 }

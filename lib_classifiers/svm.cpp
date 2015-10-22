@@ -5,12 +5,16 @@ mySVM::mySVM()
 
 }
 
+mySVM::~mySVM(){
+
+}
+
 /*
  * Non linearabe separated data - Separating hyperplane
  *
  *
  */
-void mySVM::train(cv::Mat_<float> &trainData, std::vector<uchar> &labels, int numClasses){
+void mySVM::train(cv::Mat_<float> &trainData, std::vector<uchar> &labels){
     CvSVMParams params;
     params.svm_type = CvSVM::NU_SVC;
     params.nu = 0.2;
@@ -19,14 +23,14 @@ void mySVM::train(cv::Mat_<float> &trainData, std::vector<uchar> &labels, int nu
     params.degree = 4;
     params.term_crit = cvTermCriteria(CV_TERMCRIT_ITER,1000000,0.000001);
 
-#if INFO
+#ifdef INFO
     cout << "SVM training ..." << endl;
 #endif
     int numberOfSamples = trainData.rows;
     cv::Mat trainLabels = Classifier::cr8ResponseMat(labels, numberOfSamples);
     cvsvm = new CvSVM();
     cvsvm->train(trainData,trainLabels,cv::Mat(),cv::Mat(),params);
-#if INFO
+#ifdef INFO
     cout << "SVM training ready with sv_count: " << cvsvm->get_support_vector_count() <<" vars: " << cvsvm->get_var_count() << endl;
 #endif
 }
@@ -96,17 +100,17 @@ void mySVM::showGraph(int featuresNum){
         }
 
 
-//        // Show support vectors
-//        int thickness = 2;
-//        int lineType  = 8;
-//        int c     = cvsvm->get_support_vector_count();
+        // Show support vectors
+        int thickness = 2;
+        int lineType  = 8;
+        int c     = cvsvm->get_support_vector_count();
 
-//        for (int i = 0; i < c; ++i)
-//        {
-//            const float* v = cvsvm->get_support_vector(i);
-//            cout <<Point( (int) v[0], (int) v[1]) << endl;
-//            circle( image,  Point( (int) v[0], (int) v[1]),6,  Scalar(128, 128, 128), thickness, lineType);
-//        }
+        for (int i = 0; i < c; ++i)
+        {
+            const float* v = cvsvm->get_support_vector(i);
+            cout <<Point( (int) v[0], (int) v[1]) << endl;
+            circle( image,  Point( (int) v[0], (int) v[1]),6,  Scalar(128, 128, 128), thickness, lineType);
+        }
 
        // imwrite("result.png", image);        // save the image
 
@@ -123,3 +127,6 @@ int mySVM::save2file(const char *filename){
     this->cvsvm->save(filename);
     return -1;
 }
+
+int mySVM::loadFromParams(string params){}
+string mySVM::getStrSettings(){}

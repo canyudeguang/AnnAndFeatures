@@ -26,9 +26,10 @@ class Classifier {
 public:
     static const string C_ANN;
     Classifier();
+    virtual ~Classifier() = 0;
 
     // Virtual functions implemented in a child class
-    virtual void train(cv::Mat_<float> &trainData, std::vector<uchar> &labels, int numClasses) = 0;
+    virtual void train(cv::Mat_<float> &trainData, std::vector<uchar> &labels) = 0;
     virtual std::vector<uchar> predict(cv::Mat_<float> &testData) = 0;
     virtual uchar predictResponse(cv::Mat_<float> &testData) = 0;
     virtual void showGraph(int featuresNum) = 0;
@@ -42,7 +43,7 @@ public:
     virtual int save2file(const char * filename) = 0;
 
     void evaluate(std::vector<uchar> predictedLabels, std::vector<uchar> trueLabels, int numClasses);
-    double evaluateVerbose(std::vector<uchar> predictedLabels, std::vector<uchar> trueLabels, int numClasses);
+    double evaluateVerbose(std::vector<uchar> predictedLabels, std::vector<uchar> trueLabels);
     static cv::Mat cr8ResponseMat(std::vector<uchar> & labels, int numberOfSamples);
     // Classifier methods
     /**
@@ -51,6 +52,8 @@ public:
      * @param numOfClasses number of labels
      */
     void setLabels( string labels[],int numOfClasses);
+
+    void setLabels(vector<string> vec_labels);
     /**
      * @brief Get index of given string label
      * @param label string of a label
@@ -90,6 +93,8 @@ public:
 
     int numberOfClasses;
     int attributesPerSample;
+
+    void printLabels(vector<string> filename, vector<uchar> labels);
 private:
     bool isRestMember;
     std::vector<string> strLabels;
