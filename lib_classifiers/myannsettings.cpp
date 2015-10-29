@@ -42,6 +42,7 @@ int myAnnSettings::processFileName(string filename){
     all_pointers.push_back(new IntegralFeature(IntegralFeature::CLASS_TONGUE));
     all_pointers.push_back(new IntegralFeature(IntegralFeature::CLASS_OPEN));
     all_pointers.push_back(new IntegralFeature(IntegralFeature::CLASS_DEFAULT));
+    all_pointers.push_back(new IntegralFeature(IntegralFeature::CLASS_SMILE));
 
     filename = Support::getFileName(filename);
     vector<string> parts = Support::splitString(filename, '_');

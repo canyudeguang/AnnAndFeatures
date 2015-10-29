@@ -3,6 +3,7 @@ CONFIG += console
 CONFIG += c++11
 CONFIG -= app_bundle
 CONFIG -= qt
+QMAKE_CXXFLAGS += -std=c++11
 
 SOURCES += main.cpp \
     lib_features/cornerfeatures.cpp \
@@ -31,7 +32,8 @@ SOURCES += main.cpp \
     lib_classifiers/myann.cpp \
     mainold.cpp \
     lib_classifiers/myannsettings.cpp \
-    lib_features/integralfeature.cpp
+    lib_features/integralfeature.cpp \
+    lib_classifiers/labelextractor.cpp
 
 INCLUDE += /usr/local/include/opencv /usr/local/include/opencv2
 LIBS += -L/usr/local/lib \
@@ -76,5 +78,6 @@ HEADERS += \
     lib_features/featurespicker.h \
     lib_classifiers/myann.h \
     lib_classifiers/myannsettings.h \
-    lib_features/integralfeature.h
+    lib_features/integralfeature.h \
+    lib_classifiers/labelextractor.h
 

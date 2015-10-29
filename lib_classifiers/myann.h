@@ -40,6 +40,7 @@ public:
     int loadFromParams(string params);
     int save2file(const char *filename);
     string getStrSettings();
+    string name();
 
     // Inteface of the Parent
     void train(cv::Mat_<float> &trainData, std::vector<uchar> &labels);

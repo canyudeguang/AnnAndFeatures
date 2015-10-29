@@ -17,27 +17,22 @@ using namespace std;
 using namespace cv;
 
 
-// Enumeration of available types of classifier
-enum classifierTypes{CLASS_ANN, CLASS_SVM};
 
-//==============================================================================
 class Classifier {
 
 public:
-    static const string C_ANN;
+    static const string C_ANN, C_SVM;
     Classifier();
     virtual ~Classifier() = 0;
+    virtual string name() = 0;
 
     // Virtual functions implemented in a child class
     virtual void train(cv::Mat_<float> &trainData, std::vector<uchar> &labels) = 0;
     virtual std::vector<uchar> predict(cv::Mat_<float> &testData) = 0;
     virtual uchar predictResponse(cv::Mat_<float> &testData) = 0;
-    virtual void showGraph(int featuresNum) = 0;
 
     virtual int loadFromParams(string params) = 0;
-
     virtual string getStrSettings() = 0;
-
 
     virtual int loadFromFile(const char * filename) = 0;
     virtual int save2file(const char * filename) = 0;

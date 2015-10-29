@@ -1,6 +1,7 @@
 #include "classifier.h"
 
 const string Classifier::C_ANN = "ANN";
+const string Classifier::C_SVM = "SVM";
 
 Classifier::Classifier(){
     this->nullLabel = false;

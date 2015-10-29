@@ -333,6 +333,10 @@ IntegralFeature::IntegralFeature(IntegralFeature::CLASS_TYPES clasType)
         this->cType = CLASS_TONGUE;
         this->mName = "fIntegralTo";
         break;
+    case IntegralFeature::CLASS_SMILE:
+        this->cType = CLASS_SMILE;
+        this->mName = "fIntegralSm";
+        break;
     default:
         this->mName = "fIntegral";
         this->cType = CLASS_DEFAULT;
@@ -367,10 +371,20 @@ void IntegralFeature::calcIntegralFeatures(){
     case CLASS_TONGUE:
         integralShapes.push_back(IntegralF(integralImage,IntegralF::LowRect));
         break;
+
+    case CLASS_SMILE:
+        integralShapes.push_back(IntegralF(integralImage,IntegralF::LowRect));
+        integralShapes.push_back(IntegralF(integralImage,IntegralF::MouthHoles));
+        integralShapes.push_back(IntegralF(integralImage,IntegralF::CenterDotLower));
+        integralShapes.push_back(IntegralF(integralImage,IntegralF::CenterDot3));
+        integralShapes.push_back(IntegralF(integralImage,IntegralF::LineHorizontal));
+        integralShapes.push_back(IntegralF(integralImage,IntegralF::LineVertical));
+        integralShapes.push_back(IntegralF(integralImage,IntegralF::CenterCross));
+        break;
     default:
         integralShapes.push_back(IntegralF(integralImage,IntegralF::EdgeVertical));
-       integralShapes.push_back(IntegralF(integralImage,IntegralF::EdgeHorizontal));
-        integralShapes.push_back(IntegralF(integralImage,IntegralF::LineHorizontal));
+        integralShapes.push_back(IntegralF(integralImage,IntegralF::EdgeHorizontal));
+     integralShapes.push_back(IntegralF(integralImage,IntegralF::LineHorizontal));
         integralShapes.push_back(IntegralF(integralImage,IntegralF::LineHorizontalThick));
         integralShapes.push_back(IntegralF(integralImage,IntegralF::LineVertical));
         integralShapes.push_back(IntegralF(integralImage,IntegralF::LineVerticalThick));
@@ -384,7 +398,7 @@ void IntegralFeature::calcIntegralFeatures(){
         integralShapes.push_back(IntegralF(integralImage,IntegralF::CenterDotLow));
         integralShapes.push_back(IntegralF(integralImage,IntegralF::CenterDotLower));
         integralShapes.push_back(IntegralF(integralImage,IntegralF::CenterMouth));
-        integralShapes.push_back(IntegralF(integralImage,IntegralF::CenterRect));
+       integralShapes.push_back(IntegralF(integralImage,IntegralF::CenterRect));
         integralShapes.push_back(IntegralF(integralImage,IntegralF::LowRect));
         integralShapes.push_back(IntegralF(integralImage,IntegralF::MouthHoles));
         break;

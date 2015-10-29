@@ -74,7 +74,8 @@ public:
         CLASS_TEETH = 0,
         CLASS_TONGUE,
         CLASS_OPEN,
-        CLASS_DEFAULT
+        CLASS_DEFAULT,
+        CLASS_SMILE
     };
 
     static CLASS_TYPES class_types;

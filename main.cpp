@@ -1,40 +1,17 @@
 #include <iostream>
-
-using namespace std;
-
 #include <algorithm>
 
 #include "lib_support/support.h"
 #include "lib_support/cvSupport.h"
 
-
-#include "lib_features/histogramfeatures.h"
-#include "lib_features/cornerfeatures.h"
-#include "lib_features/edgefeatures.h"
-#include "lib_features/experimentfeature.h"
-#include "lib_features/rawfeatures.h"
-#include "lib_features/skeletfeatures.h"
-#include "lib_features/hogfeatures.h"
-#include "lib_features/lbpfeatures.h"
-#include "lib_features/brightfeature.h"
-#include "lib_features/maskfeatures.h"
-#include "lib_features/grayscalefeatures.h"
-#include "lib_features/integralfeature.h"
-
 #include "lib_features/featurespicker.h"
 
-#include "lib_classifiers/ann.h"
 #include "lib_classifiers/myann.h"
 #include "lib_classifiers/myannsettings.h"
-#include "lib_classifiers/svm.h"
 
-//#include "lib_classifiers/svm.h"
-//#include "lib_classifiers/boostclass.h"
-//#include "lib_classifiers/kn.h"
-//#include "lib_classifiers/decisiontree.h"
+#include "lib_classifiers/labelextractor.h"
 
-
-
+using namespace std;
 void help(){
     cout << "Usage:" << endl;
     cout << "./AnnFeatures TrainDir TestDir -c Classifier {[Ann layers] classifier Settings} -f featureIndexes repetitions" << endl;
@@ -66,6 +43,8 @@ cv::Mat_<float> featureExtractionFromDir(vector<string> & train_images, vector<F
 
 #define INFO
 
+
+
 int main(int argc, char *argv[]){
 
     if(argc > 5){
@@ -73,14 +52,43 @@ int main(int argc, char *argv[]){
             Classifier * classifier;
              ///@TODO set SVM classifier
             if(string(argv[4]) == Classifier::C_ANN){
+                // Creation of the classifier Object
+                classifier = new myANN();
 #ifdef INFO
-                cout << "Classifier selected: myANN" << endl;
+                cout << "Classifier selected: " << classifier->name() << endl;
 #endif
+
+                // Load Train and Test Images
+                string directory(argv[1]);
+                vector<string> train_images = Support::pathVector(directory,".jpg");
+#ifdef INFO
+                cout << "Training from: \t" << directory << "\t" << train_images.size() << " images loaded." << endl;
+#endif
+                string test_dir(argv[2]);
+                vector<string> test_imgs = Support::pathVector(test_dir,".jpg");
+#ifdef INFO
+                cout << "Predict from: \t" << test_dir << "\t" << test_imgs.size() << " images loadad." << endl;
+#endif
+                sort(test_imgs.begin(), test_imgs.end());
+
+                string strLabelsFeatures(argv[7]);
+                // Label extraction
+                LabelExtractor Test_Labels;
+                Test_Labels.setLabels(strLabelsFeatures);
+                cout << Test_Labels.printLblNames(false) << endl;
+                Test_Labels.extractLabelsFromFiles(test_imgs);\
+                Test_Labels.printAll();
+
+                exit(0);
+
+                vector<uchar> train_labels = classifier->extLabelFromFileName(train_images);
+                vector<uchar> test_labels = classifier->extLabelFromFileName(test_imgs);
+
 
 /// Cosntant functions
                 ///@TODO erase! - I guess virtual destructor insteaf
                 // Setting repetitions
-                int repetitions = 3;
+                int repetitions = 6;
                 if(argc == 9) repetitions = stoi(argv[8]);
 
                 // Set Features and Classes
@@ -102,18 +110,7 @@ int main(int argc, char *argv[]){
 #endif
                     }
 
-                    // Load Train and Test Images
-                    string directory(argv[1]);
-                    vector<string> train_images = Support::pathVector(directory,".jpg");
-#ifdef INFO
-                    cout << "Training from: \t" << directory << "\t" << train_images.size() << " images loaded." << endl;
-#endif
-                    string test_dir(argv[2]);
-                    vector<string> test_imgs = Support::pathVector(test_dir,".jpg");
-#ifdef INFO
-                    cout << "Predict from: \t" << test_dir << "\t" << test_imgs.size() << " images loadad." << endl;
-#endif
-                    sort(test_imgs.begin(), test_imgs.end());
+
                     //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                     // Feature extraction
                     cv::Mat_<float> test_features = featureExtractionFromDir(test_imgs,annSettings.vec_features);
@@ -121,15 +118,13 @@ int main(int argc, char *argv[]){
                     //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                     // Training
                     ///@TODO repetitions
-                    for(int REPEAT = 0; REPEAT < repetitions; ++REPEAT){}
+                    for(int REPEAT = 0; REPEAT < repetitions; ++REPEAT){
 
                     classifier = new myANN();
                     classifier->setLabels(annSettings.vec_labels);
                     classifier->setFeatureVectorSize(Features.cols);
 
-                    // Label extraction
-                    vector<uchar> train_labels = classifier->extLabelFromFileName(train_images);
-                    vector<uchar> test_labels = classifier->extLabelFromFileName(test_imgs);
+
 
                     // set Classifier Params - from commandline
                     // -c ANN {100,0.1,0.1[20]}
@@ -154,14 +149,14 @@ int main(int argc, char *argv[]){
                     toSave += features;
                     toSave += classifier->getStrSettings() + "_";
                     toSave += to_string(int(perc)) + "_" + to_string(0) + ".yml";
-                    if(perc > 85){
+                    if(perc > 72){
                         classifier->save2file(toSave.c_str());
                     }
                     else{
                         cout  << toSave << endl;
                     }
 
-                    delete classifier;
+                    delete classifier;}
                 }// END -f arg
                 else{
                     help();
