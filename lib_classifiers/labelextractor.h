@@ -31,7 +31,7 @@ public:
     void setLabels(string string_labels);
 
     int getLabelIndex(string label);
-    string getLabelString(uint index);
+    string getLabelString(unsigned char index);
     /**
      * @brief extractLabelsFromFiles extracts uchar labels from filenames
      * @param filenames
@@ -40,6 +40,7 @@ public:
     vector<unsigned char> extractLabelsFromFiles(vector<string> &filenames);
 
     unsigned char findStrLabelInString(string &filename);
+    unsigned char getIndexOfLabel(string label);
 
     string printLblNames(bool print2cout = true);
     void printAll();
@@ -47,9 +48,13 @@ public:
 
     vector<string> mstr_Labels;
     vector<unsigned char> mLabels;
+    vector<int> label_counts;
     int number_of_classes;
 
     bool hasRestMember;
+    bool hasUnknownMember;
+    int unknown_count;
+    int total_count;
 };
 
 #endif // LABELEXTRACTOR_H

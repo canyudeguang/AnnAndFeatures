@@ -70,14 +70,19 @@ int main(int argc, char *argv[]){
                 cout << "Predict from: \t" << test_dir << "\t" << test_imgs.size() << " images loadad." << endl;
 #endif
                 sort(test_imgs.begin(), test_imgs.end());
+                sort(train_images.begin(), train_images.end());
 
                 string strLabelsFeatures(argv[7]);
                 // Label extraction
-                LabelExtractor Test_Labels;
+                LabelExtractor Test_Labels, Train_Labels;
+                Train_Labels.setLabels(strLabelsFeatures);
+                Train_Labels.extractLabelsFromFiles(train_images);
+
+                Train_Labels.printLblNames();
+
                 Test_Labels.setLabels(strLabelsFeatures);
-                cout << Test_Labels.printLblNames(false) << endl;
                 Test_Labels.extractLabelsFromFiles(test_imgs);\
-                Test_Labels.printAll();
+                Test_Labels.printLblNames();
 
                 exit(0);
 
