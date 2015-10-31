@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <algorithm>
 
 #include "lib_support/support.h"
 
@@ -16,6 +17,7 @@ public:
     static const string str_LBL_UNKNOWN;
     static const string str_LBL_REST;
 
+    LabelExtractor(string Labels_settings, vector<string> & filenames);
     LabelExtractor();
     ~LabelExtractor();
 
@@ -39,12 +41,14 @@ public:
      */
     vector<unsigned char> extractLabelsFromFiles(vector<string> &filenames);
 
+    void removeUnknowns(vector<string> &filenames);
+
     unsigned char findStrLabelInString(string &filename);
     unsigned char getIndexOfLabel(string label);
 
     string printLblNames(bool print2cout = true);
     void printAll();
-
+    void printAll(vector<string> & filenames);
 
     vector<string> mstr_Labels;
     vector<unsigned char> mLabels;
@@ -55,6 +59,8 @@ public:
     bool hasUnknownMember;
     int unknown_count;
     int total_count;
+private:
+    void init();
 };
 
 #endif // LABELEXTRACTOR_H

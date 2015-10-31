@@ -16,6 +16,7 @@ public:
     experimentFeature();
     cv::Mat_<float> getFeature(Mat &image);
     string name();
+    int count();
     Mat getGradientImage(Mat &img);
 
     int thres;

@@ -64,7 +64,6 @@ SOURCES       = main.cpp \
 		lib_features/skeletfeatures.cpp \
 		lib_features/hogfeatures.cpp \
 		lib_features/lbpfeatures.cpp \
-		lib_classifiers/ann.cpp \
 		lib_classifiers/classifier.cpp \
 		lib_classifiers/svm.cpp \
 		lib_classifiers/boostclass.cpp \
@@ -73,7 +72,6 @@ SOURCES       = main.cpp \
 		lib_features/brightfeature.cpp \
 		lib_features/featurespicker.cpp \
 		lib_classifiers/myann.cpp \
-		mainold.cpp \
 		lib_classifiers/myannsettings.cpp \
 		lib_features/integralfeature.cpp \
 		lib_classifiers/labelextractor.cpp 
@@ -93,7 +91,6 @@ OBJECTS       = main.o \
 		skeletfeatures.o \
 		hogfeatures.o \
 		lbpfeatures.o \
-		ann.o \
 		classifier.o \
 		svm.o \
 		boostclass.o \
@@ -102,7 +99,6 @@ OBJECTS       = main.o \
 		brightfeature.o \
 		featurespicker.o \
 		myann.o \
-		mainold.o \
 		myannsettings.o \
 		integralfeature.o \
 		labelextractor.o
@@ -237,7 +233,6 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		lib_features/skeletfeatures.h \
 		lib_features/hogfeatures.h \
 		lib_features/lbpfeatures.h \
-		lib_classifiers/ann.h \
 		lib_classifiers/classifier.h \
 		lib_classifiers/svm.h \
 		lib_classifiers/boostclass.h \
@@ -264,7 +259,6 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		lib_features/skeletfeatures.cpp \
 		lib_features/hogfeatures.cpp \
 		lib_features/lbpfeatures.cpp \
-		lib_classifiers/ann.cpp \
 		lib_classifiers/classifier.cpp \
 		lib_classifiers/svm.cpp \
 		lib_classifiers/boostclass.cpp \
@@ -273,7 +267,6 @@ DIST          = ../../dev/Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		lib_features/brightfeature.cpp \
 		lib_features/featurespicker.cpp \
 		lib_classifiers/myann.cpp \
-		mainold.cpp \
 		lib_classifiers/myannsettings.cpp \
 		lib_features/integralfeature.cpp \
 		lib_classifiers/labelextractor.cpp
@@ -669,11 +662,6 @@ lbpfeatures.o: lib_features/lbpfeatures.cpp lib_features/lbpfeatures.h \
 		lib_support/support.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o lbpfeatures.o lib_features/lbpfeatures.cpp
 
-ann.o: lib_classifiers/ann.cpp lib_classifiers/ann.h \
-		lib_classifiers/classifier.h \
-		lib_support/support.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ann.o lib_classifiers/ann.cpp
-
 classifier.o: lib_classifiers/classifier.cpp lib_classifiers/classifier.h \
 		lib_support/support.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o classifier.o lib_classifiers/classifier.cpp
@@ -712,27 +700,6 @@ myann.o: lib_classifiers/myann.cpp lib_classifiers/myann.h \
 		lib_support/support.h \
 		lib_features/featureextractor.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o myann.o lib_classifiers/myann.cpp
-
-mainold.o: mainold.cpp lib_support/support.h \
-		lib_support/cvSupport.h \
-		lib_features/histogramfeatures.h \
-		lib_features/featureextractor.h \
-		lib_features/histogram.h \
-		lib_features/cornerfeatures.h \
-		lib_features/edgefeatures.h \
-		lib_features/experimentfeature.h \
-		lib_features/rawfeatures.h \
-		lib_features/skeletfeatures.h \
-		lib_features/hogfeatures.h \
-		lib_features/lbpfeatures.h \
-		lib_features/brightfeature.h \
-		lib_features/maskfeatures.h \
-		lib_features/grayscalefeatures.h \
-		lib_features/featurespicker.h \
-		lib_classifiers/ann.h \
-		lib_classifiers/classifier.h \
-		lib_classifiers/myann.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainold.o mainold.cpp
 
 myannsettings.o: lib_classifiers/myannsettings.cpp lib_classifiers/myannsettings.h \
 		lib_support/support.h \

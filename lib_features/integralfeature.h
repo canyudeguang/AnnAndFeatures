@@ -86,7 +86,7 @@ public:
     cv::Mat_<float> getFeature(cv::Mat &image);
 
     string name();
-
+    int count();
 
 
     int IntegerSum(cv::Mat &intImage, cv::Point a, cv::Point b);
@@ -97,6 +97,7 @@ private:
     CLASS_TYPES cType;
     string mName;
     vector<IntegralF> integralShapes;
+    int mCount;
 };
 
 

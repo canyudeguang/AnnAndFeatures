@@ -91,8 +91,9 @@ int myANN::loadFromParams(string params){
 
         vector<string> atoms = Support::splitString(settings,',');
         this->setIterations(stoi(atoms[0]));
-        this->bp_param1 = stod(atoms[1]);
-        this->bp_param2 = stod(atoms[2]);
+        ///@TODO now is defaults
+//        this->bp_param1 = stod(atoms[1]);
+//        this->bp_param2 = stod(atoms[2]);
 #ifdef INFO
         cout << "ANN INFO: iters=" << this->iters << ", eps=" << this->eps << ", bp1=" << this->bp_param1;
         cout << ", bp2=" << this->bp_param2 << ", features_count=" << this->attributesPerSample;
@@ -104,6 +105,34 @@ int myANN::loadFromParams(string params){
     }
     return 0;
 }
+
+void myANN::processFileLoad(string filename){
+    vector<string> parts = Support::splitString(filename,'_');
+    for(int i = 0; i < parts.size(); ++i){
+        string part = parts[i];
+        if(part[0] >= '0' && part[0] <= '9'){
+            if(this->iters == DEFAULT_ITER){
+                setIterations(stoi(part));
+            }
+        }
+    }
+
+    //layers from loaded network
+    cv::Mat layers(this->nnetwork->get_layer_sizes());
+    vector<int> net_layers;
+    for(int i = 0; i < layers.cols; ++i){
+        net_layers.push_back(layers.at<int>(0,i));
+    }
+
+    this->setClassesVecLen(net_layers[net_layers.size()-1], net_layers[0]);
+
+    vector<string> str_inner_layers;
+    for(int i = 1; i < net_layers.size()-1; ++i){
+        str_inner_layers.push_back(to_string(net_layers[i]));
+    }
+    this->setLayers(str_inner_layers);
+}
+
 //==============================================================================
 int myANN::loadFromFile(const char *filename){
 #ifdef INFO
@@ -111,6 +140,7 @@ int myANN::loadFromFile(const char *filename){
 #endif
     nnetwork = new CvANN_MLP();
     nnetwork->load(filename);
+    this->processFileLoad(string(filename));
     return -1;
 }
 //==============================================================================
@@ -187,24 +217,23 @@ vector<uchar> myANN::predict(Mat_<float> &testData)
 
     Mat_<float> classifResult(1, this->numberOfClasses);
     vector<uchar> predictedLabels(numberOfSamples);
-    for(int i = 0; i < numberOfSamples; i++) {
 
+    Mat_<float> predictions;
+
+    for(int i = 0; i < numberOfSamples; i++) {
         nnetwork->predict(testData.row(i), classifResult);
 #ifdef DDD
         cout << classifResult << endl;
 #endif
-
         Point2i max_loc;
         minMaxLoc(classifResult, 0, 0, 0, &max_loc);
 
         // add row into predictions
-        this->predictions.push_back(classifResult);
+        predictions.push_back(classifResult);
         //predictedLabels.push_back(maxI);
         predictedLabels[i] = static_cast<unsigned char>(max_loc.x);
     }
-    this->predictLabels.insert(this->predictLabels.end(),predictedLabels.begin(), predictedLabels.end());
-
-    return this->predictLabels;
+    return predictedLabels;
 }
 //==============================================================================
 uchar myANN::predictResponse(cv::Mat_<float> &testData){
@@ -230,14 +259,15 @@ string myANN::getStrSettings(){
     string settings("");
     settings += to_string(this->iters) + "_";
 
-    string bp1 = to_string(this->bp_param1);
-    bp1 = bp1.substr(0,3);
-    bp1.erase(std::remove(bp1.begin(), bp1.end(), '.'), bp1.end());
-    string bp2 = to_string(this->bp_param2);
-    bp2 = bp2.substr(0,3);
-    bp2.erase(std::remove(bp2.begin(), bp2.end(), '.'), bp2.end());
+    ///@NOTE BP are defaults
+//    string bp1 = to_string(this->bp_param1);
+//    bp1 = bp1.substr(0,3);
+//    bp1.erase(std::remove(bp1.begin(), bp1.end(), '.'), bp1.end());
+//    string bp2 = to_string(this->bp_param2);
+//    bp2 = bp2.substr(0,3);
+//    bp2.erase(std::remove(bp2.begin(), bp2.end(), '.'), bp2.end());
 
-    settings+= bp1 + "_" + bp2+"_";
+//    settings+= bp1 + "_" + bp2+"_";
 
     for(int i = 0; i < this->nn_layers.size(); ++i){
         settings += "_"+to_string(this->nn_layers[i]);

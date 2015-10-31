@@ -4,6 +4,9 @@
 string experimentFeature::name(){
     return "fExper";
 }
+int experimentFeature::count(){
+    return 2;
+}
 
 /** @function thresh_callback */
 void experimentFeature::on_trackbar(int event, void* param)

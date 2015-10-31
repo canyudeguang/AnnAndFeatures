@@ -22,6 +22,9 @@ public:
     static cv::Mat_<float> joinFeatures(cv::Mat_<float> &f1, cv::Mat_<float> &f2);
 
     virtual string name() = 0;
+    virtual int count() = 0;
+
+    static cv::Mat_<float> extractFromImgs(vector<string> &image_paths, vector<FeatureExtractor *> vec_features);
 };
 
 #endif // FEATUREEXTRACTOR_H

@@ -8,6 +8,9 @@ HOGFeatures::HOGFeatures()
 string HOGFeatures::name(){
     return "fHOG";
 }
+int HOGFeatures::count(){
+    return 3780;
+}
 
 HOGFeatures::~HOGFeatures()
 {

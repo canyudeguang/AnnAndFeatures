@@ -324,22 +324,27 @@ IntegralFeature::IntegralFeature(IntegralFeature::CLASS_TYPES clasType)
     case IntegralFeature::CLASS_OPEN:
         this->mName = "fIntegralOp";
         this->cType = CLASS_OPEN;
+        this->mCount = 1 * 2;
         break;
     case IntegralFeature::CLASS_TEETH:
         this->mName = "fIntegralTe";
         this->cType = CLASS_TEETH;
+        this->mCount = 8 * 2;
         break;
     case IntegralFeature::CLASS_TONGUE:
         this->cType = CLASS_TONGUE;
         this->mName = "fIntegralTo";
+        this->mCount = 1 * 2;
         break;
     case IntegralFeature::CLASS_SMILE:
         this->cType = CLASS_SMILE;
         this->mName = "fIntegralSm";
+        this->mCount = 7 * 2;
         break;
     default:
         this->mName = "fIntegral";
         this->cType = CLASS_DEFAULT;
+        this->mCount = 19 * 2;
         break;
     }
 }
@@ -384,7 +389,7 @@ void IntegralFeature::calcIntegralFeatures(){
     default:
         integralShapes.push_back(IntegralF(integralImage,IntegralF::EdgeVertical));
         integralShapes.push_back(IntegralF(integralImage,IntegralF::EdgeHorizontal));
-     integralShapes.push_back(IntegralF(integralImage,IntegralF::LineHorizontal));
+        integralShapes.push_back(IntegralF(integralImage,IntegralF::LineHorizontal));
         integralShapes.push_back(IntegralF(integralImage,IntegralF::LineHorizontalThick));
         integralShapes.push_back(IntegralF(integralImage,IntegralF::LineVertical));
         integralShapes.push_back(IntegralF(integralImage,IntegralF::LineVerticalThick));
@@ -398,7 +403,7 @@ void IntegralFeature::calcIntegralFeatures(){
         integralShapes.push_back(IntegralF(integralImage,IntegralF::CenterDotLow));
         integralShapes.push_back(IntegralF(integralImage,IntegralF::CenterDotLower));
         integralShapes.push_back(IntegralF(integralImage,IntegralF::CenterMouth));
-       integralShapes.push_back(IntegralF(integralImage,IntegralF::CenterRect));
+        integralShapes.push_back(IntegralF(integralImage,IntegralF::CenterRect));
         integralShapes.push_back(IntegralF(integralImage,IntegralF::LowRect));
         integralShapes.push_back(IntegralF(integralImage,IntegralF::MouthHoles));
         break;
@@ -432,4 +437,8 @@ cv::Mat_<float> IntegralFeature::getFeature(Mat &image){
 
 string IntegralFeature::name(){
     return this->mName;
+}
+
+int IntegralFeature::count(){
+    return this->mCount;
 }

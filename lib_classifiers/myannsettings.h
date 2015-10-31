@@ -30,16 +30,20 @@ public:
     myAnnSettings();
     ~myAnnSettings();
     int processFileName(string filename);
-    int getNumClasses();
     int getNumFeatures();
+    int get_feature_vector_length();
+
+    string getFileName(string classifierSettings, int perc);
 
     void printFeatures();
-    void printClasses();
 
-    string * getStrLabelsArray();
+    void print();
 
-    vector<string> vec_labels;
     vector<FeatureExtractor *> vec_features;
+    vector<string> classes;
+    int features_count;
+    int classes_count;
+
 };
 
 #endif // MYANNSETTINGS_H

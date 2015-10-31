@@ -21,7 +21,6 @@ SOURCES += main.cpp \
     lib_features/skeletfeatures.cpp \
     lib_features/hogfeatures.cpp \
     lib_features/lbpfeatures.cpp \
-    lib_classifiers/ann.cpp \
     lib_classifiers/classifier.cpp \
     lib_classifiers/svm.cpp \
     lib_classifiers/boostclass.cpp \
@@ -30,7 +29,6 @@ SOURCES += main.cpp \
     lib_features/brightfeature.cpp \
     lib_features/featurespicker.cpp \
     lib_classifiers/myann.cpp \
-    mainold.cpp \
     lib_classifiers/myannsettings.cpp \
     lib_features/integralfeature.cpp \
     lib_classifiers/labelextractor.cpp
@@ -68,7 +66,6 @@ HEADERS += \
     lib_features/skeletfeatures.h \
     lib_features/hogfeatures.h \
     lib_features/lbpfeatures.h \
-    lib_classifiers/ann.h \
     lib_classifiers/classifier.h \
     lib_classifiers/svm.h \
     lib_classifiers/boostclass.h \

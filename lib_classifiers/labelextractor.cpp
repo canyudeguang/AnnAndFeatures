@@ -7,8 +7,19 @@ const string LabelExtractor::str_LBL_UNKNOWN = "UNKNOWN";
 const unsigned char LabelExtractor::LBL_REST = 222;
 const unsigned char LabelExtractor::LBL_UNKNOWN = 255;
 
+LabelExtractor::LabelExtractor(string Labels_settings, vector<string> & filenames)
+{
+    this->init();
+    this->setLabels(Labels_settings);
+    this->extractLabelsFromFiles(filenames);
+}
+
 LabelExtractor::LabelExtractor()
 {
+   this->init();
+}
+
+void LabelExtractor::init(){
     this->hasRestMember = false;
     this->hasUnknownMember = false;
     this->unknown_count = 0;
@@ -64,6 +75,20 @@ void LabelExtractor::printAll(){
         cout << this->getLabelString(this->mLabels[i]) << ":\t[" << int(mLabels[i]) <<"]" << endl;
     }
 }
+
+void LabelExtractor::printAll(vector<string> &filenames){
+
+    if(mLabels.size() == filenames.size()){
+        for(int i = 0; i < this->mLabels.size(); i++){
+            cout << this->getLabelString(this->mLabels[i]) << ":\t[" << int(mLabels[i]) <<"] " << filenames[i] << endl;
+        }
+    }
+    else{
+        cerr << "Sizes of Images and Labels don't match; images: " << filenames.size() << " labels: " << mLabels.size() << endl;
+    }
+
+}
+
 
 string LabelExtractor::getLabelString(unsigned char index){
     if(index == LabelExtractor::LBL_UNKNOWN){
@@ -122,21 +147,39 @@ vector<unsigned char> LabelExtractor::extractLabelsFromFiles(vector<string> &fil
 
     this->mLabels.clear();
 
-    this->label_counts = vector<int>(this->mstr_Labels.size());
+    this->label_counts.resize(this->mstr_Labels.size());
     this->label_counts.assign(this->label_counts.size(),0);
 
     for(size_t i = 0; i < filenames.size(); ++i){
         unsigned char foundLabel = this->findStrLabelInString(filenames[i]);
         this->mLabels.push_back(foundLabel);
-        this->total_count ++;
+        this->total_count++;
         if(foundLabel == LBL_UNKNOWN){
             this->hasUnknownMember = true;
             unknown_count++;
         }
-        this->label_counts[foundLabel]++;
+        else{
+            this->label_counts[foundLabel]++;
+        }
+
     }
 
     return this->mLabels;
 }
 
+void LabelExtractor::removeUnknowns(vector<string> &filenames){
+    if(filenames.size() == mLabels.size()){
+        int count = 0;
+        for(int i = 0; i < mLabels.size(); ++i){
+            if(mLabels[i] == LabelExtractor::LBL_UNKNOWN){
+                filenames.erase(filenames.begin() + i-count);
+                count++;
+            }
+        }
+        mLabels.erase(remove(mLabels.begin(), mLabels.end(), LabelExtractor::LBL_UNKNOWN), mLabels.end());
+    }
+    else{
+        cerr << "Sizes of Images and Labels don't match; images: " << filenames.size() << " labels: " << mLabels.size() << endl;
+    }
+}
 

@@ -42,6 +42,8 @@ public:
     string getStrSettings();
     string name();
 
+
+
     // Inteface of the Parent
     void train(cv::Mat_<float> &trainData, std::vector<uchar> &labels);
     std::vector<uchar> predict(cv::Mat_<float> &testData);
@@ -53,7 +55,7 @@ public:
 
     ~myANN();
 
-    Mat_<float> predictions;
+
     vector<uchar> predictLabels;
 
     int iters;
@@ -61,6 +63,8 @@ public:
     Mat layers;
 private:
     CvANN_MLP* nnetwork;
+
+    void processFileLoad(string filename);
 
 
     double eps;
